@@ -14,7 +14,7 @@ def print_line(level, tag, args):
 
 
 # read the file and process the rows
-with open('01-project_Miller.ged', encoding='utf-8') as f:
+with open('01-project.ged', encoding='utf-8') as f:
     for line in f:
         print("-->", line.strip())
         words = line.split()  # split() splits on whitespace and eliminates trailing whitespace
