@@ -1,0 +1,173 @@
+0 NOTE https://github.com/conniejmiller/SSW555tm092017Fall
+0 HEAD
+0 NOTE define me
+0 p1 INDI
+1 NAME Constance Joan /Lewis/
+1 SEX F
+1 BIRT
+2 DATE 9 FEB 1962
+1 FAMC f2
+1 FAMS f1
+0 NOTE define spouse
+0 p2 INDI
+1 NAME John Anderson /Miller/
+1 SEX M
+1 BIRT
+2 DATE 21 JAN 1957
+1 FAMC f3
+1 FAMS f1
+0 NOTE define mom
+0 p3 INDI
+1 NAME Thelma Lucella /Philbrook/
+1 SEX F
+1 BIRT
+2 DATE 18 FEB 1939
+1 FAMC f4
+1 FAMS f2
+0 NOTE define dad
+0 p4 INDI
+1 NAME John Walter /Lewis/
+1 SEX M
+1 BIRT
+2 DATE 30 JAN 1937
+1 FAMC f5
+1 FAMS f2
+0 NOTE define brother
+0 p5 INDI
+1 NAME Jeffrey Clement /Lewis/
+1 SEX M
+1 BIRT
+2 DATE 26 OCT 1965
+1 FAMC f2
+0 NOTE define mother in law
+0 p6 INDI
+1 NAME Edna Adlee /Holmes/
+1 SEX F
+1 BIRT
+2 DATE 1 NOV 1929
+1 DEAT
+2 DATE 11 SEP 1998
+1 FAMS f6
+1 FAMS f3
+0 NOTE define father in law
+0 p7 INDI
+1 NAME Frank /Miller/
+1 SEX M
+1 BIRT
+2 DATE 20 OCT 1927
+1 DEAT
+2 DATE 18 MAR 2007
+1 FAMS f3
+0 NOTE define brother in law
+0 p8 INDI
+1 NAME Frank /Miller/ Jr
+1 SEX M
+1 BIRT
+2 DATE 25 AUG 1955
+1 FAMC f3
+0 NOTE define maternal grandmother
+0 p9 INDI
+1 NAME Lorene Elizabeth /Detert/
+1 SEX F
+1 BIRT
+2 DATE 11 NOV 1898
+1 DEAT
+2 DATE 30 APR 1989
+1 FAMS f4
+0 NOTE define maternal grandfather
+0 p10 INDI
+1 NAME Herbert Montgomery /Philbrook/
+1 SEX M
+1 BIRT
+2 DATE 5 SEP 1878
+1 DEAT
+2 DATE 10 AUG 1952
+1 FAMS f4
+0 NOTE define paternal grandfather
+0 p11 INDI
+1 NAME Elbert Eugene /Lewis/
+1 SEX M
+1 BIRT
+2 DATE 28 DEC 1912
+1 DEAT
+2 DATE 11 DEC 1994
+1 FAMS f5
+0 NOTE define maternal grandmother
+0 p12 INDI
+1 NAME Jennie Earnest /Lee/
+1 SEX F
+1 BIRT
+2 DATE 1 MAR 1915
+1 DEAT
+2 DATE 27 FEB 1996
+1 FAMS f5
+0 NOTE define paternal step father in law
+0 p13 INDI
+1 NAME Bryan Kent /Holmes/
+1 SEX M
+1 BIRT
+2 DATE 20 JAN 1925
+1 DEAT
+2 DATE 20 JUN 1951
+1 FAMS f6
+0 NOTE define half brother in law
+0 p14 INDI
+1 NAME Bryan Ferris /Miller/
+2 GIVN Bryan Ferris
+2 SURN Miller
+1 SEX M
+1 BIRT
+2 DATE 20 JAN 1948
+1 FAMC f6
+0 NOTE define half sister in law
+0 p15 INDI
+1 NAME Theresa Ann /Holmes/
+1 SEX F
+1 BIRT
+2 DATE 17 OCT 1949
+1 FAMC f6
+0 NOTE define family
+0 f1 FAM
+1 MARR
+2 DATE 19 MAR 1989
+1 WIFE p1
+1 HUSB p2
+0 NOTE define parents 
+0 f2 FAM
+1 MARR
+2 DATE 8 APR 1961
+1 DIV
+2 DATE 30 JUL 1988
+1 WIFE p3
+1 HUSB p4
+1 CHIL p5
+1 CHIL p1
+0 NOTE define in laws
+0 f3 FAM
+1 MARR
+2 DATE 28 MAY 1954
+1 WIFE p6
+1 HUSB p7
+1 CHIL p8
+1 CHIL p2
+0 NOTE define maternal grandparents 
+0 f4 FAM
+1 WIFE p9
+1 HUSB p10
+1 CHIL p3
+0 NOTE define paternal grandparents
+0 f5 FAM
+1 MARR
+2 DATE 9 JUN 1935
+1 HUSB p11
+1 WIFE p12
+1 CHIL p4
+0 NOTE define paternal step grandparents
+0 f6 FAM
+1 MARR
+2 DATE 25 DEC 1944
+1 WIFE p6
+1 HUSB p13
+1 CHIL p14
+1 CHIL p15
+0 TRLR
