@@ -87,5 +87,6 @@ def getname(id):
     return "Unknown"
     
 for row in family:
-    print (row["ID"] + " : " + getname(row["HUSB"]) + " and " + getname(row["WIFE"]))
+    print (row["ID"] + " : " + row["HUSB"] + ":" + getname(row["HUSB"]) + " and " + row["WIFE"] + ":" + getname(row["WIFE"]))
+
 
