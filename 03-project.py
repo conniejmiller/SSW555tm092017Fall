@@ -88,3 +88,36 @@ for row in sorted(individual, key=itemgetter("ID")):
 for row in sorted(family, key=itemgetter("ID")):
     print (row["ID"] + " : " + row["HUSB"] + ":" + getname(row["HUSB"]) + " and " + row["WIFE"] + ":" + getname(row["WIFE"]))
 
+    
+    
+# now try in table with all data in a table
+from prettytable import PrettyTable
+
+individuals = PrettyTable(["ID", 
+                           "NAME", 
+                           "GENDER", 
+                           "BIRTHDAY"])
+individuals.padding_width = 1 # One space between column edges and contents (default)
+individuals.align["NAME"] = "l" # Left align names
+for row in sorted(individual, key=itemgetter("ID")):
+    print(row)
+    individuals.add_row([row["ID"], 
+                         row["NAME"],
+                         row["SEX"],
+                         row["BIRT"]])
+print (individuals)
+
+families = PrettyTable(["ID", 
+                        "HUSBAND", 
+                        "WIFE"])
+families.padding_width = 1 # One space between column edges and contents (default)
+families.align["HUSBAND"] = "l" 
+families.align["WIFE"] = "1"
+
+for row in sorted(family, key=itemgetter("ID")):
+    families.add_row([row["ID"], 
+                      row["HUSB"]+ ":" + getname(row["HUSB"]), 
+                      row["WIFE"] + ":" + getname(row["WIFE"])])
+
+print (families)
+
