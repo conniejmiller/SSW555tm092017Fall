@@ -50,12 +50,12 @@ while 1:
         elif tag in ("BIRT","DEAT"):
             line = fp.readline()
             words = line.split()
-            indi_dict[tag] = " ".join(other_stuff)
+            indi_dict[tag] = " ".join(words[2:])
             
         elif tag in ("MARR","DIV"):
             line = fp.readline()
             words = line.split()
-            fam_dict[tag] = " ".join(other_stuff)
+            fam_dict[tag] = " ".join(words[2:])
             
         elif tag in ("HUSB","WIFE"):
             fam_dict[tag] = " ".join(other_stuff)
