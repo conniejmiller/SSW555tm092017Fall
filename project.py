@@ -13,14 +13,19 @@ def print_line(level, tag, args):
     print("<-- %s|%s|%s|%s" % (level, tag, valid_tag(level, tag), args))
 
 
-def process_words(wordMatrix):
+def process_words(inFile):
     this_type = 'new'
     individual = []
     family = []
     indi_dict = {}
     family_dict = {}
 
-    for words in wordMatrix:
+    while 1:
+        line = inFile.readline()
+        if not line:
+            break
+        words = line.split() # split() splits on whitespace and eliminates trailing whitespace
+
         if len(words) >= 2:
             level = words[0]
             tag = words[1]
@@ -53,10 +58,14 @@ def process_words(wordMatrix):
                 indi_dict[tag] = " ".join(other_stuff)
                 
             elif tag in ("BIRT", "DEAT"):
-                indi_dict[tag] = " ".join(other_stuff)
+                line = fp.readline()
+                words = line.split()
+                indi_dict[tag] = " ".join(words[2:])
                 
             elif tag in ("MARR", "DIV"):
-                fam_dict[tag] = " ".join(other_stuff)
+                line = fp.readline()
+                words = line.split()
+                fam_dict[tag] = " ".join(words[2:])
             
             elif tag in ("HUSB", "WIFE"):
                 fam_dict[tag] = " ".join(other_stuff)
@@ -81,11 +90,9 @@ def process_file():
     words = []
 
     # read the file and process the rows
-    with open(FILE_NAME) as inFile:
-        for line in inFile:
-            words.append(line.split())
+    inFile = open(FILE_NAME)
 
-    individual, family = process_words(words)
+    individual, family = process_words(inFile)
 
 
 if __name__ == '__main__':
