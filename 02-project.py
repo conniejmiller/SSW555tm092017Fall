@@ -12,11 +12,13 @@ def print_line(level, tag, args):
     print("<-- %s|%s|%s|%s" % (level, tag, valid_tag(level, tag), args))
 
 # read the file and process the rows  
-fp = open('01-project.ged', encoding='utf-8')
+fp = open('01-project_Miller.ged', encoding='utf-8')
 
 individual = []
 family = []
     
+this_type = 'new'
+
 while 1:
     line = fp.readline()
     if not line:
@@ -29,26 +31,50 @@ while 1:
         other_stuff = words[2:]
    
         if len(words) == 3 and words[2] in ("INDI", "FAM"):
-                
+            # print lastline
+            if this_type == 'INDI':
+                individual.append(indi_dict)
+            elif this_type == 'FAM':
+                family.append(fam_dict)
+
             if words[2] == "INDI":
                 indi_dict = {"ID":tag,"NAME":'',"SEX":'',"BIRT":'',"DEAT":''}
                 this_type = 'INDI'
-                individual.append(indi_dict)
             else:
                 fam_dict = {"ID":tag,"MARR":'',"HUSB":'',"WIFE":'',"CHIL":[],"DIV":''}
                 this_type = 'FAM'
-                family.append(fam_dict)
+        
+        elif tag in ("NAME","SEX"):
+            indi_dict[tag] = " ".join(other_stuff)
+            individual.append(indi_dict)
             
-        else:
-            if this_type == 'INDI':
-                print ("INDI")
-            else:
-                print ("FAM")
+        elif tag in ("BIRT","DEAT"):
+            line = fp.readline()
+            words = line.split()
+            indi_dict[tag] = " ".join(words[2:])
+            
+        elif tag in ("MARR","DIV"):
+            line = fp.readline()
+            words = line.split()
+            fam_dict[tag] = " ".join(words[2:])
+            
+        elif tag in ("HUSB","WIFE"):
+            fam_dict[tag] = " ".join(other_stuff)
+            individual.append(fam_dict)
+            
+        elif tag == "CHIL":
+            fam_dict[tag].append(other_stuff)
+            individual.append(fam_dict)
 
     else:
         # badly formatted line
         print_line("?", "?", "?")
 
+# now print the last one
+if this_type == 'INDI':
+    individual.append(indi_dict)
+elif this_type == 'FAM':
+    family.append(fam_dict)
+
 print (individual)
-print ('')
 print (family)
