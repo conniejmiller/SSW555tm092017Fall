@@ -76,5 +76,16 @@ if this_type == 'INDI':
 elif this_type == 'FAM':
     family.append(fam_dict)
 
-print (individual)
-print (family)
+
+for row in individual:
+    print(row["ID"] + " : " + row["NAME"])
+
+def getname(id):
+    for row in individual:
+        if row["ID"] == id:
+            return row["NAME"]
+    return "Unknown"
+    
+for row in family:
+    print (row["ID"] + " : " + getname(row["HUSB"]) + " and " + getname(row["WIFE"]))
+
