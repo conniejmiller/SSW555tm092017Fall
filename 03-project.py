@@ -101,7 +101,6 @@ individuals = PrettyTable(["ID",
 individuals.padding_width = 1 # One space between column edges and contents (default)
 individuals.align["NAME"] = "l" # Left align names
 for row in sorted(individual, key=itemgetter("ID")):
-    print(row)
     individuals.add_row([row["ID"], 
                          row["NAME"],
                          row["SEX"],
