@@ -12,7 +12,7 @@ def print_line(level, tag, args):
     print("<-- %s|%s|%s|%s" % (level, tag, valid_tag(level, tag), args))
 
 # read the file and process the rows  
-fp = open('01-project.ged', encoding='utf-8')
+fp = open('01-project_Miller.ged', encoding='utf-8')
 
 individual = []
 family = []
@@ -46,7 +46,6 @@ while 1:
         
         elif tag in ("NAME","SEX"):
             indi_dict[tag] = " ".join(other_stuff)
-            individual.append(indi_dict)
             
         elif tag in ("BIRT","DEAT"):
             line = fp.readline()
@@ -60,11 +59,9 @@ while 1:
             
         elif tag in ("HUSB","WIFE"):
             fam_dict[tag] = " ".join(other_stuff)
-            individual.append(fam_dict)
             
         elif tag == "CHIL":
             fam_dict[tag].append(words[2])
-            individual.append(fam_dict)
 
     else:
         # badly formatted line
@@ -75,7 +72,6 @@ if this_type == 'INDI':
     individual.append(indi_dict)
 elif this_type == 'FAM':
     family.append(fam_dict)
-
 
 for row in individual:
     print(row["ID"] + " : " + row["NAME"])
@@ -88,6 +84,4 @@ def getname(id):
     
 for row in family:
     print (row["ID"] + " : " + row["HUSB"] + ":" + getname(row["HUSB"]) + " and " + row["WIFE"] + ":" + getname(row["WIFE"]))
-
-
 
