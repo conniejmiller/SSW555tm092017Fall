@@ -87,9 +87,9 @@ def process_file():
 
     individual, family = process_words(words)
 
-    print(individual)
-    print(family)
-
 
 if __name__ == '__main__':
     process_file()
+    
+    print(individual)
+    print(family)
