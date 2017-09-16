@@ -73,8 +73,8 @@ if this_type == 'INDI':
 elif this_type == 'FAM':
     family.append(fam_dict)
 
-for row in individual:
-    print(row["ID"] + " : " + row["NAME"])
+#now print output     
+from operator import itemgetter
 
 def getname(id):
     for row in individual:
@@ -82,6 +82,9 @@ def getname(id):
             return row["NAME"]
     return "Unknown"
     
-for row in family:
+for row in sorted(individual, key=itemgetter("ID")):
+    print(row["ID"] + " : " + row["NAME"])
+
+for row in sorted(family, key=itemgetter("ID")):
     print (row["ID"] + " : " + row["HUSB"] + ":" + getname(row["HUSB"]) + " and " + row["WIFE"] + ":" + getname(row["WIFE"]))
 
