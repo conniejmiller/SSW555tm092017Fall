@@ -82,15 +82,17 @@ def print_ids_names_individuals(individuals):
         prints the unique identifiers and names of each of the 
         individuals in order by their unique identifiers"""
     for individual in individuals:
-        print(individual['ID'])
-        print(individual['NAME'])
-
+        print(individual)
+        
 
 def print_ids_names_families(families):
     """ Takes a list of collections as an argument and 
         prints the unique identifiers and names of the 
         husbands and wives, in order by unique family identifiers"""
     for family in families:
-        print(family['ID'])
+        string = "Unique family identifier: {0} \nUnique HUSB identifier: {1} \nUnique WIFE identifier: {2}\n".format(family['ID'], family['HUSB'], family['WIFE'])
+        print(string)
 
 print_ids_names_individuals(individual)
+print('**********')
+print_ids_names_families(family)
