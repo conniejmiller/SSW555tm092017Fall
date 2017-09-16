@@ -46,7 +46,6 @@ while 1:
         
         elif tag in ("NAME","SEX"):
             indi_dict[tag] = " ".join(other_stuff)
-            individual.append(indi_dict)
             
         elif tag in ("BIRT","DEAT"):
             line = fp.readline()
@@ -60,11 +59,9 @@ while 1:
             
         elif tag in ("HUSB","WIFE"):
             fam_dict[tag] = " ".join(other_stuff)
-            individual.append(fam_dict)
             
         elif tag == "CHIL":
             fam_dict[tag].append(words[2])
-            individual.append(fam_dict)
 
     else:
         # badly formatted line
