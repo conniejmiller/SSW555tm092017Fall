@@ -1,3 +1,5 @@
+FILE_NAME = 'data/baseline_input.ged'
+
 # is this a valid combination?
 def valid_tag(level,tag):
     # define valid tags at each level
@@ -136,7 +138,6 @@ def print_table (individual,family):
     
 # process the file
 def process_file():
-    FILE_NAME = '01-project_Miller.ged'
     words = []
 
     # read the file and process the rows
