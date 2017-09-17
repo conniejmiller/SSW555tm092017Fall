@@ -1,3 +1,8 @@
+from operator import itemgetter
+from prettytable import PrettyTable
+
+FILE_NAME = 'data/baseline_input.ged'
+
 # is this a valid combination?
 def valid_tag(level,tag):
     # define valid tags at each level
@@ -85,32 +90,18 @@ def process_words(wordMatrix):
 
     return individual, family
 
-# process the file
-def process_file():
-    FILE_NAME = '01-project.ged'
-    words = []
-
-    # read the file and process the rows
-    with open(FILE_NAME) as inFile:
-        for line in inFile:
-            words.append(line.split())
-
-    individual, family = process_words(words)
-    
-    #print(individual)
-    #print(family)
-
-    #now print output     
-    from operator import itemgetter          
+# print individuals
+def print_indi(individual):        
     for row in sorted(individual, key=itemgetter("ID")):
-        print(row["ID"] + " : " + row["NAME"])
+        print(row["ID"] + " : " + row["NAME"]) 
     
+# print families
+def print_fam(individual,family):        
     for row in sorted(family, key=itemgetter("ID")):
         print (row["ID"] + " : " + row["HUSB"] + ":" + getname(individual,row["HUSB"]) + " and " + row["WIFE"] + ":" + getname(individual,row["WIFE"]))
-    
-    # now try in table with all data in a table
-    from prettytable import PrettyTable
-    
+        
+# print in table
+def print_table (individual,family):    
     individuals = PrettyTable(["ID", 
                                "NAME", 
                                "GENDER", 
@@ -144,7 +135,32 @@ def process_file():
                           row["WIFE"] + ":" + getname(individual,row["WIFE"]),
                           row["CHIL"]])
     print (families)
+    
+# process the file
+def process_file():
+    words = []
+
+    # read the file and process the rows
+    with open(FILE_NAME) as inFile:
+        for line in inFile:
+            words.append(line.split())
+
+    return words
+
+# Main processing function
+def main():
+    words = process_file()
+
+    individual, family = process_words(words)
+
+    print_indi(individual)
+    print_fam(individual, family)
+
+    print_table(individual, family)
+
+    # Call validation function here
+    # vaidateSomething(individual, family)
 
 if __name__ == '__main__':
-    process_file()
+    main()
     
