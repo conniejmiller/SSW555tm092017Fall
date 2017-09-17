@@ -30,7 +30,7 @@ def process_words(wordMatrix):
     individual = []
     family = []
     indi_dict = {}
-    family_dict = {}
+    fam_dict = {}
 
     for words in wordMatrix:
         if len(words) >= 2:
