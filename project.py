@@ -1,3 +1,6 @@
+from operator import itemgetter
+from prettytable import PrettyTable
+
 FILE_NAME = 'data/baseline_input.ged'
 
 # is this a valid combination?
@@ -87,21 +90,17 @@ def process_words(wordMatrix):
     return individual, family
 
 # print individuals
-def print_indi(individual):
-    from operator import itemgetter          
+def print_indi(individual):        
     for row in sorted(individual, key=itemgetter("ID")):
         print(row["ID"] + " : " + row["NAME"]) 
     
 # print families
-def print_fam(individual,family):
-    from operator import itemgetter          
+def print_fam(individual,family):        
     for row in sorted(family, key=itemgetter("ID")):
         print (row["ID"] + " : " + row["HUSB"] + ":" + getname(individual,row["HUSB"]) + " and " + row["WIFE"] + ":" + getname(individual,row["WIFE"]))
         
 # print in table
-def print_table (individual,family):
-    from prettytable import PrettyTable
-    
+def print_table (individual,family):    
     individuals = PrettyTable(["ID", 
                                "NAME", 
                                "GENDER", 
@@ -145,18 +144,22 @@ def process_file():
         for line in inFile:
             words.append(line.split())
 
-    individual, family = process_words(words)
-    
-    #print(individual)
-    #print(family)
+    return words
 
-    #now print output     
+# Main processing function
+def main():
+    words = process_file()
+
+    individual, family = process_words(words)
+
     print_indi(individual)
     print_fam(individual, family)
-    
-    # now try in table with all data in a table
+
     print_table(individual, family)
 
+    # Call validation function here
+    # vaidateSomething(individual, family)
+
 if __name__ == '__main__':
-    process_file()
+    main()
     
