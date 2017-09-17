@@ -7,25 +7,20 @@ def valid_tag(level, tag):
 
     return "Y" if level in valid_tags and tag in valid_tags[level] else "N"
 
-
 # print the formatted line
 def print_line(level, tag, args):
     print("<-- %s|%s|%s|%s" % (level, tag, valid_tag(level, tag), args))
 
-
-def process_words(inFile):
+# process rows in the matrix
+def process_words(wordMatrix):
     this_type = 'new'
+    this_tag = 'new'
     individual = []
     family = []
     indi_dict = {}
     family_dict = {}
 
-    while 1:
-        line = inFile.readline()
-        if not line:
-            break
-        words = line.split() # split() splits on whitespace and eliminates trailing whitespace
-
+    for words in wordMatrix:
         if len(words) >= 2:
             level = words[0]
             tag = words[1]
@@ -57,24 +52,22 @@ def process_words(inFile):
             elif tag in ("NAME", "SEX"):
                 indi_dict[tag] = " ".join(other_stuff)
                 
-            elif tag in ("BIRT", "DEAT"):
-                line = fp.readline()
-                words = line.split()
-                indi_dict[tag] = " ".join(words[2:])
+            elif tag in ("BIRT", "DEAT", "MARR", "DIV"):
+                #savethis tag so we can write it after the next row
+                this_tag = tag
                 
-            elif tag in ("MARR", "DIV"):
-                line = fp.readline()
-                words = line.split()
-                fam_dict[tag] = " ".join(words[2:])
+            elif tag in ("DATE"):
+                if this_type == 'INDI':
+                    indi_dict[this_tag] = " ".join(other_stuff)
+                elif this_type == 'FAM':
+                    fam_dict[this_tag] = " ".join(other_stuff)
+                this_tag = 'new'
             
             elif tag in ("HUSB", "WIFE"):
                 fam_dict[tag] = " ".join(other_stuff)
             
             elif tag == "CHIL":
                 fam_dict[tag].append(words[2])
-        else:
-            # badly formatted line
-            print_line("?", "?", "?")
 
     # now print the last one
     if this_type == 'INDI':
@@ -84,19 +77,19 @@ def process_words(inFile):
 
     return individual, family
 
-
 def process_file():
     FILE_NAME = '01-project.ged'
     words = []
 
     # read the file and process the rows
-    inFile = open(FILE_NAME)
+    with open(FILE_NAME) as inFile:
+        for line in inFile:
+            words.append(line.split())
 
-    individual, family = process_words(inFile)
-
-
-if __name__ == '__main__':
-    process_file()
+    individual, family = process_words(words)
     
     print(individual)
     print(family)
+
+if __name__ == '__main__':
+    process_file()
