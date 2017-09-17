@@ -87,7 +87,7 @@ def process_words(wordMatrix):
 
 # process the file
 def process_file():
-    FILE_NAME = '01-project_Miller.ged'
+    FILE_NAME = '01-project.ged'
     words = []
 
     # read the file and process the rows
