@@ -12,7 +12,7 @@ def print_line(level, tag, args):
     print("<-- %s|%s|%s|%s" % (level, tag, valid_tag(level, tag), args))
 
 # read the file and process the rows  
-fp = open('01-project_Miller.ged', encoding='utf-8')
+fp = open('01-project.ged', encoding='utf-8')
 
 individual = []
 family = []
