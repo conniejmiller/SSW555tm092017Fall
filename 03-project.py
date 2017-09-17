@@ -84,30 +84,20 @@ def process_words(wordMatrix):
 
     return individual, family
 
-# process the file
-def process_file():
-    FILE_NAME = '01-project_Miller.ged'
-    words = []
-
-    # read the file and process the rows
-    with open(FILE_NAME) as inFile:
-        for line in inFile:
-            words.append(line.split())
-
-    individual, family = process_words(words)
-    
-    #print(individual)
-    #print(family)
-
-    #now print output     
+# print individuals
+def print_indi(individual):
     from operator import itemgetter          
     for row in sorted(individual, key=itemgetter("ID")):
-        print(row["ID"] + " : " + row["NAME"])
+        print(row["ID"] + " : " + row["NAME"]) 
     
+# print families
+def print_fam(individual,family):
+    from operator import itemgetter          
     for row in sorted(family, key=itemgetter("ID")):
         print (row["ID"] + " : " + row["HUSB"] + ":" + getname(individual,row["HUSB"]) + " and " + row["WIFE"] + ":" + getname(individual,row["WIFE"]))
-    
-    # now try in table with all data in a table
+        
+# print in table
+def print_table (individual,family):
     from prettytable import PrettyTable
     
     individuals = PrettyTable(["ID", 
@@ -143,6 +133,28 @@ def process_file():
                           row["WIFE"] + ":" + getname(individual,row["WIFE"]),
                           row["CHIL"]])
     print (families)
+    
+# process the file
+def process_file():
+    FILE_NAME = '01-project_Miller.ged'
+    words = []
+
+    # read the file and process the rows
+    with open(FILE_NAME) as inFile:
+        for line in inFile:
+            words.append(line.split())
+
+    individual, family = process_words(words)
+    
+    #print(individual)
+    #print(family)
+
+    #now print output     
+    print_indi(individual)
+    print_fam(individual, family)
+    
+    # now try in table with all data in a table
+    print_table(individual, family)
 
 if __name__ == '__main__':
     process_file()
