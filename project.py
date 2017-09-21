@@ -177,7 +177,7 @@ def dateCompare(a):
         return 'False'
 
 
-def validateList(indi_list, fam_list):
+def validateDates(indi_list, fam_list):
     for row in indi_list:
         if not dateCompare(row["BIRT"]):
             print('Error US01: Birth date of ' +
@@ -223,7 +223,7 @@ def main():
 
     # Call validation function here
     # vaidateSomething(individual, family)
-    validateList(individual, family)
+    validateDates(individual, family)
 
 
 if __name__ == '__main__':
