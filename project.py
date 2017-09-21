@@ -2,7 +2,7 @@ from operator import itemgetter
 from prettytable import PrettyTable
 from datetime import datetime
 
-FILE_NAME = 'baseline_input.ged'
+FILE_NAME = 'data/baseline_input.ged'
 
 
 # is this a valid combination?
