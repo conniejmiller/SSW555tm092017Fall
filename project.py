@@ -1,20 +1,21 @@
 from operator import itemgetter
 from prettytable import PrettyTable
+from datetime import datetime
 
 FILE_NAME = 'data/baseline_input.ged'
 
-def valid_tag(level,tag):
+
+def valid_tag(level, tag):
     """ Defines a dict of valid tags at each level,
         checks for a valid combination, and returns "Y" or "N" 
     """
-    valid_tags = {
-        "0": ["INDI", "FAM", "HEAD", "TRLR", "NOTE"],
-        "1": ["NAME", "SEX", "BIRT", "DEAT", "FAMC", "FAMS", "MARR", "HUSB", "WIFE", "CHIL", "DIV"],
-        "2": ["DATE"]
-    }
-                  
+    valid_tags = {"0": ["INDI", "FAM", "HEAD", "TRLR", "NOTE"],
+                  "1": ["NAME", "SEX", "BIRT", "DEAT", "FAMC", "FAMS",
+                        "MARR", "HUSB", "WIFE", "CHIL", "DIV"],
+                  "2": ["DATE"]}
+
     return "Y" if level in valid_tags and tag in valid_tags[level] else "N"
-    
+
 
 def print_line(level, tag, args):
     """ Print the formatted line of level, tag, and arguments """
@@ -36,11 +37,10 @@ def process_words(wordMatrix):
     individual = []
     family = []
     indi_dict = {}
-    family_dict = {}
+    fam_dict = {}
 
     for words in wordMatrix:
         if len(words) >= 2:
-            level = words[0]
             tag = words[1]
             other_stuff = words[2:]
 
@@ -52,38 +52,38 @@ def process_words(wordMatrix):
                     family.append(fam_dict)
 
                 if words[2] == "INDI":
-                    indi_dict = {"ID": tag, 
-                                 "NAME": '', 
-                                 "SEX": '', 
-                                 "BIRT": '', 
+                    indi_dict = {"ID": tag,
+                                 "NAME": '',
+                                 "SEX": '',
+                                 "BIRT": '',
                                  "DEAT": ''}
                     this_type = 'INDI'
                 else:
-                    fam_dict = {"ID": tag, 
-                                "MARR": '', 
-                                "HUSB": '', 
-                                "WIFE": '', 
-                                "CHIL": [], 
+                    fam_dict = {"ID": tag,
+                                "MARR": '',
+                                "HUSB": '',
+                                "WIFE": '',
+                                "CHIL": [],
                                 "DIV": ''}
                     this_type = 'FAM'
-            
+
             elif tag in ("NAME", "SEX"):
                 indi_dict[tag] = " ".join(other_stuff)
-                
+
             elif tag in ("BIRT", "DEAT", "MARR", "DIV"):
-                #savethis tag so we can write it after the next row
+                # savethis tag so we can write it after the next row
                 this_tag = tag
-                
+
             elif tag in ("DATE"):
                 if this_type == 'INDI':
                     indi_dict[this_tag] = " ".join(other_stuff)
                 elif this_type == 'FAM':
                     fam_dict[this_tag] = " ".join(other_stuff)
                 this_tag = 'new'
-            
+
             elif tag in ("HUSB", "WIFE"):
                 fam_dict[tag] = " ".join(other_stuff)
-            
+
             elif tag == "CHIL":
                 fam_dict[tag].append(words[2])
 
@@ -97,53 +97,59 @@ def process_words(wordMatrix):
 
 
 def print_indi(individual):
-    """ Print individuals """        
+    """ Print individuals """ 
     for row in sorted(individual, key=itemgetter("ID")):
-        print(row["ID"] + " : " + row["NAME"]) 
-    
+        print(row["ID"] + " : " + row["NAME"])
 
-def print_fam(individual,family):  
-    """ Print families """      
+
+def print_fam(individual, family):
+    """ Print families """ 
     for row in sorted(family, key=itemgetter("ID")):
-        print (row["ID"] + " : " + row["HUSB"] + ":" + getname(individual,row["HUSB"]) + " and " + row["WIFE"] + ":" + getname(individual,row["WIFE"]))
-        
+        print(row["ID"] + " : " +
+              row["HUSB"] + ":" + getname(individual, row["HUSB"]) +
+              " and " +
+              row["WIFE"] + ":" + getname(individual, row["WIFE"]))
 
-def print_table (individual,family):    
-    """ Print in table """
-    individuals = PrettyTable(["ID", 
-                               "NAME", 
-                               "GENDER", 
+
+def print_table(individual, family):
+    """ Print table of individuals and families """
+    individuals = PrettyTable(["ID",
+                               "NAME",
+                               "GENDER",
                                "BIRTHDAY",
                                "DEATH"])
-    individuals.padding_width = 1 # One space between column edges and contents (default)
-    individuals.align["NAME"] = "l" # Left align names
+    # One space between column edges and contents (default)
+    individuals.padding_width = 1
+    individuals.align["NAME"] = "l"  # Left align names
     for row in sorted(individual, key=itemgetter("ID")):
-        individuals.add_row([row["ID"], 
+        individuals.add_row([row["ID"],
                              row["NAME"],
                              row["SEX"],
                              row["BIRT"],
                              row["DEAT"]])
-    print (individuals)
-    
-    families = PrettyTable(["ID", 
+    print(individuals)
+
+    families = PrettyTable(["ID",
                             "MARRIED",
                             "DIVORCED",
-                            "HUSBAND", 
+                            "HUSBAND",
                             "WIFE",
                             "CHILDREN"])
-    families.padding_width = 1 # One space between column edges and contents (default)
+    # One space between column edges and contents (default)
+    families.padding_width = 1
     families.align["HUSBAND"] = "1"
     families.align["WIFE"] = "1"
-    
+
     for row in sorted(family, key=itemgetter("ID")):
         families.add_row([row["ID"],
                           row["MARR"],
                           row["DIV"],
-                          row["HUSB"]+ ":" + getname(individual,row["HUSB"]), 
-                          row["WIFE"] + ":" + getname(individual,row["WIFE"]),
+                          row["HUSB"] + ":" + getname(individual, row["HUSB"]),
+                          row["WIFE"] + ":" + getname(individual, row["WIFE"]),
                           row["CHIL"]])
-    print (families)
-    
+
+    print(families)
+
 
 def process_file():
     """  Process the file """
@@ -157,6 +163,60 @@ def process_file():
     return words
 
 
+def date_compare(a):
+    """ 
+        This routine compares a date in the Exact format to the current date
+        and returns true if it is prior to today
+        otherwise, returns false
+    """
+    # print (datetime.now())
+    new_date = datetime.strptime(a, '%d %b %Y').date()
+    # print(new_date)
+
+    if new_date < datetime.now().date():
+        return 'True'
+    else:
+        return 'False'
+
+
+def validate_dates(indi_list, fam_list):
+    """ 
+        This function validate dates by looping through both 
+        individual and family lists, calling date_compare() 
+        and checking for empty spaces/rows of DEAT, MARR, DIV. 
+    """ 
+    for row in indi_list:
+        if not date_compare(row["BIRT"]):
+            print('Error US01: Birth date of ' +
+                  row["NAME"] + ' (' + row["ID"] + ') ' +
+                  'occurs after the current date.')
+        # if death date was defined
+        if row["DEAT"] != '' and not date_compare(row["DEAT"]):
+            print('Error US01: Death date of ' +
+                  row["NAME"] + ' (' + row["ID"] + ') ' +
+                  'occurs after the current date.')
+
+    for row in fam_list:
+        # if marriage date was not defined - anomaly
+        if row["MARR"] == '':
+            print('Anomaly: No marriage date exists for family (' +
+                  row["ID"] + ').')
+        elif not date_compare(row["MARR"]):
+            print('Error US01: Marriage date of ' +
+                  getname(indi_list, row["HUSB"]) + ' (' + row["HUSB"] +
+                  ') and ' +
+                  getname(indi_list, row["WIFE"]) + ' (' + row["WIFE"] +
+                  ') occurs after the current date.')
+
+        # if divorce date was defined
+        if row["DIV"] != '' and not date_compare(row["DIV"]):
+            print('Error US01: Divorce date of ' +
+                  getname(indi_list, row["HUSB"]) + ' (' + row["HUSB"] +
+                  ') and ' +
+                  getname(indi_list, row["WIFE"]) + ' (' + row["WIFE"] +
+                  ') occurs after the current date.')
+
+
 def main():
     """ Main processing function. calls process_file(), print_indi() print_fam()
         and print_table()
@@ -165,14 +225,15 @@ def main():
 
     individual, family = process_words(words)
 
-    print_indi(individual)
-    print_fam(individual, family)
+    # print_indi(individual)
+    # print_fam(individual, family)
 
     print_table(individual, family)
 
     # Call validation function here
     # vaidateSomething(individual, family)
+    validate_dates(individual, family)
+
 
 if __name__ == '__main__':
     main()
-    
