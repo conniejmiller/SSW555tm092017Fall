@@ -3,29 +3,34 @@ from prettytable import PrettyTable
 
 FILE_NAME = 'data/baseline_input.ged'
 
-# is this a valid combination?
 def valid_tag(level,tag):
-    # define valid tags at each level
-    valid_tags = {"0": ["INDI", "FAM", "HEAD", "TRLR", "NOTE"],
-                  "1": ["NAME", "SEX", "BIRT", "DEAT", "FAMC", "FAMS", "MARR", "HUSB", "WIFE", "CHIL", "DIV"],
-                  "2": ["DATE"]}
+    """ Defines a dict of valid tags at each level,
+        checks for a valid combination, and returns "Y" or "N" 
+    """
+    valid_tags = {
+        "0": ["INDI", "FAM", "HEAD", "TRLR", "NOTE"],
+        "1": ["NAME", "SEX", "BIRT", "DEAT", "FAMC", "FAMS", "MARR", "HUSB", "WIFE", "CHIL", "DIV"],
+        "2": ["DATE"]
+    }
                   
     return "Y" if level in valid_tags and tag in valid_tags[level] else "N"
     
-# print the formatted line
+
 def print_line(level, tag, args):
+    """ Print the formatted line of level, tag, and arguments """
     print("<-- %s|%s|%s|%s" % (level, tag, valid_tag(level, tag), args))
 
-# get name for an individual
+
 def getname(list, id):
+    """ Get the name for an individual.  """
     for row in list:
         if row["ID"] == id:
             return row["NAME"]
     return "Unknown"
 
 
-# process rows in the matrix
 def process_words(wordMatrix):
+    """ Process rows in the matrix """
     this_type = 'new'
     this_tag = 'new'
     individual = []
@@ -90,18 +95,21 @@ def process_words(wordMatrix):
 
     return individual, family
 
-# print individuals
-def print_indi(individual):        
+
+def print_indi(individual):
+    """ Print individuals """        
     for row in sorted(individual, key=itemgetter("ID")):
         print(row["ID"] + " : " + row["NAME"]) 
     
-# print families
-def print_fam(individual,family):        
+
+def print_fam(individual,family):  
+    """ Print families """      
     for row in sorted(family, key=itemgetter("ID")):
         print (row["ID"] + " : " + row["HUSB"] + ":" + getname(individual,row["HUSB"]) + " and " + row["WIFE"] + ":" + getname(individual,row["WIFE"]))
         
-# print in table
+
 def print_table (individual,family):    
+    """ Print in table """
     individuals = PrettyTable(["ID", 
                                "NAME", 
                                "GENDER", 
@@ -136,8 +144,9 @@ def print_table (individual,family):
                           row["CHIL"]])
     print (families)
     
-# process the file
+
 def process_file():
+    """  Process the file """
     words = []
 
     # read the file and process the rows
@@ -147,8 +156,11 @@ def process_file():
 
     return words
 
-# Main processing function
+
 def main():
+    """ Main processing function. calls process_file(), print_indi() print_fam()
+        and print_table()
+    """
     words = process_file()
 
     individual, family = process_words(words)
