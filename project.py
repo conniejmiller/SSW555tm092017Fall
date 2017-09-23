@@ -163,6 +163,28 @@ def process_file():
     return words
 
 
+def is_deceased(row_death):
+    """ Check if an individual is dea and return a Boolean val """
+    try: 
+        row_death = str(row_death)    
+        if not row_death:
+            return False
+        else:
+            return True
+    except ValueError:
+        print('Invalid type.')
+
+
+def list_deceased(indi_list):
+    """ 
+        This function loops through the individual list and prints 
+        names of deceased people 
+    """
+    for row in indi_list:
+        if is_deceased(row["DEAT"]):
+            print('Deceased: {0}, {1}'.format(row["NAME"], row['DEAT']))
+
+
 def date_compare(a):
     """ 
         This routine compares a date in the Exact format to the current date
@@ -174,9 +196,9 @@ def date_compare(a):
     # print(new_date)
 
     if new_date < datetime.now().date():
-        return 'True'
+        return True
     else:
-        return 'False'
+        return False
 
 
 def validate_dates(indi_list, fam_list):
@@ -234,6 +256,7 @@ def main():
     # vaidateSomething(individual, family)
     validate_dates(individual, family)
 
+    # print(list_deceased(individual))
 
 if __name__ == '__main__':
     main()
