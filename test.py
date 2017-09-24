@@ -9,13 +9,14 @@ class TestEmptyInput(unittest.TestCase):
         wordMatrix = [[]]
         self.assertEqual(project.process_words(wordMatrix), ([], []))
 
-    def test_date_compare(self):
+    def test_dateCompare(self):
         """ Testing the date_compare function  """
-        self.assertEqual(project.date_compare('10 SEP 2017'), True)
-        self.assertTrue(project.date_compare('10 SEP 2017'), True)
-        self.assertEqual(project.date_compare('10 SEP 2018'), False)
-        self.assertEqual(project.date_compare('20 SEP 2017'), True)
-        self.assertNotEqual(project.date_compare('10 SEP 2018'), True)
+        self.assertEqual(project.dateCompare('10 SEP 2017'), 'True')
+        self.assertTrue(project.dateCompare('10 SEP 2017'))
+        self.assertEqual(project.dateCompare('10 SEP 2018'), 'False')
+        self.assertEqual(project.dateCompare('20 SEP 2017'), 'True')
+        self.assertNotEqual(project.dateCompare('10 SEP 2017'), 'False')
+        self.assertNotEqual(project.dateCompare('10 SEP 2018'), 'True')
 
     def test_is_deceased(self):
         """ Testing the is_deceased function  """ 
@@ -24,7 +25,14 @@ class TestEmptyInput(unittest.TestCase):
         self.assertEqual(project.is_deceased('18 MAR 2007'), True)
         self.assertFalse(project.is_deceased(''), True)
         self.assertTrue(project.is_deceased('18 MAR 2007'), True)
-
+        
+    def test_lifeDuration(self):
+        self.assertTrue(project.validLifeTime('01 JAN 1980', '01 JAN 2020'))
+        self.assertTrue(project.validLifeTime('01 JAN 1985', '01 JAN 2020'))
+        self.assertTrue(project.validLifeTime('01 JAN 1990', '01 JAN 2020'))
+        self.assertFalse(project.validLifeTime('01 JAN 1980', '01 JAN 2220'))
+        self.assertFalse(project.validLifeTime('01 JAN 1500', '01 JAN 2520'))
+        self.assertFalse(project.validLifeTime('01 JAN 1000', '01 JAN 2220'))
 
 if __name__ == '__main__':
     unittest.main(exit=False, verbosity=2)

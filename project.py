@@ -201,22 +201,35 @@ def date_compare(a):
         return False
 
 
-def validate_dates(indi_list, fam_list):
-    """ 
-        This function validate dates by looping through both 
-        individual and family lists, calling date_compare() 
-        and checking for empty spaces/rows of DEAT, MARR, DIV. 
-    """ 
+def validLifeTime(birth, death):
+    """
+    This routine validates the duration of life
+    """
+    if birth != '' and death != '':
+        death_date = datetime.strptime(death, '%d %b %Y').date()
+        birth_date = datetime.strptime(birth, '%d %b %Y').date()
+        if (death_date - birth_date).days / 365 < 150:
+            return True
+        else:
+            return False
+
+
+def validateDates(indi_list, fam_list):
     for row in indi_list:
-        if not date_compare(row["BIRT"]):
+        birth_date = row["BIRT"]
+        death_date = row["DEAT"]
+        if not dateCompare(birth_date):
             print('Error US01: Birth date of ' +
                   row["NAME"] + ' (' + row["ID"] + ') ' +
                   'occurs after the current date.')
         # if death date was defined
-        if row["DEAT"] != '' and not date_compare(row["DEAT"]):
+        if death_date != '' and not dateCompare(row["DEAT"]):
             print('Error US01: Death date of ' +
                   row["NAME"] + ' (' + row["ID"] + ') ' +
                   'occurs after the current date.')
+
+        if not validLifeTime(birth_date, death_date):
+            print('Error US07: Invalid life duration')
 
     for row in fam_list:
         # if marriage date was not defined - anomaly
