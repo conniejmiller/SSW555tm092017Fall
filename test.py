@@ -11,12 +11,12 @@ class TestEmptyInput(unittest.TestCase):
 
     def test_dateCompare(self):
         """ Testing the date_compare function  """
-        self.assertEqual(project.dateCompare('10 SEP 2017'), 'True')
+        self.assertEqual(project.dateCompare('10 SEP 2017'), True)
         self.assertTrue(project.dateCompare('10 SEP 2017'))
-        self.assertEqual(project.dateCompare('10 SEP 2018'), 'False')
-        self.assertEqual(project.dateCompare('20 SEP 2017'), 'True')
-        self.assertNotEqual(project.dateCompare('10 SEP 2017'), 'False')
-        self.assertNotEqual(project.dateCompare('10 SEP 2018'), 'True')
+        self.assertEqual(project.dateCompare('10 SEP 2018'), False)
+        self.assertEqual(project.dateCompare('20 SEP 2017'), True)
+        self.assertNotEqual(project.dateCompare('10 SEP 2017'), False)
+        self.assertNotEqual(project.dateCompare('10 SEP 2018'), True)
 
     def test_is_deceased(self):
         """ Testing the is_deceased function  """ 
@@ -33,6 +33,15 @@ class TestEmptyInput(unittest.TestCase):
         self.assertFalse(project.validLifeTime('01 JAN 1980', '01 JAN 2220'))
         self.assertFalse(project.validLifeTime('01 JAN 1500', '01 JAN 2520'))
         self.assertFalse(project.validLifeTime('01 JAN 1000', '01 JAN 2220'))
+
+
+    def test_getAge(self):
+        """ Testing the getAge function  """
+        self.assertEqual(project.getAge(project.individual, 'p1'), 55)
+        self.assertEqual(project.getAge(project.individual, 'p2'), 60)
+        self.assertEqual(project.getAge(project.individual, 'p4'), 80)
+        self.assertEqual(project.getAge(project.individual, 'p5'), 50)
+
 
 if __name__ == '__main__':
     unittest.main(exit=False, verbosity=2)

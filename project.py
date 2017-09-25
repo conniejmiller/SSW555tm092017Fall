@@ -1,13 +1,14 @@
 from operator import itemgetter
 from prettytable import PrettyTable
 from datetime import datetime
+from math import floor
 
 FILE_NAME = 'data/baseline_input.ged'
 
 
 def valid_tag(level, tag):
     """ Defines a dict of valid tags at each level,
-        checks for a valid combination, and returns "Y" or "N" 
+        checks for a valid combination, and returns "Y" or "N"
     """
     valid_tags = {"0": ["INDI", "FAM", "HEAD", "TRLR", "NOTE"],
                   "1": ["NAME", "SEX", "BIRT", "DEAT", "FAMC", "FAMS",
@@ -97,13 +98,13 @@ def process_words(wordMatrix):
 
 
 def print_indi(individual):
-    """ Print individuals """ 
+    """ Print individuals """
     for row in sorted(individual, key=itemgetter("ID")):
         print(row["ID"] + " : " + row["NAME"])
 
 
 def print_fam(individual, family):
-    """ Print families """ 
+    """ Print families """
     for row in sorted(family, key=itemgetter("ID")):
         print(row["ID"] + " : " +
               row["HUSB"] + ":" + getname(individual, row["HUSB"]) +
@@ -165,8 +166,8 @@ def process_file():
 
 def is_deceased(row_death):
     """ Check if an individual is dea and return a Boolean val """
-    try: 
-        row_death = str(row_death)    
+    try:
+        row_death = str(row_death)
         if not row_death:
             return False
         else:
@@ -176,18 +177,16 @@ def is_deceased(row_death):
 
 
 def list_deceased(indi_list):
-    """ 
-        This function loops through the individual list and prints 
-        names of deceased people 
+    """ This function loops through the individual list and prints
+        names of deceased people
     """
     for row in indi_list:
         if is_deceased(row["DEAT"]):
             print('Deceased: {0}, {1}'.format(row["NAME"], row['DEAT']))
 
 
-def date_compare(a):
-    """ 
-        This routine compares a date in the Exact format to the current date
+def dateCompare(a):
+    """ This routine compares a date in the Exact format to the current date
         and returns true if it is prior to today
         otherwise, returns false
     """
@@ -202,9 +201,7 @@ def date_compare(a):
 
 
 def validLifeTime(birth, death):
-    """
-    This routine validates the duration of life
-    """
+    """ This routine validates the duration of life """
     if birth != '' and death != '':
         death_date = datetime.strptime(death, '%d %b %Y').date()
         birth_date = datetime.strptime(birth, '%d %b %Y').date()
@@ -212,6 +209,18 @@ def validLifeTime(birth, death):
             return True
         else:
             return False
+
+
+def getAge(list, id):
+    """ This returns the the age of a given individual """
+    for row in list:
+        if row["ID"] == id:
+            birth_date = row["BIRT"]
+            birth_date = datetime.strptime(birth_date, '%d %b %Y').date()
+            today = datetime.now().date()
+            age = (today - birth_date).days / 365
+            return floor(age)
+    return -1
 
 
 def validateDates(indi_list, fam_list):
@@ -229,6 +238,7 @@ def validateDates(indi_list, fam_list):
                   'occurs after the current date.')
 
         if not validLifeTime(birth_date, death_date):
+            # TODO: This error message needs to provide more data
             print('Error US07: Invalid life duration')
 
     for row in fam_list:
@@ -236,7 +246,7 @@ def validateDates(indi_list, fam_list):
         if row["MARR"] == '':
             print('Anomaly: No marriage date exists for family (' +
                   row["ID"] + ').')
-        elif not date_compare(row["MARR"]):
+        elif not dateCompare(row["MARR"]):
             print('Error US01: Marriage date of ' +
                   getname(indi_list, row["HUSB"]) + ' (' + row["HUSB"] +
                   ') and ' +
@@ -244,12 +254,34 @@ def validateDates(indi_list, fam_list):
                   ') occurs after the current date.')
 
         # if divorce date was defined
-        if row["DIV"] != '' and not date_compare(row["DIV"]):
+        if row["DIV"] != '' and not dateCompare(row["DIV"]):
             print('Error US01: Divorce date of ' +
                   getname(indi_list, row["HUSB"]) + ' (' + row["HUSB"] +
                   ') and ' +
                   getname(indi_list, row["WIFE"]) + ' (' + row["WIFE"] +
                   ') occurs after the current date.')
+
+        # if children exist, check ages of parents at birth
+        if row["CHIL"] != '':
+            # get current age of parents
+            dad_age = getAge(indi_list, row["HUSB"])
+            mom_age = getAge(indi_list, row["WIFE"])
+            for child in row["CHIL"]:
+                child_age = getAge(indi_list, child)
+                if (dad_age - child_age) >= 80:
+                    print('Anomaly US12: Father ' +
+                          getname(indi_list, row["HUSB"]) +
+                          ' (' + row["HUSB"] +
+                          ') was older than 80 when ' +
+                          getname(indi_list, child) + ' (' + child +
+                          ') was born.')
+                elif (mom_age - child_age) >= 60:
+                    print('Anomaly US12: Mother ' +
+                          getname(indi_list, row["WIFE"]) +
+                          ' (' + row["WIFE"] +
+                          ') was older than 60 when ' +
+                          getname(indi_list, child) + ' (' + child +
+                          ') was born.')
 
 
 def main():
@@ -260,16 +292,10 @@ def main():
 
     individual, family = process_words(words)
 
-    # print_indi(individual)
-    # print_fam(individual, family)
-
     print_table(individual, family)
 
-    # Call validation function here
-    # vaidateSomething(individual, family)
-    validate_dates(individual, family)
-
-    # print(list_deceased(individual))
+    # Call validation function
+    validateDates(individual, family)
 
 if __name__ == '__main__':
     main()
