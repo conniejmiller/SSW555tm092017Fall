@@ -185,7 +185,7 @@ def list_deceased(indi_list):
             print('Deceased: {0}, {1}'.format(row["NAME"], row['DEAT']))
 
 
-def dateCompare(a):
+def date_compare(a):
     """ This routine compares a date in the Exact format to the current date
         and returns true if it is prior to today
         otherwise, returns false
@@ -200,18 +200,20 @@ def dateCompare(a):
         return False
 
 
-def validLifeTime(birth, death):
+def valid_lifetime(birth, death):
     """ This routine validates the duration of life """
     if birth != '' and death != '':
         death_date = datetime.strptime(death, '%d %b %Y').date()
         birth_date = datetime.strptime(birth, '%d %b %Y').date()
-        if (death_date - birth_date).days / 365 < 150:
+
+        life_years = (death_date - birth_date).days / 365
+        if life_years < 150:
             return True
         else:
             return False
 
 
-def getAge(list, id):
+def get_age(list, id):
     """ This returns the the age of a given individual """
     for row in list:
         if row["ID"] == id:
@@ -223,30 +225,31 @@ def getAge(list, id):
     return -1
 
 
-def validateDates(indi_list, fam_list):
+def validate_dates(indi_list, fam_list):
     for row in indi_list:
         birth_date = row["BIRT"]
         death_date = row["DEAT"]
-        if not dateCompare(birth_date):
+        if not date_compare(birth_date):
             print('Error US01: Birth date of ' +
                   row["NAME"] + ' (' + row["ID"] + ') ' +
                   'occurs after the current date.')
         # if death date was defined
-        if death_date != '' and not dateCompare(row["DEAT"]):
+        if death_date != '' and not date_compare(row["DEAT"]):
             print('Error US01: Death date of ' +
                   row["NAME"] + ' (' + row["ID"] + ') ' +
                   'occurs after the current date.')
 
-        if not validLifeTime(birth_date, death_date):
-            # TODO: This error message needs to provide more data
-            print('Error US07: Invalid life duration')
+            if not valid_lifetime(birth_date, death_date):
+                print('Error US07: Life duration of ' +
+                    row["NAME"] + ' (' + row["ID"] + ') ' +
+                    'is greater than 150 years.')
 
     for row in fam_list:
         # if marriage date was not defined - anomaly
         if row["MARR"] == '':
             print('Anomaly: No marriage date exists for family (' +
                   row["ID"] + ').')
-        elif not dateCompare(row["MARR"]):
+        elif not date_compare(row["MARR"]):
             print('Error US01: Marriage date of ' +
                   getname(indi_list, row["HUSB"]) + ' (' + row["HUSB"] +
                   ') and ' +
@@ -254,7 +257,7 @@ def validateDates(indi_list, fam_list):
                   ') occurs after the current date.')
 
         # if divorce date was defined
-        if row["DIV"] != '' and not dateCompare(row["DIV"]):
+        if row["DIV"] != '' and not date_compare(row["DIV"]):
             print('Error US01: Divorce date of ' +
                   getname(indi_list, row["HUSB"]) + ' (' + row["HUSB"] +
                   ') and ' +
@@ -264,10 +267,10 @@ def validateDates(indi_list, fam_list):
         # if children exist, check ages of parents at birth
         if row["CHIL"] != '':
             # get current age of parents
-            dad_age = getAge(indi_list, row["HUSB"])
-            mom_age = getAge(indi_list, row["WIFE"])
+            dad_age = get_age(indi_list, row["HUSB"])
+            mom_age = get_age(indi_list, row["WIFE"])
             for child in row["CHIL"]:
-                child_age = getAge(indi_list, child)
+                child_age = get_age(indi_list, child)
                 if (dad_age - child_age) >= 80:
                     print('Anomaly US12: Father ' +
                           getname(indi_list, row["HUSB"]) +
@@ -294,8 +297,8 @@ def main():
 
     print_table(individual, family)
 
-    # Call validation function
-    validateDates(individual, family)
+    # Call validation functions
+    validate_dates(individual, family)
 
 if __name__ == '__main__':
     main()
