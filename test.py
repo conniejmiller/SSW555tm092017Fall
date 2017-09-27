@@ -6,8 +6,8 @@ class TestProject(unittest.TestCase):
 
     def test_empty(self):
         """ Testing the process_words function """
-        wordMatrix = [[]]
-        self.assertEqual(project.process_words(wordMatrix), ([], []))
+        word_matrix = [[]]
+        self.assertEqual(project.process_words(word_matrix), ([], []))
 
     def test_date_compare(self):
         """ Testing the date_compare function  """
@@ -26,7 +26,7 @@ class TestProject(unittest.TestCase):
         self.assertFalse(project.is_deceased(''), True)
         self.assertTrue(project.is_deceased('18 MAR 2007'), True)
         
-    def test_lifeDuration(self):
+    def test_life_duration(self):
         """ Testing if life duration is less than 150 years"""
         self.assertTrue(project.valid_lifetime('01 JAN 1980', '01 JAN 2020'))
         self.assertTrue(project.valid_lifetime('01 JAN 1985', '01 JAN 2020'))
@@ -45,6 +45,13 @@ class TestProject(unittest.TestCase):
         self.assertEqual(project.get_age(individual, 'p4'), 80)
         self.assertEqual(project.get_age(individual, 'p5'), 51)
 
+    def test_valid_month(self):
+        """ Testing is month is valid """
+        self.assertTrue(project.valid_month('01 JAN 1980'))
+        self.assertTrue(project.valid_month('01 FEB 1980'))
+        self.assertTrue(project.valid_month('01 MAR 1980'))
+        self.assertFalse(project.valid_month('01 JAM 1980'))
+        self.assertFalse(project.valid_month('01 ABC 1980'))
 
 if __name__ == '__main__':
     unittest.main(exit=False, verbosity=2)

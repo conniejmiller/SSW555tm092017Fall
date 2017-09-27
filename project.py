@@ -185,6 +185,23 @@ def list_deceased(indi_list):
             print('Deceased: {0}, {1}'.format(row["NAME"], row['DEAT']))
 
 
+def valid_month(date):
+    """ This function determines if a given month is valid """
+    if date != '':
+        month = date.split()[1]
+    else:
+        return True
+
+    valid_months = ["JAN", "FEB", "MAR", "APR",
+                    "MAY", "JUN", "JUL", "AUG",
+                    "SEP", "OCT", "NOV", "DEC"]
+
+    if month in valid_months:
+        return True
+    else:
+        return False
+
+
 def date_compare(a):
     """ This routine compares a date in the Exact format to the current date
         and returns true if it is prior to today
@@ -229,6 +246,15 @@ def validate_dates(indi_list, fam_list):
     for row in indi_list:
         birth_date = row["BIRT"]
         death_date = row["DEAT"]
+
+        if not valid_month(birth_date):
+            print('Error US42: Invalid birth month for ' +
+                  row["NAME"] + ' (' + row["ID"] + ') ')
+
+        if not valid_month(death_date):
+            print('Error US42: Invalid death month for ' +
+                  row["NAME"] + ' (' + row["ID"] + ') ')
+
         if not date_compare(birth_date):
             print('Error US01: Birth date of ' +
                   row["NAME"] + ' (' + row["ID"] + ') ' +
@@ -241,8 +267,8 @@ def validate_dates(indi_list, fam_list):
 
             if not valid_lifetime(birth_date, death_date):
                 print('Error US07: Life duration of ' +
-                    row["NAME"] + ' (' + row["ID"] + ') ' +
-                    'is greater than 150 years.')
+                      row["NAME"] + ' (' + row["ID"] + ') ' +
+                      'is greater than 150 years.')
 
     for row in fam_list:
         # if marriage date was not defined - anomaly
@@ -256,6 +282,13 @@ def validate_dates(indi_list, fam_list):
                   getname(indi_list, row["WIFE"]) + ' (' + row["WIFE"] +
                   ') occurs after the current date.')
 
+        if not valid_month(row["MARR"]):
+            print('Error US42: Invalid marriage month for ' +
+                  getname(indi_list, row["HUSB"]) + ' (' + row["HUSB"] +
+                  ') and ' +
+                  getname(indi_list, row["WIFE"]) + ' (' + row["WIFE"] +
+                  ')')
+
         # if divorce date was defined
         if row["DIV"] != '' and not date_compare(row["DIV"]):
             print('Error US01: Divorce date of ' +
@@ -263,6 +296,13 @@ def validate_dates(indi_list, fam_list):
                   ') and ' +
                   getname(indi_list, row["WIFE"]) + ' (' + row["WIFE"] +
                   ') occurs after the current date.')
+
+        if not valid_month(row["DIV"]):
+            print('Error US42: Invalid divorce month for ' +
+                  getname(indi_list, row["HUSB"]) + ' (' + row["HUSB"] +
+                  ') and ' +
+                  getname(indi_list, row["WIFE"]) + ' (' + row["WIFE"] +
+                  ')')
 
         # if children exist, check ages of parents at birth
         if row["CHIL"] != '':
