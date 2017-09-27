@@ -2,6 +2,8 @@ import unittest
 import project
 
 
+TEST_FILE_NAME = 'data/testing.ged'
+
 class TestProject(unittest.TestCase):
 
     def test_empty(self):
@@ -37,16 +39,15 @@ class TestProject(unittest.TestCase):
 
     def test_get_age(self):
         """ Testing the get_age function  """
-        # TEST_FILE_NAME = 'data/testing.ged'
-        # words = project.process_file(TEST_FILE_NAME)
-        # individual, _ = project.process_words(words)
+        TEST_FILE_NAME = 'data/testing.ged'
+        words = project.process_file(TEST_FILE_NAME)
+        individual, _ = project.process_words(words)
 
-        # self.assertEqual(project.get_age(individual, 'p1'), 55)
-        # self.assertEqual(project.get_age(individual, 'p2'), 60)
-        # self.assertEqual(project.get_age(individual, 'p4'), 80)
-        # self.assertEqual(project.get_age(individual, 'p5'), 51)
-        pass
-
+        self.assertEqual(project.get_age(individual, 'p1'), 55)
+        self.assertEqual(project.get_age(individual, 'p2'), 60)
+        self.assertEqual(project.get_age(individual, 'p4'), 80)
+        self.assertEqual(project.get_age(individual, 'p5'), 51)
+        
     def test_valid_month(self):
         """ Testing is month is valid """
         self.assertTrue(project.valid_month('01 JAN 1980'))
@@ -59,7 +60,6 @@ class TestProject(unittest.TestCase):
         """ validate_genders(families, individuals): 
             if husband and wife genders accurate, return True 
         """
-        TEST_FILE_NAME = 'data/testing.ged'
         words = project.process_file(TEST_FILE_NAME)
         individuals, families = project.process_words(words)
         self.assertTrue(project.validate_genders(families, individuals))
