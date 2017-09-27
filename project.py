@@ -330,8 +330,9 @@ def main():
     """ Main processing function. calls process_file(), print_indi() print_fam()
         and print_table()
     """
-    # words = process_file(FILE_NAME)
-    words = process_file(TEST_FILE_NAME)
+    words = process_file(FILE_NAME)
+    # To be used as a test input
+    # words = process_file(TEST_FILE_NAME)
 
     individual, family = process_words(words)
 
