@@ -153,6 +153,29 @@ def print_table(individual, family):
     print(families)
 
 
+def validate_genders(families, individuals):
+    """ Return True if both husband and wife genders are correct,
+        otherwise return False.
+    """
+    husband_id = None
+    wife_id = None
+    for spouse in families:
+        husband_id = spouse['HUSB']
+        wife_id = spouse['WIFE']
+
+        for individual in individuals:
+            if individual['ID'] == wife_id:
+                if individual['SEX'] == 'F': 
+                    return True
+                else:
+                    return False
+            if individual['ID'] == husband_id:
+                if individual['SEX'] == 'M':
+                    return True
+                else:
+                    return False
+
+
 def process_file(filename):
     """  Process the file """
     words = []
@@ -325,7 +348,6 @@ def validate_dates(indi_list, fam_list):
                           getname(indi_list, child) + ' (' + child +
                           ') was born.')
 
-
 def main():
     """ Main processing function. calls process_file(), print_indi() print_fam()
         and print_table()
@@ -336,8 +358,15 @@ def main():
 
     individual, family = process_words(words)
 
+    # print(family)
+
+    # print(individual)
+
     print_table(individual, family)
 
+    # print(list_deceased(individual))
+
+    print(validate_genders(family, individual))
     # Call validation functions
     validate_dates(individual, family)
 
