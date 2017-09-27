@@ -286,7 +286,6 @@ def validate_dates(indi_list, fam_list):
                           getname(indi_list, child) + ' (' + child +
                           ') was born.')
 
-
 def main():
     """ Main processing function. calls process_file(), print_indi() print_fam()
         and print_table()
@@ -295,7 +294,13 @@ def main():
 
     individual, family = process_words(words)
 
+    # print(family)
+
+    # print(individual)
+
     print_table(individual, family)
+
+    # print(list_deceased(individual))
 
     # Call validation functions
     validate_dates(individual, family)
