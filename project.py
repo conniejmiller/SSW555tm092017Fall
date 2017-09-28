@@ -157,6 +157,7 @@ def validate_genders(families, individuals):
     """ Identify families where traditional spouses don't exist. """
     husband_id = None
     wife_id = None
+    all_good = True
     for spouse in families:
         husband_id = spouse['HUSB']
         wife_id = spouse['WIFE']
@@ -167,11 +168,14 @@ def validate_genders(families, individuals):
                     print('Anomaly US21: Wife ' +
                           individual['NAME'] + ' (' + individual['ID'] + ') ' +
                           'in family ' + spouse['ID'] + 'is not female.')
+                    all_good = False
             elif individual['ID'] == husband_id:
                 if individual['SEX'] != 'M':
                     print('Anomaly US21: Husband ' +
                           individual['NAME'] + ' (' + individual['ID'] + ') ' +
                           'in family ' + spouse['ID'] + 'is not female.')
+                    all_good = False
+    return all_good
 
 
 def process_file(filename):
