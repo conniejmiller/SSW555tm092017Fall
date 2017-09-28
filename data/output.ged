@@ -1,53 +1,22 @@
-﻿p1 : Constance Joan /Lewis/
-p10 : Herbert Montgomery /Philbrook/
-p11 : Elbert Eugene /Lewis/
-p12 : Jennie Earnest /Lee/
-p13 : Bryan Kent /Holmes/
-p14 : Bryan Ferris /Miller/
-p15 : Theresa Ann /Holmes/
-p2 : John Anderson /Miller/
-p3 : Thelma Lucella /Philbrook/
-p4 : John Walter /Lewis/
-p5 : Jeffrey Clement /Lewis/
-p6 : Edna Adlee /Holmes/
-p7 : Frank /Miller/
-p8 : Frank /Miller/ Jr
-p9 : Lorene Elizabeth /Detert/
-
-f1 : p2:John Anderson /Miller/ and p1:Constance Joan /Lewis/
-f2 : p4:John Walter /Lewis/ and p3:Thelma Lucella /Philbrook/
-f3 : p7:Frank /Miller/ and p6:Edna Adlee /Holmes/
-f4 : p10:Herbert Montgomery /Philbrook/ and p9:Lorene Elizabeth /Detert/
-f5 : p11:Elbert Eugene /Lewis/ and p12:Jennie Earnest /Lee/
-f6 : p13:Bryan Kent /Holmes/ and p6:Edna Adlee /Holmes/
-
-+-----+--------------------------------+--------+-------------+-------------+
-|  ID | NAME                           | GENDER |   BIRTHDAY  |    DEATH    |
-+-----+--------------------------------+--------+-------------+-------------+
-|  p1 | Constance Joan /Lewis/         |   F    |  9 FEB 1962 |             |
-| p10 | Herbert Montgomery /Philbrook/ |   M    |  5 SEP 1878 | 10 AUG 1952 |
-| p11 | Elbert Eugene /Lewis/          |   M    | 28 DEC 1912 | 11 DEC 1994 |
-| p12 | Jennie Earnest /Lee/           |   F    |  1 MAR 1915 | 27 FEB 1996 |
-| p13 | Bryan Kent /Holmes/            |   M    | 20 JAN 1925 | 20 JUN 1951 |
-| p14 | Bryan Ferris /Miller/          |   M    | 20 JAN 1948 |             |
-| p15 | Theresa Ann /Holmes/           |   F    | 17 OCT 1949 |             |
-|  p2 | John Anderson /Miller/         |   M    | 21 JAN 1957 |             |
-|  p3 | Thelma Lucella /Philbrook/     |   F    | 18 FEB 1939 |             |
-|  p4 | John Walter /Lewis/            |   M    | 30 JAN 1937 |             |
-|  p5 | Jeffrey Clement /Lewis/        |   M    | 26 OCT 1965 |             |
-|  p6 | Edna Adlee /Holmes/            |   F    |  1 NOV 1929 | 11 SEP 1998 |
-|  p7 | Frank /Miller/                 |   M    | 20 OCT 1927 | 18 MAR 2007 |
-|  p8 | Frank /Miller/ Jr              |   M    | 25 AUG 1955 |             |
-|  p9 | Lorene Elizabeth /Detert/      |   F    | 11 NOV 1898 | 30 APR 1989 |
-+-----+--------------------------------+--------+-------------+-------------+
-
-+----+-------------+-------------+------------------------------------+-------------------------------+----------------+
-| ID |   MARRIED   |   DIVORCED  |              HUSBAND               |              WIFE             |    CHILDREN    |
-+----+-------------+-------------+------------------------------------+-------------------------------+----------------+
-| f1 | 19 MAR 1989 |             |     p2:John Anderson /Miller/      |   p1:Constance Joan /Lewis/   |       []       |
-| f2 |  8 APR 1961 | 30 JUL 1988 |       p4:John Walter /Lewis/       | p3:Thelma Lucella /Philbrook/ |  ['p5', 'p1']  |
-| f3 | 28 MAY 1954 |             |         p7:Frank /Miller/          |     p6:Edna Adlee /Holmes/    |  ['p8', 'p2']  |
-| f4 |             |             | p10:Herbert Montgomery /Philbrook/ |  p9:Lorene Elizabeth /Detert/ |     ['p3']     |
-| f5 |  9 JUN 1935 |             |     p11:Elbert Eugene /Lewis/      |    p12:Jennie Earnest /Lee/   |     ['p4']     |
-| f6 | 25 DEC 1944 |             |      p13:Bryan Kent /Holmes/       |     p6:Edna Adlee /Holmes/    | ['p14', 'p15'] |
-+----+-------------+-------------+------------------------------------+-------------------------------+----------------+
++------+----------------------------+--------+-------------+------------+
+|  ID  | NAME                       | GENDER |   BIRTHDAY  |   DEATH    |
++------+----------------------------+--------+-------------+------------+
+| @I1@ | Bob /Jones/                |   M    |  1 JAN 1900 | 1 JAN 2051 |
+| @I2@ | Mary /Smith/               |   M    |  1 JAM 1901 |            |
+| @I3@ | Thelma Lucella /Philbrook/ |   F    | 18 FEB 1939 |            |
+| @I4@ | John Walter /Lewis/        |   M    | 30 JAN 1937 |            |
+| @I5@ | Patricia Jane /Lewis/      |   F    |  9 FEB 2002 |            |
++------+----------------------------+--------+-------------+------------+
++------+-------------+----------+--------------------------+---------------------------------+----------+
+|  ID  |   MARRIED   | DIVORCED |         HUSBAND          |               WIFE              | CHILDREN |
++------+-------------+----------+--------------------------+---------------------------------+----------+
+| @F1@ |             |          |     @I1@:Bob /Jones/     |        @I2@:Mary /Smith/        |    []    |
+| @F2@ | 19 MAR 1989 |          | @I4@:John Walter /Lewis/ | @I3@:Thelma Lucella /Philbrook/ | ['@I5@'] |
++------+-------------+----------+--------------------------+---------------------------------+----------+
+Error US01: Death date of Bob /Jones/ (@I1@) occurs after the current date.
+Error US07: Life duration of Bob /Jones/ (@I1@) is greater than 150 years.
+Error US42: Invalid birth month for Mary /Smith/ (@I2@) 
+Anomaly: No marriage date exists for family (@F1@).
+Anomaly US12: Mother Thelma Lucella /Philbrook/ (@I3@) was older than 60 when Patricia Jane /Lewis/ (@I5@) was born.
+Anomaly US21: Wife Mary /Smith/ (@I2@) in family @F1@is not female.
+US29: Deceased: Bob /Jones/, 1 JAN 2051
