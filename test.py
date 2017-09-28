@@ -58,7 +58,7 @@ class TestProject(unittest.TestCase):
         """ validate_genders(families, individuals):
             if husband and wife genders accurate, return True
         """
-        self.assertTrue(project.validate_genders(families, individuals))
+        self.assertFalse(project.validate_genders(families, individuals))
 
 
 if __name__ == '__main__':
