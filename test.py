@@ -2,6 +2,11 @@ import unittest
 import project
 
 
+TEST_FILE_NAME = 'data/testing.ged'
+words = project.process_file(TEST_FILE_NAME)
+individuals, families = project.process_words(words)
+
+
 class TestProject(unittest.TestCase):
 
     def test_empty(self):
@@ -19,13 +24,13 @@ class TestProject(unittest.TestCase):
         self.assertNotEqual(project.date_compare('10 SEP 2018'), True)
 
     def test_is_deceased(self):
-        """ Testing the is_deceased function  """ 
-        self.assertEqual(project.is_deceased(''), False) 
+        """ Testing the is_deceased function  """
+        self.assertEqual(project.is_deceased(''), False)
         self.assertEqual(project.is_deceased('11 SEP 1998'), True)
         self.assertEqual(project.is_deceased('18 MAR 2007'), True)
         self.assertFalse(project.is_deceased(''), True)
         self.assertTrue(project.is_deceased('18 MAR 2007'), True)
-        
+
     def test_life_duration(self):
         """ Testing if life duration is less than 150 years"""
         self.assertTrue(project.valid_lifetime('01 JAN 1980', '01 JAN 2020'))
@@ -37,15 +42,9 @@ class TestProject(unittest.TestCase):
 
     def test_get_age(self):
         """ Testing the get_age function  """
-        # TEST_FILE_NAME = 'data/testing.ged'
-        # words = project.process_file(TEST_FILE_NAME)
-        # individual, _ = project.process_words(words)
-
-        # self.assertEqual(project.get_age(individual, 'p1'), 55)
-        # self.assertEqual(project.get_age(individual, 'p2'), 60)
-        # self.assertEqual(project.get_age(individual, 'p4'), 80)
-        # self.assertEqual(project.get_age(individual, 'p5'), 51)
-        pass
+        self.assertEqual(project.get_age(individuals, '@I1@'), 117)
+        self.assertEqual(project.get_age(individuals, '@I3@'), 78)
+        self.assertEqual(project.get_age(individuals, '@I4@'), 80)
 
     def test_valid_month(self):
         """ Testing is month is valid """
@@ -56,13 +55,10 @@ class TestProject(unittest.TestCase):
         self.assertFalse(project.valid_month('01 ABC 1980'))
 
     def test_validate_genders(self):
-        """ validate_genders(families, individuals): 
-            if husband and wife genders accurate, return True 
+        """ validate_genders(families, individuals):
+            if husband and wife genders accurate, return True
         """
-        TEST_FILE_NAME = 'data/testing.ged'
-        words = project.process_file(TEST_FILE_NAME)
-        individuals, families = project.process_words(words)
-        self.assertTrue(project.validate_genders(families, individuals))
+        self.assertFalse(project.validate_genders(families, individuals))
 
 
 if __name__ == '__main__':

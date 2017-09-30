@@ -1,3 +1,4 @@
+0 NOTE test file for team 09
 0 HEAD
 1 SOUR Family Echo
 2 WWW http://www.familyecho.com/
@@ -26,7 +27,7 @@
 2 GIVN Mary
 2 SURN Smith
 2 _MARNM Jones
-1 SEX F
+1 SEX M
 1 BIRT
 2 DATE 1 JAM 1901
 1 FAMS @F1@
@@ -34,4 +35,26 @@
 1 HUSB @I1@
 1 WIFE @I2@
 1 _CURRENT Y
+0 @I3@ INDI
+1 NAME Thelma Lucella /Philbrook/
+1 SEX F
+1 BIRT
+2 DATE 18 FEB 1939
+0 @I4@ INDI
+1 NAME John Walter /Lewis/
+1 SEX M
+1 BIRT
+2 DATE 30 JAN 1937
+0 @F2@ FAM
+1 MARR
+2 DATE 19 MAR 1989
+1 WIFE @I3@
+1 HUSB @I4@
+1 CHIL @I5@
+0 @I5@ INDI
+1 NAME Patricia Jane /Lewis/
+1 SEX F
+1 BIRT
+2 DATE 9 FEB 2002
+1 FAMC @F2@
 0 TRLR

@@ -154,26 +154,28 @@ def print_table(individual, family):
 
 
 def validate_genders(families, individuals):
-    """ Return True if both husband and wife genders are correct,
-        otherwise return False.
-    """
+    """ Identify families where traditional spouses don't exist. """
     husband_id = None
     wife_id = None
+    all_good = True
     for spouse in families:
         husband_id = spouse['HUSB']
         wife_id = spouse['WIFE']
 
         for individual in individuals:
             if individual['ID'] == wife_id:
-                if individual['SEX'] == 'F': 
-                    return True
-                else:
-                    return False
-            if individual['ID'] == husband_id:
-                if individual['SEX'] == 'M':
-                    return True
-                else:
-                    return False
+                if individual['SEX'] != 'F':
+                    print('Anomaly US21: Wife ' +
+                          individual['NAME'] + ' (' + individual['ID'] + ') ' +
+                          'in family ' + spouse['ID'] + 'is not female.')
+                    all_good = False
+            elif individual['ID'] == husband_id:
+                if individual['SEX'] != 'M':
+                    print('Anomaly US21: Husband ' +
+                          individual['NAME'] + ' (' + individual['ID'] + ') ' +
+                          'in family ' + spouse['ID'] + 'is not female.')
+                    all_good = False
+    return all_good
 
 
 def process_file(filename):
@@ -206,7 +208,7 @@ def list_deceased(indi_list):
     """
     for row in indi_list:
         if is_deceased(row["DEAT"]):
-            print('Deceased: {0}, {1}'.format(row["NAME"], row['DEAT']))
+            print('US29: Deceased: {0}, {1}'.format(row["NAME"], row['DEAT']))
 
 
 def valid_month(date):
@@ -348,6 +350,7 @@ def validate_dates(indi_list, fam_list):
                           getname(indi_list, child) + ' (' + child +
                           ') was born.')
 
+
 def main():
     """ Main processing function. calls process_file(), print_indi() print_fam()
         and print_table()
@@ -358,17 +361,16 @@ def main():
 
     individual, family = process_words(words)
 
-    # print(family)
-
-    # print(individual)
-
+    # print table of data
     print_table(individual, family)
 
-    # print(list_deceased(individual))
-
-    print(validate_genders(family, individual))
     # Call validation functions
     validate_dates(individual, family)
+    validate_genders(family, individual)
+
+    # print lists
+    list_deceased(individual)
+
 
 if __name__ == '__main__':
     main()
