@@ -19,3 +19,4 @@ Error US42: Invalid birth month for Mary /Smith/ (@I2@)
 Anomaly: No marriage date exists for family (@F1@).
 Anomaly US12: Mother Thelma Lucella /Philbrook/ (@I3@) was older than 60 when Patricia Jane /Lewis/ (@I5@) was born.
 Anomaly US21: Wife Mary /Smith/ (@I2@) in family @F1@is not female.
+US29: Deceased: Bob /Jones/, 1 JAN 2051
