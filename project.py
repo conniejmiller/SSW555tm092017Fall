@@ -173,7 +173,7 @@ def validate_genders(families, individuals):
                 if individual['SEX'] != 'M':
                     print('Anomaly US21: Husband ' +
                           individual['NAME'] + ' (' + individual['ID'] + ') ' +
-                          'in family ' + spouse['ID'] + 'is not female.')
+                          'in family ' + spouse['ID'] + 'is not male.')
                     all_good = False
     return all_good
 
