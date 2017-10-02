@@ -1,0 +1,21 @@
++------+----------------------------+--------+-------------+------------+
+|  ID  | NAME                       | GENDER |   BIRTHDAY  |   DEATH    |
++------+----------------------------+--------+-------------+------------+
+| @I1@ | Bob /Jones/                |   M    |  1 JAN 1900 | 1 JAN 2051 |
+| @I2@ | Mary /Smith/               |   M    |  1 JAM 1901 |            |
+| @I3@ | Thelma Lucella /Philbrook/ |   F    | 18 FEB 1939 |            |
+| @I4@ | John Walter /Lewis/        |   M    | 30 JAN 1937 |            |
+| @I5@ | Patricia Jane /Lewis/      |   F    |  9 FEB 2002 |            |
++------+----------------------------+--------+-------------+------------+
++------+-------------+----------+--------------------------+---------------------------------+----------+
+|  ID  |   MARRIED   | DIVORCED |         HUSBAND          |               WIFE              | CHILDREN |
++------+-------------+----------+--------------------------+---------------------------------+----------+
+| @F1@ |             |          |     @I1@:Bob /Jones/     |        @I2@:Mary /Smith/        |    []    |
+| @F2@ | 19 MAR 1989 |          | @I4@:John Walter /Lewis/ | @I3@:Thelma Lucella /Philbrook/ | ['@I5@'] |
++------+-------------+----------+--------------------------+---------------------------------+----------+
+Error US01: Death date of Bob /Jones/ (@I1@) occurs after the current date.
+Error US07: Life duration of Bob /Jones/ (@I1@) is greater than 150 years.
+Error US42: Invalid birth month for Mary /Smith/ (@I2@) 
+Anomaly: No marriage date exists for family (@F1@).
+Anomaly US12: Mother Thelma Lucella /Philbrook/ (@I3@) was older than 60 when Patricia Jane /Lewis/ (@I5@) was born.
+Anomaly US21: Wife Mary /Smith/ (@I2@) in family @F1@is not female.
