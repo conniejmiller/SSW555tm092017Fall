@@ -211,6 +211,14 @@ def list_deceased(indi_list):
             print('US29: Deceased: {0}, {1}'.format(row["NAME"], row['DEAT']))
 
 
+def is_in_month(month, months):
+    """ Return True is month in months """
+    if month in months:
+        return True
+    else:
+        return False
+
+
 def valid_month(date):
     """ This function determines if a given month is valid """
     if date != '':
@@ -219,13 +227,10 @@ def valid_month(date):
         return True
 
     valid_months = ["JAN", "FEB", "MAR", "APR",
-                    "MAY", "JUN", "JUL", "AUG",
-                    "SEP", "OCT", "NOV", "DEC"]
+                        "MAY", "JUN", "JUL", "AUG",
+                        "SEP", "OCT", "NOV", "DEC"]
 
-    if month in valid_months:
-        return True
-    else:
-        return False
+    return is_in_month(month, valid_months)
 
 
 def date_compare(a):
@@ -243,17 +248,27 @@ def date_compare(a):
         return False
 
 
+def is_below150_years(life_years):
+    """ Return True if below 150 years """
+    if life_years < 150:
+        return True
+    else:
+        return False
+
+
+def calculate_lifeyears(death_date, birth_date):
+    return (death_date - birth_date).days / 365
+
+
 def valid_lifetime(birth, death):
     """ This routine validates the duration of life """
     if birth != '' and death != '':
         death_date = datetime.strptime(death, '%d %b %Y').date()
         birth_date = datetime.strptime(birth, '%d %b %Y').date()
 
-        life_years = (death_date - birth_date).days / 365
-        if life_years < 150:
-            return True
-        else:
-            return False
+        life_years = calculate_lifeyears(death_date, birth_date)
+
+        return is_below150_years(life_years)
 
 
 def get_age(list, id):

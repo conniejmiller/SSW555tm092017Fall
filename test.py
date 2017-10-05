@@ -9,6 +9,7 @@ individuals, families = project.process_words(words)
 
 class TestProject(unittest.TestCase):
 
+
     def test_empty(self):
         """ Testing the process_words function """
         word_matrix = [[]]
@@ -59,6 +60,28 @@ class TestProject(unittest.TestCase):
             if husband and wife genders accurate, return True
         """
         self.assertFalse(project.validate_genders(families, individuals))
+
+    def test_valid_lifetime(self):
+        """ valid_lifetime(birth, death) 
+            if years is below 150,
+            return True
+        """ 
+        birth = '30 APR 1989'
+        death = '30 APR 1960'
+        invalid_birth = '30 APR 1850'
+        invalid_death = '30 APR 2017'
+        self.assertTrue(project.valid_lifetime(birth, death))
+        self.assertFalse(project.valid_lifetime(invalid_birth, invalid_death))
+
+    def test_is_below150_years(self):
+        """ is_below150_years(life_years)
+            if years is below 150,
+            return True 
+        """
+        self.assertTrue(project.is_below150_years(90))
+        self.assertTrue(project.is_below150_years(9))
+        self.assertFalse(project.is_below150_years(160))
+
 
 
 if __name__ == '__main__':
