@@ -73,7 +73,7 @@ def process_words(wordMatrix):
                 indi_dict[tag] = " ".join(other_stuff)
 
             elif tag in ("BIRT", "DEAT", "MARR", "DIV"):
-                # savethis tag so we can write it after the next row
+                # save this tag so we can write it after the next row
                 this_tag = tag
 
             elif tag in ("DATE"):
@@ -165,13 +165,11 @@ def validate_genders(families, individuals):
         for individual in individuals:
             if individual['ID'] == wife_id:
                 if individual['SEX'] != 'F':
-                    # smelly 2
                     print('Anomaly US21: Wife ' + get_name_id(individual) +
                           'in family ' + spouse['ID'] + ' is not female.')
                     all_good = False
             elif individual['ID'] == husband_id:
                 if individual['SEX'] != 'M':
-                    # smelly 2
                     print('Anomaly US21: Husband ' + get_name_id(individual) +
                           'in family ' + spouse['ID'] + ' is not male.')
                     all_good = False
