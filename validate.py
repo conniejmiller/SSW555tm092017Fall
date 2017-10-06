@@ -1,4 +1,5 @@
 from datetime import datetime
+from math import floor
 from helpers import *
 
 
@@ -8,10 +9,8 @@ def get_age(list, id):
         if row["ID"] == id:
             birth_date = row["BIRT"]
             if valid_month(birth_date):
-                birth_date = datetime.strptime(birth_date, '%d %b %Y').date()
-                today = datetime.now().date()
-                age = (today - birth_date).days / 365
-                return floor(age)
+                today = datetime.now().date().strftime('%d %b %Y')
+                return calculate_years(birth_date, today)
             return -1
     return -1
 
@@ -73,10 +72,7 @@ def valid_month(date):
 def valid_lifetime(birth, death):
     """ This routine validates the duration of life """
     if birth != '' and death != '':
-        death_date = datetime.strptime(death, '%d %b %Y').date()
-        birth_date = datetime.strptime(birth, '%d %b %Y').date()
-
-        life_years = (death_date - birth_date).days / 365
+        life_years = calculate_years(birth, death)
         if life_years < 150:
             return True
         else:
