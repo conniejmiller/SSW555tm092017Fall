@@ -28,9 +28,7 @@ def date_compare(a):
         and returns true if it is prior to today
         otherwise, returns false
     """
-    # print (datetime.now())
     new_date = datetime.strptime(a, '%d %b %Y').date()
-    # print(new_date)
 
     if new_date < datetime.now().date():
         return True
@@ -44,3 +42,12 @@ def get_name(list, id):
         if row["ID"] == id:
             return row["NAME"]
     return "Unknown"
+
+
+def calculate_years(date1, date2):
+    # this returns the number of years between 2 exact format dates
+    first_date = datetime.strptime(date1, '%d %b %Y').date()
+    second_date = datetime.strptime(date2, '%d %b %Y').date()
+
+    years = (first_date - second_date).days / 365
+    return floor(abs(years))
