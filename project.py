@@ -73,7 +73,7 @@ def process_words(wordMatrix):
                 indi_dict[tag] = " ".join(other_stuff)
 
             elif tag in ("BIRT", "DEAT", "MARR", "DIV"):
-                # savethis tag so we can write it after the next row
+                # save this tag so we can write it after the next row
                 this_tag = tag
 
             elif tag in ("DATE"):
@@ -165,15 +165,13 @@ def validate_genders(families, individuals):
         for individual in individuals:
             if individual['ID'] == wife_id:
                 if individual['SEX'] != 'F':
-                    print('Anomaly US21: Wife ' +
-                          individual['NAME'] + ' (' + individual['ID'] + ') ' +
-                          'in family ' + spouse['ID'] + 'is not female.')
+                    print('Anomaly US21: Wife ' + get_name_id(individual) +
+                          'in family ' + spouse['ID'] + ' is not female.')
                     all_good = False
             elif individual['ID'] == husband_id:
                 if individual['SEX'] != 'M':
-                    print('Anomaly US21: Husband ' +
-                          individual['NAME'] + ' (' + individual['ID'] + ') ' +
-                          'in family ' + spouse['ID'] + 'is not male.')
+                    print('Anomaly US21: Husband ' + get_name_id(individual) +
+                          'in family ' + spouse['ID'] + ' is not male.')
                     all_good = False
     return all_good
 
@@ -233,9 +231,7 @@ def date_compare(a):
         and returns true if it is prior to today
         otherwise, returns false
     """
-    # print (datetime.now())
     new_date = datetime.strptime(a, '%d %b %Y').date()
-    # print(new_date)
 
     if new_date < datetime.now().date():
         return True
@@ -243,13 +239,19 @@ def date_compare(a):
         return False
 
 
+def calculate_years(date1, date2):
+    # this returns the number of years between 2 exact format dates
+    first_date = datetime.strptime(date1, '%d %b %Y').date()
+    second_date = datetime.strptime(date2, '%d %b %Y').date()
+
+    years = (first_date - second_date).days / 365
+    return floor(abs(years))
+
+
 def valid_lifetime(birth, death):
     """ This routine validates the duration of life """
     if birth != '' and death != '':
-        death_date = datetime.strptime(death, '%d %b %Y').date()
-        birth_date = datetime.strptime(birth, '%d %b %Y').date()
-
-        life_years = (death_date - birth_date).days / 365
+        life_years = calculate_years(birth, death)
         if life_years < 150:
             return True
         else:
@@ -262,12 +264,37 @@ def get_age(list, id):
         if row["ID"] == id:
             birth_date = row["BIRT"]
             if valid_month(birth_date):
-                birth_date = datetime.strptime(birth_date, '%d %b %Y').date()
-                today = datetime.now().date()
-                age = (today - birth_date).days / 365
-                return floor(age)
+                today = datetime.now().date().strftime('%d %b %Y')
+                return calculate_years(birth_date, today)
             return -1
     return -1
+
+
+def get_name_id(indi):
+    # return name and ID for printing
+    out_string = indi["NAME"] + ' (' + indi["ID"] + ')'
+    return out_string
+
+
+def get_name_id_list(list, id):
+    # return name and ID for printing
+    for row in list:
+        if row["ID"] == id:
+            out_string = row["NAME"] + ' (' + row["ID"] + ')'
+            return out_string
+    return "Unknown"
+
+
+def validate_birth_dates(row):
+    birth_date = row["BIRT"]
+    if not valid_month(birth_date):
+        print('Error US42: Invalid birth month for ' + get_name_id(row))
+        return 'US42'
+    elif not date_compare(birth_date):
+        print('Error US01: Birth date of ' + get_name_id(row) +
+              ' occurs after the current date.')
+        return 'US01'
+    return 'none'
 
 
 def validate_dates(indi_list, fam_list):
@@ -275,25 +302,17 @@ def validate_dates(indi_list, fam_list):
         birth_date = row["BIRT"]
         death_date = row["DEAT"]
 
-        if not valid_month(birth_date):
-            print('Error US42: Invalid birth month for ' +
-                  row["NAME"] + ' (' + row["ID"] + ') ')
-        elif not date_compare(birth_date):
-            print('Error US01: Birth date of ' +
-                  row["NAME"] + ' (' + row["ID"] + ') ' +
-                  'occurs after the current date.')
+        validate_birth_dates(row)
+
         # if death date was defined
         if not valid_month(death_date):
-            print('Error US42: Invalid death month for ' +
-                  row["NAME"] + ' (' + row["ID"] + ') ')
+            print('Error US42: Invalid death month for ' + get_name_id(row))
         elif death_date != '' and not date_compare(row["DEAT"]):
-            print('Error US01: Death date of ' +
-                  row["NAME"] + ' (' + row["ID"] + ') ' +
+            print('Error US01: Death date of ' + get_name_id(row) +
                   'occurs after the current date.')
 
             if not valid_lifetime(birth_date, death_date):
-                print('Error US07: Life duration of ' +
-                      row["NAME"] + ' (' + row["ID"] + ') ' +
+                print('Error US07: Life duration of ' + get_name_id(row) +
                       'is greater than 150 years.')
 
     for row in fam_list:
@@ -303,30 +322,28 @@ def validate_dates(indi_list, fam_list):
                   row["ID"] + ').')
         elif not valid_month(row["MARR"]):
             print('Error US42: Invalid marriage month for ' +
-                  getname(indi_list, row["HUSB"]) + ' (' + row["HUSB"] +
-                  ') and ' +
-                  getname(indi_list, row["WIFE"]) + ' (' + row["WIFE"] +
-                  ')')
+                  get_name_id_list(indi_list, row["HUSB"]) +
+                  ' and ' +
+                  get_name_id_list(indi_list, row["WIFE"]))
         elif not date_compare(row["MARR"]):
             print('Error US01: Marriage date of ' +
-                  getname(indi_list, row["HUSB"]) + ' (' + row["HUSB"] +
-                  ') and ' +
-                  getname(indi_list, row["WIFE"]) + ' (' + row["WIFE"] +
-                  ') occurs after the current date.')
+                  get_name_id_list(indi_list, row["HUSB"]) +
+                  ' and ' +
+                  get_name_id_list(indi_list, row["WIFE"]) +
+                  ' occurs after the current date.')
 
         # if divorce date was defined
         if not valid_month(row["DIV"]):
             print('Error US42: Invalid divorce month for ' +
-                  getname(indi_list, row["HUSB"]) + ' (' + row["HUSB"] +
-                  ') and ' +
-                  getname(indi_list, row["WIFE"]) + ' (' + row["WIFE"] +
-                  ')')
+                  get_name_id_list(indi_list, row["HUSB"]) +
+                  ' and ' +
+                  get_name_id_list(indi_list, row["WIFE"]))
         elif row["DIV"] != '' and not date_compare(row["DIV"]):
             print('Error US01: Divorce date of ' +
-                  getname(indi_list, row["HUSB"]) + ' (' + row["HUSB"] +
-                  ') and ' +
-                  getname(indi_list, row["WIFE"]) + ' (' + row["WIFE"] +
-                  ') occurs after the current date.')
+                  get_name_id_list(indi_list, row["HUSB"]) +
+                  ' and ' +
+                  get_name_id_list(indi_list, row["WIFE"]) +
+                  ' occurs after the current date.')
 
         # if children exist, check ages of parents at birth
         if row["CHIL"] != '':
@@ -337,18 +354,16 @@ def validate_dates(indi_list, fam_list):
                 child_age = get_age(indi_list, child)
                 if (dad_age - child_age) >= 80:
                     print('Anomaly US12: Father ' +
-                          getname(indi_list, row["HUSB"]) +
-                          ' (' + row["HUSB"] +
-                          ') was older than 80 when ' +
-                          getname(indi_list, child) + ' (' + child +
-                          ') was born.')
+                          get_name_id_list(indi_list, row["HUSB"]) +
+                          ' was older than 80 when ' +
+                          get_name_id_list(indi_list, child) +
+                          ' was born.')
                 elif (mom_age - child_age) >= 60:
                     print('Anomaly US12: Mother ' +
-                          getname(indi_list, row["WIFE"]) +
-                          ' (' + row["WIFE"] +
-                          ') was older than 60 when ' +
-                          getname(indi_list, child) + ' (' + child +
-                          ') was born.')
+                          get_name_id_list(indi_list, row["WIFE"]) +
+                          ' was older than 60 when ' +
+                          get_name_id_list(indi_list, child) +
+                          ' was born.')
 
 
 def main():
