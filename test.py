@@ -14,12 +14,10 @@ class TestProject(unittest.TestCase):
 
     def test_date_compare(self):
         """ Testing the date_compare function  """
-        self.assertEqual(date_compare('10 SEP 2017'), True)
-        self.assertTrue(date_compare('10 SEP 2017'))
-        self.assertEqual(date_compare('10 SEP 2018'), False)
-        self.assertEqual(date_compare('20 SEP 2017'), True)
-        self.assertNotEqual(date_compare('10 SEP 2017'), False)
-        self.assertNotEqual(date_compare('10 SEP 2018'), True)
+        self.assertEqual(date_compare('10 SEP 2017',''), True)
+        self.assertTrue(date_compare('10 SEP 2017',''))
+        self.assertEqual(date_compare('10 SEP 2018','10 SEP 2017'), False)
+        self.assertEqual(date_compare('20 SEP 2017','10 SEP 2018'), True)
 
     def test_is_deceased(self):
         """ Testing the is_deceased function  """
