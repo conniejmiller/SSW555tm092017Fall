@@ -23,16 +23,19 @@ def list_deceased(indi_list):
             print('US29: Deceased: {0}, {1}'.format(row["NAME"], row['DEAT']))
 
 
-def date_compare(a):
-    """ This routine compares a date in the Exact format to the current date
-        and returns true if it is prior to today
+def date_compare(date1, date2):
+    """ This routine compares 2 dates in the Exact format 
+        and returns true if the early date is before thelater date
         otherwise, returns false
+        by default, the later date is set to today.
     """
-    # print (datetime.now())
-    new_date = datetime.strptime(a, '%d %b %Y').date()
-    # print(new_date)
+    early_date = datetime.strptime(date1, '%d %b %Y').date()
+    if date2 == '':
+        late_date = datetime.now().date()
+    else:
+        late_date = datetime.strptime(date2, '%d %b %Y').date()
 
-    if new_date < datetime.now().date():
+    if early_date < late_date:
         return True
     else:
         return False
