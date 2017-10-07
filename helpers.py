@@ -47,3 +47,20 @@ def get_name(list, id):
         if row["ID"] == id:
             return row["NAME"]
     return "Unknown"
+
+
+def get_birth(list, id):
+    """ Get the birth date for an individual.  """
+    for row in list:
+        if row["ID"] == id:
+            return row["BIRT"]
+    return "Unknown"
+
+
+def calculate_years(date1, date2):
+    # this returns the number of years between 2 exact format dates
+    first_date = datetime.strptime(date1, '%d %b %Y').date()
+    second_date = datetime.strptime(date2, '%d %b %Y').date()
+
+    years = (first_date - second_date).days / 365
+    return floor(abs(years))
