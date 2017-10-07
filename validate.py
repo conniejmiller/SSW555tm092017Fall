@@ -91,7 +91,7 @@ def validate_dates(indi_list, fam_list):
         if not valid_month(birth_date):
             print('Error US42: Invalid birth month for ' +
                   row["NAME"] + ' (' + row["ID"] + ') ')
-        elif not date_compare(birth_date):
+        elif not date_compare(birth_date,''):
             print('Error US01: Birth date of ' +
                   row["NAME"] + ' (' + row["ID"] + ') ' +
                   'occurs after the current date.')
@@ -99,7 +99,7 @@ def validate_dates(indi_list, fam_list):
         if not valid_month(death_date):
             print('Error US42: Invalid death month for ' +
                   row["NAME"] + ' (' + row["ID"] + ') ')
-        elif death_date != '' and not date_compare(row["DEAT"]):
+        elif death_date != '' and not date_compare(row["DEAT"],''):
             print('Error US01: Death date of ' +
                   row["NAME"] + ' (' + row["ID"] + ') ' +
                   'occurs after the current date.')
@@ -120,7 +120,7 @@ def validate_dates(indi_list, fam_list):
                   ') and ' +
                   get_name(indi_list, row["WIFE"]) + ' (' + row["WIFE"] +
                   ')')
-        elif not date_compare(row["MARR"]):
+        elif not date_compare(row["MARR"],''):
             print('Error US01: Marriage date of ' +
                   get_name(indi_list, row["HUSB"]) + ' (' + row["HUSB"] +
                   ') and ' +
@@ -134,7 +134,7 @@ def validate_dates(indi_list, fam_list):
                   ') and ' +
                   get_name(indi_list, row["WIFE"]) + ' (' + row["WIFE"] +
                   ')')
-        elif row["DIV"] != '' and not date_compare(row["DIV"]):
+        elif row["DIV"] != '' and not date_compare(row["DIV"],''):
             print('Error US01: Divorce date of ' +
                   get_name(indi_list, row["HUSB"]) + ' (' + row["HUSB"] +
                   ') and ' +
