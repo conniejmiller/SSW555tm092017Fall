@@ -56,6 +56,28 @@ class TestProject(unittest.TestCase):
         """
         self.assertFalse(validate_genders(families, individuals))
 
+    def test_calculate_years(self):
+        """ Testing the calculate_years function  """
+        self.assertEqual(calculate_years('09 FEB 1962', '11 SEP 2017'), 55)
+        self.assertEqual(calculate_years('10 SEP 1969', '11 SEP 1999'), 30)
+        self.assertEqual(calculate_years('23 OCT 1989', '11 SEP 2017'), 27)
+
+    def test_valid_lifetime(self):
+        """ Testing the valid_lifetime function  """
+        self.assertEqual(valid_lifetime('11 SEP 1998', '11 SEP 1999'), True)
+        self.assertEqual(valid_lifetime('11 SEP 1898', '11 SEP 1999'), True)
+        self.assertEqual(valid_lifetime('11 SEP 1798', '11 SEP 1999'), False)
+
+    def test_get_name(self):
+        """ Testing the get_age function  """
+        self.assertEqual(get_name(individuals, '@I1@'), 'Bob /Jones/')
+        self.assertEqual(get_name(individuals, '@I2@'), 'Mary /Smith/')
+
+    def test_get_birth(self):
+        """ Testing the get_age function  """
+        self.assertEqual(get_birth(individuals, '@I1@'), '1 JAN 1900')
+        self.assertEqual(get_birth(individuals, '@I3@'), '18 FEB 1939')
+
 
 if __name__ == '__main__':
     unittest.main(exit=False, verbosity=2)
