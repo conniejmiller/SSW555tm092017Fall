@@ -100,6 +100,7 @@ class Gedcom():
         """Display the contents of the GEDCOM file"""
         print_table(self.individual, self.family)
         list_deceased(self.individual)
+        get_living_married(self.family, self.individual)
 
     def validate(self):
         """Validate the contents of the GEDCOM file"""
@@ -114,7 +115,6 @@ def main():
 
     gedcom.display()
     gedcom.validate()
-
 
 if __name__ == '__main__':
     main()
