@@ -56,6 +56,10 @@ class TestProject(unittest.TestCase):
         """
         self.assertFalse(validate_genders(families, individuals))
 
+    def test_validate_males(self):
+        """ Testing male last name validation """
+        self.assertFalse(validate_males(families, individuals))
+
     def test_calculate_years(self):
         """ Testing the calculate_years function  """
         self.assertEqual(calculate_years('09 FEB 1962', '11 SEP 2017'), 55)
@@ -69,9 +73,14 @@ class TestProject(unittest.TestCase):
         self.assertEqual(valid_lifetime('11 SEP 1798', '11 SEP 1999'), False)
 
     def test_get_name(self):
-        """ Testing the get_age function  """
+        """ Testing the get_name function  """
         self.assertEqual(get_name(individuals, '@I1@'), 'Bob /Jones/')
         self.assertEqual(get_name(individuals, '@I2@'), 'Mary /Smith/')
+
+    def test_get_last_name(self):
+        """ Testing the get_last_name function  """
+        self.assertEqual(get_last_name(individuals, '@I1@'), 'Jones')
+        self.assertEqual(get_last_name(individuals, '@I2@'), 'Smith')
 
     def test_get_birth(self):
         """ Testing the get_age function  """

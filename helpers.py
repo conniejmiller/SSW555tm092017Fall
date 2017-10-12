@@ -49,6 +49,16 @@ def get_name(list, id):
     return "Unknown"
 
 
+def get_last_name(list, id):
+    name = get_name(list, id)
+    names = name.split('/')
+
+    if len(names) > 1:
+        return names[-2]
+    else:
+        return "Unknown"
+
+
 def get_birth(list, id):
     """ Get the birth date for an individual.  """
     for row in list:

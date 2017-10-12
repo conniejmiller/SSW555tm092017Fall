@@ -105,6 +105,7 @@ class Gedcom():
         """Validate the contents of the GEDCOM file"""
         validate_dates(self.individual, self.family)
         validate_genders(self.family, self.individual)
+        validate_males(self.family, self.individual)
 
 
 def main():
