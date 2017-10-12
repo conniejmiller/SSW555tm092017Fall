@@ -1,9 +1,9 @@
 from math import floor
 from datetime import datetime
-
+import validate
 
 def is_deceased(row_death):
-    """ Check if an individual is dea and return a Boolean val """
+    """ Check if an individual is dea and return a Boolean val. """
     try:
         row_death = str(row_death)
         if not row_death:
@@ -16,44 +16,81 @@ def is_deceased(row_death):
 
 def list_deceased(indi_list):
     """ This function loops through the individual list and prints
-        names of deceased people
-    """
+        names of deceased people. """
     for row in indi_list:
         if is_deceased(row["DEAT"]):
             print('US29: Deceased: {0}, {1}'.format(row["NAME"], row['DEAT']))
 
 
-def get_living_married(families, individuals):
-    """ Return a list of living married people """
-    couple_ids = []
+def find_living_people_ids(individuals):
+    """ Find all living people, then return a list of their ID and Name. """
     living_people_ids = []
-    living_married_people = []
     for person in individuals:
         if is_deceased(person["DEAT"]):
             continue
         else: 
             living_people_ids.append([person["ID"],person["NAME"]])
 
+    return living_people_ids
+
+
+def get_currently_married(families):
+    """ Takes a list of families as a parameter and checks if they are 
+        currently married by looking for an empty MARR, DIV row. Returns
+        a list of couple IDs. """
+    couple_ids = []
     for family in families:
         if family["MARR"] != '' and family["DIV"] == '':
             couple_ids.extend([family["HUSB"], family["WIFE"]])
+
+    return couple_ids
+
+
+def get_living_married(families, individuals):
+    """ Return a list of living married people. """
+    couple_ids = get_currently_married(families)
+    living_people_ids = find_living_people_ids(individuals)
+    living_married_people = []
     
     for living_person in living_people_ids:
         if living_person[0] in couple_ids:
             print("US30: Living married person: {}".format(living_person[1]))
             living_married_people.append([living_person[0],living_person[1]])
         elif living_person[0] not in couple_ids:
-            print("US30: Non-living, non-married, divorced person: {}".format(living_person[1]))
+            print("US30: Non-living, non-married, or divorced person: {}".format(living_person[1]))
     
-    print(living_married_people)
     return living_married_people
 
 
+def list_living_single(individuals, families):
+    """ List people over 30 years old who have never been married. 
+        Compare the ID of married people to living people over 30. 
+        If the person's ID is NOT IN the married people list, return the ID. """
 
+    wife = None
+    husb = None
+    living_people_ids = [] # all living people
+    family_ids = [] # all married or formerly married people
+    living_single_people_over_30 = []
 
+    for person in find_living_people_ids(individuals):
+        living_people_ids.append(person[0])
 
+    for family in families:
+        wife = family["WIFE"]
+        husb = family["HUSB"]
+        family_ids.extend([wife, husb])
 
+    for ID in living_people_ids:
+        age = int(validate.get_age(individuals, ID))
+        if age > 30 and ID not in family_ids:
+            living_single_people_over_30.append(ID)
 
+    for person in find_living_people_ids(individuals):
+        if person[0] in living_single_people_over_30:
+            print("US31: List of living single people over 30: {}, {}".format(person[0],person[1]))
+
+            
 def date_compare(date1, date2):
     """ This routine compares 2 dates in the Exact format 
         and returns true if the early date is before thelater date

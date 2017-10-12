@@ -101,6 +101,8 @@ class Gedcom():
         print_table(self.individual, self.family)
         list_deceased(self.individual)
         get_living_married(self.family, self.individual)
+        list_living_single(self.individual, self.family)
+
 
     def validate(self):
         """Validate the contents of the GEDCOM file"""

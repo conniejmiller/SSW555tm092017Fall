@@ -78,10 +78,35 @@ class TestProject(unittest.TestCase):
         self.assertEqual(get_birth(individuals, '@I3@'), '18 FEB 1939')
 
     def test_get_living_married(self):
-        """ Test the living married function """
+        """ Test the living married function to return a list """
         families = list()
         individuals = list()
         self.assertEqual(get_living_married(families, individuals), [])
+
+    def test_find_living_people_ids(self):
+        """ Test the living_single(individuals) function """
+        individuals = list()
+        self.assertEqual(find_living_people_ids(individuals), [])
+
+    def test_get_currently_married(self):
+        """ Test the get_currently_married(families) function """
+        families = list()
+        self.assertEqual(get_currently_married(families), [])
+
+    def test_get_living_married(self):
+        """ Test the get_living_married(families, individuals) function """
+        individuals = list()
+        families = list()
+        self.assertEqual(get_living_married(families, individuals), [])
+        self.assertEqual(get_living_married(families, individuals), [])
+
+    def list_living_single(self):
+        """ Test the list_living_single(families, individuals) function """
+        individuals = list()
+        families = list()
+        self.assertEqual(list_living_single(families, individuals), [])
+        self.assertEqual(list_living_single(families, individuals), [])
+
 
 
 if __name__ == '__main__':
