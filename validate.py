@@ -53,6 +53,31 @@ def validate_genders(families, individuals):
     return all_good
 
 
+def validate_males(families, individuals):
+    """ Identify males in a given family with the same last name """
+    valid = True
+    for family in families:
+        possible_males = []
+        possible_males.append(family['HUSB'])
+        for child in family['CHIL']:
+            possible_males.append(child)
+
+        last_name = ""
+        for person in possible_males:
+            for individual in individuals:
+                if individual['ID'] == person:
+                    if individual['SEX'] == 'M':
+                        if last_name != "":
+                            if last_name != get_last_name(individuals, individual['ID']):
+                                print('Anomaly US21: Male ' +
+                                      individual['NAME'] + ' (' + individual['ID'] + ') ' +
+                                      'has differing last name.')
+                                valid = False
+                        else:
+                            last_name = get_last_name(individuals, individual['ID'])
+    return valid
+     
+
 def validate_marriages(families, individuals):
     """ Verify all marriages are unique"""
     spouse_list = []
