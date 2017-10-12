@@ -56,6 +56,11 @@ class TestProject(unittest.TestCase):
         """
         self.assertFalse(validate_genders(families, individuals))
 
+    def test_validate_marriages(self):
+        """ If duplicate spouses found, returns false
+        """
+        self.assertTrue(validate_marriages(families, individuals))
+
     def test_calculate_years(self):
         """ Testing the calculate_years function  """
         self.assertEqual(calculate_years('09 FEB 1962', '11 SEP 2017'), 55)

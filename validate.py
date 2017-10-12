@@ -1,6 +1,7 @@
 from datetime import datetime
 from math import floor
 from helpers import *
+from collections import Counter
 
 
 def get_age(list, id):
@@ -50,6 +51,29 @@ def validate_genders(families, individuals):
                           'in family (' + spouse['ID'] + ') is not male.')
                     all_good = False
     return all_good
+
+
+def validate_marriages(families, individuals):
+    """ Verify all marriages are unique"""
+    spouse_list = []
+    duplicates = False
+
+    for family in families:
+        if family['DIV'] == '':
+            spouse_list.append(family['WIFE'])
+            spouse_list.append(family['HUSB'])
+
+    spouse_duplicates = [spouse for spouse, count in Counter(spouse_list).items() if count > 1]
+
+    for spouse in spouse_duplicates:
+        duplicates = True
+        for individual in individuals:
+            if individual['ID'] == spouse:
+                print('Anomaly US11: Spouse ' + 
+                      individual['NAME'] + ' (' + individual['ID'] + ') ' +
+                      'is a spouse in multiple families.')
+
+    return duplicates
 
 
 def valid_month(date):
