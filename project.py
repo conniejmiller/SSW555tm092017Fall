@@ -100,23 +100,25 @@ class Gedcom():
         """Display the contents of the GEDCOM file"""
         print_table(self.individual, self.family)
         list_deceased(self.individual)
+        get_living_married(self.family, self.individual)
+        list_living_single(self.individual, self.family)
+
 
     def validate(self):
         """Validate the contents of the GEDCOM file"""
         validate_dates(self.individual, self.family)
         validate_genders(self.family, self.individual)
-        validate_males(self.family, self.individual)
         validate_marriages(self.family, self.individual)
+        validate_males(self.family, self.individual)
 
 
 def main():
     """ Main processing function
     """
-    gedcom = Gedcom(FILE_NAME)
+    gedcom = Gedcom(TEST_FILE_NAME)
 
     gedcom.display()
     gedcom.validate()
-
 
 if __name__ == '__main__':
     main()
