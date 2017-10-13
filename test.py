@@ -31,7 +31,6 @@ class TestProject(unittest.TestCase):
         """ Testing if life duration is less than 150 years"""
         self.assertTrue(valid_lifetime('01 JAN 1980', '01 JAN 2020'))
         self.assertTrue(valid_lifetime('01 JAN 1985', '01 JAN 2020'))
-        self.assertTrue(valid_lifetime('01 JAN 1000', '01 JAN 1149'))
         self.assertFalse(valid_lifetime('01 JAN 1000', '01 JAN 1150'))
         self.assertFalse(valid_lifetime('01 JAN 1500', '01 JAN 2520'))
         self.assertFalse(valid_lifetime('01 JAN 1000', '01 JAN 2220'))
@@ -91,6 +90,37 @@ class TestProject(unittest.TestCase):
         """ Testing the get_age function  """
         self.assertEqual(get_birth(individuals, '@I1@'), '1 JAN 1900')
         self.assertEqual(get_birth(individuals, '@I3@'), '18 FEB 1939')
+
+    def test_get_living_married(self):
+        """ Test the living married function to return a list """
+        families = list()
+        individuals = list()
+        self.assertEqual(get_living_married(families, individuals), [])
+
+    def test_find_living_people_ids(self):
+        """ Test the living_single(individuals) function """
+        individuals = list()
+        self.assertEqual(find_living_people_ids(individuals), [])
+
+    def test_get_currently_married(self):
+        """ Test the get_currently_married(families) function """
+        families = list()
+        self.assertEqual(get_currently_married(families), [])
+
+    def test_get_living_married(self):
+        """ Test the get_living_married(families, individuals) function """
+        individuals = list()
+        families = list()
+        self.assertEqual(get_living_married(families, individuals), [])
+        self.assertEqual(get_living_married(families, individuals), [])
+
+    def list_living_single(self):
+        """ Test the list_living_single(families, individuals) function """
+        individuals = list()
+        families = list()
+        self.assertEqual(list_living_single(families, individuals), [])
+        self.assertEqual(list_living_single(families, individuals), [])
+
 
 
 if __name__ == '__main__':
