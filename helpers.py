@@ -56,8 +56,6 @@ def get_living_married(families, individuals):
         if living_person[0] in couple_ids:
             print("US30: Living married person: {}".format(living_person[1]))
             living_married_people.append([living_person[0],living_person[1]])
-        elif living_person[0] not in couple_ids:
-            print("US30: Non-living, non-married, or divorced person: {}".format(living_person[1]))
     
     return living_married_people
 
@@ -88,7 +86,7 @@ def list_living_single(individuals, families):
 
     for person in find_living_people_ids(individuals):
         if person[0] in living_single_people_over_30:
-            print("US31: List of living single people over 30: {}, {}".format(person[0],person[1]))
+            print("US31: List of living single people over 30: {}".format(person[1]))
 
             
 def date_compare(date1, date2):
