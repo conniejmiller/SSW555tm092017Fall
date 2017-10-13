@@ -69,7 +69,7 @@ def validate_males(families, individuals):
                     if individual['SEX'] == 'M':
                         if last_name != "":
                             if last_name != get_last_name(individuals, individual['ID']):
-                                print('Anomaly US21: Male ' +
+                                print('Anomaly US16: Male ' +
                                       individual['NAME'] + ' (' + individual['ID'] + ') ' +
                                       'has differing last name.')
                                 valid = False
@@ -230,3 +230,4 @@ def validate_dates(indi_list, fam_list):
                           ') was older than 60 when ' +
                           get_name(indi_list, child) + ' (' + child +
                           ') was born.')
+                          
