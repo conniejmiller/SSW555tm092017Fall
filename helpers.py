@@ -3,7 +3,7 @@ from datetime import datetime
 import validate
 
 def is_deceased(row_death):
-    """ Check if an individual is dea and return a Boolean val. """
+    """ Check if an individual is dead and return a Boolean value. """
     try:
         row_death = str(row_death)
         if not row_death:
@@ -86,7 +86,7 @@ def list_living_single(individuals, families):
 
     for person in find_living_people_ids(individuals):
         if person[0] in living_single_people_over_30:
-            print("US31: List of living single people over 30: {}".format(person[1]))
+            print("US31: Living single person over 30: {}".format(person[1]))
 
             
 def date_compare(date1, date2):
