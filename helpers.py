@@ -1,124 +1,144 @@
-from validate import *
-from display import *
-from helpers import *
+from math import floor
+from datetime import datetime
+import validate
 
-FILE_NAME = 'data/baseline_input.ged'
-TEST_FILE_NAME = 'data/testing.ged'
+def is_deceased(row_death):
+    """ Check if an individual is dea and return a Boolean val. """
+    try:
+        row_death = str(row_death)
+        if not row_death:
+            return False
+        else:
+            return True
+    except ValueError:
+        print('Invalid type.')
 
 
-class Gedcom():
+def list_deceased(indi_list):
+    """ This function loops through the individual list and prints
+        names of deceased people. """
+    for row in indi_list:
+        if is_deceased(row["DEAT"]):
+            print('US29: Deceased: {0}, {1}'.format(row["NAME"], row['DEAT']))
+
+
+def find_living_people_ids(individuals):
+    """ Find all living people, then return a list of their ID and Name. """
+    living_people_ids = []
+    for person in individuals:
+        if is_deceased(person["DEAT"]):
+            continue
+        else: 
+            living_people_ids.append([person["ID"],person["NAME"]])
+
+    return living_people_ids
+
+
+def get_currently_married(families):
+    """ Takes a list of families as a parameter and checks if they are 
+        currently married by looking for an empty MARR, DIV row. Returns
+        a list of couple IDs. """
+    couple_ids = []
+    for family in families:
+        if family["MARR"] != '' and family["DIV"] == '':
+            couple_ids.extend([family["HUSB"], family["WIFE"]])
+
+    return couple_ids
+
+
+def get_living_married(families, individuals):
+    """ Return a list of living married people. """
+    couple_ids = get_currently_married(families)
+    living_people_ids = find_living_people_ids(individuals)
+    living_married_people = []
+    
+    for living_person in living_people_ids:
+        if living_person[0] in couple_ids:
+            print("US30: Living married person: {}".format(living_person[1]))
+            living_married_people.append([living_person[0],living_person[1]])
+        # elif living_person[0] not in couple_ids:
+        #    print("Non-living, non-married, or divorced person: {}".format(living_person[1]))
+    
+    return living_married_people
+
+
+def list_living_single(individuals, families):
+    """ List people over 30 years old who have never been married. 
+        Compare the ID of married people to living people over 30. 
+        If the person's ID is NOT IN the married people list, return the ID. """
+
+    wife = None
+    husb = None
+    living_people_ids = [] # all living people
+    family_ids = [] # all married or formerly married people
+    living_single_people_over_30 = []
+
+    for person in find_living_people_ids(individuals):
+        living_people_ids.append(person[0])
+
+    for family in families:
+        wife = family["WIFE"]
+        husb = family["HUSB"]
+        family_ids.extend([wife, husb])
+
+    for ID in living_people_ids:
+        age = int(validate.get_age(individuals, ID))
+        if age > 30 and ID not in family_ids:
+            living_single_people_over_30.append(ID)
+
+    for person in find_living_people_ids(individuals):
+        if person[0] in living_single_people_over_30:
+            print("US31: Living single person over 30: {}, {}".format(person[0],person[1]))
+
+            
+def date_compare(date1, date2):
+    """ This routine compares 2 dates in the Exact format 
+        and returns true if the early date is before thelater date
+        otherwise, returns false
+        by default, the later date is set to today.
     """
-    The loader and handler for GEDCOM files
-    """
-    def __init__(self, file_name):
-        try:
-            self.words = self._process_file(file_name)
-            self.individual, self.family = self._process_words(self.words)
-        except:
-            print("Unable to process input file")
-            self.words = None
-            self.individual = None
-            self.family = None
+    early_date = datetime.strptime(date1, '%d %b %Y').date()
+    if date2 == '':
+        late_date = datetime.now().date()
+    else:
+        late_date = datetime.strptime(date2, '%d %b %Y').date()
 
-    def _process_words(self, wordMatrix):
-        """ Process rows in the matrix """
-        this_type = 'new'
-        this_tag = 'new'
-        individual = []
-        family = []
-        indi_dict = {}
-        fam_dict = {}
-
-        for words in wordMatrix:
-            if len(words) >= 2:
-                tag = words[1]
-                other_stuff = words[2:]
-
-                if len(words) == 3 and words[2] in ("INDI", "FAM"):
-                    # print lastline
-                    if this_type == 'INDI':
-                        individual.append(indi_dict)
-                    elif this_type == 'FAM':
-                        family.append(fam_dict)
-
-                    if words[2] == "INDI":
-                        indi_dict = {"ID": tag,
-                                     "NAME": '',
-                                     "SEX": '',
-                                     "BIRT": '',
-                                     "DEAT": ''}
-                        this_type = 'INDI'
-                    else:
-                        fam_dict = {"ID": tag,
-                                    "MARR": '',
-                                    "HUSB": '',
-                                    "WIFE": '',
-                                    "CHIL": [],
-                                    "DIV": ''}
-                        this_type = 'FAM'
-
-                elif tag in ("NAME", "SEX"):
-                    indi_dict[tag] = " ".join(other_stuff)
-
-                elif tag in ("BIRT", "DEAT", "MARR", "DIV"):
-                    # savethis tag so we can write it after the next row
-                    this_tag = tag
-
-                elif tag in ("DATE"):
-                    if this_type == 'INDI':
-                        indi_dict[this_tag] = " ".join(other_stuff)
-                    elif this_type == 'FAM':
-                        fam_dict[this_tag] = " ".join(other_stuff)
-                    this_tag = 'new'
-
-                elif tag in ("HUSB", "WIFE"):
-                    fam_dict[tag] = " ".join(other_stuff)
-
-                elif tag == "CHIL":
-                    fam_dict[tag].append(words[2])
-
-        # now print the last one
-        if this_type == 'INDI':
-            individual.append(indi_dict)
-        elif this_type == 'FAM':
-            family.append(fam_dict)
-
-        return individual, family
-
-    def _process_file(self, filename):
-        """  Process the file """
-        words = []
-
-        # read the file and process the rows
-        with open(filename) as in_file:
-            for line in in_file:
-                words.append(line.split())
-
-        return words
-
-    def display(self):
-        """Display the contents of the GEDCOM file"""
-        print_table(self.individual, self.family)
-        list_deceased(self.individual)
-        get_living_married(self.family, self.individual)
-        list_living_single(self.individual, self.family)
+    if early_date < late_date:
+        return True
+    else:
+        return False
 
 
-    def validate(self):
-        """Validate the contents of the GEDCOM file"""
-        validate_dates(self.individual, self.family)
-        validate_genders(self.family, self.individual)
-        validate_marriages(self.family, self.individual)
-        validate_males(self.family, self.individual)
+def get_name(list, id):
+    """ Get the name for an individual.  """
+    for row in list:
+        if row["ID"] == id:
+            return row["NAME"]
+    return "Unknown"
 
 
-def main():
-    """ Main processing function
-    """
-    gedcom = Gedcom(TEST_FILE_NAME)
+def get_last_name(list, id):
+    name = get_name(list, id)
+    names = name.split('/')
 
-    gedcom.display()
-    gedcom.validate()
+    if len(names) > 1:
+        return names[-2]
+    else:
+        return "Unknown"
 
-if __name__ == '__main__':
-    main()
+
+def get_birth(list, id):
+    """ Get the birth date for an individual.  """
+    for row in list:
+        if row["ID"] == id:
+            return row["BIRT"]
+    return "Unknown"
+
+
+def calculate_years(date1, date2):
+    # this returns the number of years between 2 exact format dates
+    first_date = datetime.strptime(date1, '%d %b %Y').date()
+    second_date = datetime.strptime(date2, '%d %b %Y').date()
+
+    years = (first_date - second_date).days / 365
+    return floor(abs(years))
