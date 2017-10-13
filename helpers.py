@@ -3,7 +3,7 @@ from datetime import datetime
 import validate
 
 def is_deceased(row_death):
-    """ Check if an individual is dea and return a Boolean val. """
+    """ Check if an individual is dead and return a Boolean value. """
     try:
         row_death = str(row_death)
         if not row_death:
