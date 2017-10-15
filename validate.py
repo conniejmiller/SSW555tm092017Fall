@@ -69,7 +69,7 @@ def validate_males(families, individuals):
                     if individual['SEX'] == 'M':
                         if last_name != "":
                             if last_name != get_last_name(individuals, individual['ID']):
-                                print('Anomaly US21: Male ' +
+                                print('Anomaly US16: Male ' +
                                       individual['NAME'] + ' (' + individual['ID'] + ') ' +
                                       'has differing last name.')
                                 valid = False
