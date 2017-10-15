@@ -11,16 +11,18 @@ def print_line(level, tag, args):
 def print_indi(individual):
     """ Print individuals """
     for row in sorted(individual, key=itemgetter("ID")):
-        print(row["ID"] + " : " + row["NAME"])
+        print("%s : %s" % (row["ID"], row["NAME"]))
 
 
 def print_fam(individual, family):
     """ Print families """
     for row in sorted(family, key=itemgetter("ID")):
-        print(row["ID"] + " : " +
-              row["HUSB"] + ":" + get_name(individual, row["HUSB"]) +
-              " and " +
-              row["WIFE"] + ":" + get_name(individual, row["WIFE"]))
+        print("%s : %s:%s and %s:%s" %
+              (row["ID"],
+               row["HUSB"],
+               get_name(individual, row["HUSB"]),
+               row["WIFE"],
+               get_name(individual, row["WIFE"])))
 
 
 def print_table(individual, family):
