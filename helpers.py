@@ -140,3 +140,18 @@ def calculate_years(date1, date2):
 
     years = (first_date - second_date).days / 365
     return floor(abs(years))
+
+
+def get_name_id(indi):
+    # return name and ID for printing
+    out_string = indi["NAME"] + ' (' + indi["ID"] + ')'
+    return out_string
+
+
+def get_name_id_list(list, id):
+    # return name and ID for printing
+    for row in list:
+        if row["ID"] == id:
+            out_string = row["NAME"] + ' (' + row["ID"] + ')'
+            return out_string
+    return "Unknown"
