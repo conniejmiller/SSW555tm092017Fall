@@ -121,6 +121,21 @@ class TestProject(unittest.TestCase):
         self.assertEqual(list_living_single(families, individuals), [])
         self.assertEqual(list_living_single(families, individuals), [])
 
+    def test_get_name_id(self):
+       """ Testing the get_name_id function """
+       self.assertEqual(get_name_id(individuals[0]), 'Bob /Jones/ (@I1@)')
+       self.assertEqual(get_name_id(individuals[1]), 'Mary /Smith/ (@I2@)')
+       self.assertEqual(get_name_id(individuals[2]),
+                        'Thelma Lucella /Philbrook/ (@I3@)')
+
+    def test_get_name_id_list(self):
+        """ Testing the get_name_id function """
+        self.assertEqual(get_name_id_list(individuals, '@I1@'),
+                         'Bob /Jones/ (@I1@)')
+        self.assertEqual(get_name_id_list(individuals, '@I2@'),
+                         'Mary /Smith/ (@I2@)')
+        self.assertEqual(get_name_id_list(individuals, '@I3@'),
+                         'Thelma Lucella /Philbrook/ (@I3@)')
 
 
 if __name__ == '__main__':
