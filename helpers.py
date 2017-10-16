@@ -134,9 +134,24 @@ def get_birth(list, id):
 
 
 def calculate_years(date1, date2):
-    # this returns the number of years between 2 exact format dates
+    """ this returns the number of years between 2 exact format dates """
     first_date = datetime.strptime(date1, '%d %b %Y').date()
     second_date = datetime.strptime(date2, '%d %b %Y').date()
 
     years = (first_date - second_date).days / 365
     return floor(abs(years))
+
+
+def get_name_id(indi):
+    """ return name and ID for printing """
+    out_string = indi["NAME"] + ' (' + indi["ID"] + ')'
+    return out_string
+
+
+def get_name_id_list(list, id):
+    """ return name and ID for printing """
+    for row in list:
+        if row["ID"] == id:
+            out_string = row["NAME"] + ' (' + row["ID"] + ')'
+            return out_string
+    return "Unknown"
