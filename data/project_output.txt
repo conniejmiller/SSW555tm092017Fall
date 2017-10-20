@@ -1,41 +1,49 @@
-+------+----------------------------+--------+-------------+------------+
-|  ID  | NAME                       | GENDER |   BIRTHDAY  |   DEATH    |
-+------+----------------------------+--------+-------------+------------+
-| @I1@ | Bob /Jones/                |   M    |  1 JAN 1900 | 1 JAN 2051 |
-| @I2@ | Mary /Smith/               |   M    |  1 JAM 1901 |            |
-| @I3@ | Thelma Lucella /Philbrook/ |   F    | 18 FEB 1939 |            |
-| @I4@ | John Walter /Lewis/        |   M    | 30 JAN 1937 |            |
-| @I5@ | Patricia Jane /Lewis/      |   F    |  9 FEB 2002 |            |
-| @I6@ | Carol /Smith/              |   F    |  1 JAN 2051 | 1 FEB 1951 |
-| @I7@ | Joe /Wright/               |   M    | 21 JAN 1957 |            |
-| @I9@ | George /Johnson/           |   M    | 30 JAN 1977 |            |
-+------+----------------------------+--------+-------------+------------+
-+------+-------------+----------+--------------------------+---------------------------------+------------------+
-|  ID  |   MARRIED   | DIVORCED |         HUSBAND          |               WIFE              |     CHILDREN     |
-+------+-------------+----------+--------------------------+---------------------------------+------------------+
-| @F1@ |             |          |     @I1@:Bob /Jones/     |        @I2@:Mary /Smith/        |        []        |
-| @F2@ | 19 MAR 1989 |          | @I4@:John Walter /Lewis/ | @I3@:Thelma Lucella /Philbrook/ | ['@I5@', '@I7@'] |
-| @F3@ |  8 APR 1962 |          |    @I7@:Joe /Wright/     |    @I5@:Patricia Jane /Lewis/   |        []        |
-| @F4@ |  9 APR 1962 |          |    @I6@:Carol /Smith/    |    @I5@:Patricia Jane /Lewis/   |        []        |
-+------+-------------+----------+--------------------------+---------------------------------+------------------+
++-------+----------------------------+--------+-------------+-------------+
+|   ID  | NAME                       | GENDER |   BIRTHDAY  |    DEATH    |
++-------+----------------------------+--------+-------------+-------------+
+| @I10@ | Ruth /Jones/               |   F    | 28 MAR 1978 | 30 MAY 1999 |
+| @I11@ | Andrew /Stewart/           |   M    | 30 JAN 1977 |             |
+|  @I1@ | Bob /Jones/                |   M    |  1 JAN 1900 |  1 JAN 2051 |
+|  @I2@ | Mary /Smith/               |   M    |  1 JAM 1901 |             |
+|  @I3@ | Thelma Lucella /Philbrook/ |   F    | 18 FEB 1939 |             |
+|  @I4@ | John Walter /Lewis/        |   M    | 30 JAN 1937 |             |
+|  @I5@ | Patricia Jane /Lewis/      |   F    |  9 FEB 2002 |             |
+|  @I6@ | Carol /Smith/              |   F    |  1 JAN 2051 |  1 FEB 1951 |
+|  @I7@ | Joe /Wright/               |   M    | 21 JAN 1957 |             |
+|  @I9@ | George /Johnson/           |   M    | 30 JAN 1977 |             |
++-------+----------------------------+--------+-------------+-------------+
++------+-------------+-------------+--------------------------+---------------------------------+------------------+
+|  ID  |   MARRIED   |   DIVORCED  |         HUSBAND          |               WIFE              |     CHILDREN     |
++------+-------------+-------------+--------------------------+---------------------------------+------------------+
+| @F1@ |             |             |     @I1@:Bob /Jones/     |        @I2@:Mary /Smith/        |        []        |
+| @F2@ | 19 MAR 1989 |             | @I4@:John Walter /Lewis/ | @I3@:Thelma Lucella /Philbrook/ | ['@I5@', '@I7@'] |
+| @F3@ |  8 APR 1962 | 18 JUN 1957 |    @I7@:Joe /Wright/     |    @I5@:Patricia Jane /Lewis/   |        []        |
+| @F4@ |  9 APR 1962 |             |    @I6@:Carol /Smith/    |        @I10@:Ruth /Jones/       |        []        |
+| @F5@ | 19 MAY 2004 |             |  @I11@:Andrew /Stewart/  |        @I10@:Ruth /Jones/       |        []        |
++------+-------------+-------------+--------------------------+---------------------------------+------------------+
 US29: Deceased: Bob /Jones/, 1 JAN 2051
 US29: Deceased: Carol /Smith/, 1 FEB 1951
+US29: Deceased: Ruth /Jones/, 30 MAY 1999
 US30: Living married person: Thelma Lucella /Philbrook/
 US30: Living married person: John Walter /Lewis/
-US30: Living married person: Patricia Jane /Lewis/
-US30: Living married person: Joe /Wright/
+US30: Living married person: Andrew /Stewart/
 US31: Living single person over 30: @I9@, George /Johnson/
 Error US01: Death date of Bob /Jones/ (@I1@) occurs after the current date.
 Error US07: Life duration of Bob /Jones/ (@I1@) is greater than 150 years.
-Error US42: Invalid birth month for Mary /Smith/ (@I2@) 
+Error US42: Invalid birth month for Mary /Smith/ (@I2@)
 Error US01: Birth date of Carol /Smith/ (@I6@) occurs after the current date.
-Error US03: Birth date of Carol /Smith/ (@I6@) occurs after the death date.
-Anomaly: No marriage date exists for family (@F1@).
+Error US03: Birth date of Carol /Smith/ (@I6@) occurs after the death date
+Anomaly: No marriage date exists for family (@F1@)
+Error US04: Family @F1@ has no marriage date.
+Error US05: Family @F1@ has no marriage date.
 Anomaly US12: Mother Thelma Lucella /Philbrook/ (@I3@) was older than 60 when Patricia Jane /Lewis/ (@I5@) was born.
 Error US02: Birth date of Patricia Jane /Lewis/ (@I5@) occurs after the marriage date for family (@F3@).
-Error US02: Birth date of Patricia Jane /Lewis/ (@I5@) occurs after the marriage date for family (@F4@).
+Error US04: Marriage in family @F3@ occurred after the divorce.
+Error US02: Birth date of Ruth /Jones/ (@I10@) occurs after the marriage date for family (@F4@).
 Error US02: Birth date of Carol /Smith/ (@I6@) occurs after the marriage date for family (@F4@).
+Error US05: Marriage in family @F4@ occurred after husband's death.
+Error US05: Marriage in family @F5@ occurred after wife's death.
 Anomaly US21: Wife Mary /Smith/ (@I2@) in family (@F1@) is not female.
 Anomaly US21: Husband Carol /Smith/ (@I6@) in family (@F4@) is not male.
-Anomaly US11: Spouse Patricia Jane /Lewis/ (@I5@) is a spouse in multiple families.
+Anomaly US11: Spouse Ruth /Jones/ (@I10@) is a spouse in multiple families.
 Anomaly US16: Male Joe /Wright/ (@I7@) has differing last name.
