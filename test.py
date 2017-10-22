@@ -54,14 +54,13 @@ class TestProject(unittest.TestCase):
             if husband and wife genders accurate, return True
         """
         self.assertFalse(validate_genders(families, individuals))
-
+ 
     def test_validate_males(self):
         """ Testing male last name validation """
         self.assertFalse(validate_males(families, individuals))
 
     def test_validate_marriages(self):
-        """ If duplicate spouses found, returns false
-        """
+        """ If duplicate spouses found, returns false """
         self.assertTrue(validate_marriages(families, individuals))
 
     def test_calculate_years(self):
@@ -80,7 +79,7 @@ class TestProject(unittest.TestCase):
         """ Testing the get_name function  """
         self.assertEqual(get_name(individuals, '@I1@'), 'Bob /Jones/')
         self.assertEqual(get_name(individuals, '@I2@'), 'Mary /Smith/')
-
+ 
     def test_get_last_name(self):
         """ Testing the get_last_name function  """
         self.assertEqual(get_last_name(individuals, '@I1@'), 'Jones')
@@ -90,6 +89,11 @@ class TestProject(unittest.TestCase):
         """ Testing the get_age function  """
         self.assertEqual(get_birth(individuals, '@I1@'), '1 JAN 1900')
         self.assertEqual(get_birth(individuals, '@I3@'), '18 FEB 1939')
+
+    def test_get_death(self):
+        """ Testing the get_age function  """
+        self.assertEqual(get_death(individuals, '@I1@'), '1 JAN 2051')
+        self.assertEqual(get_death(individuals, '@I3@'), '')
 
     def test_get_living_married(self):
         """ Test the living married function to return a list """
@@ -136,7 +140,21 @@ class TestProject(unittest.TestCase):
                          'Mary /Smith/ (@I2@)')
         self.assertEqual(get_name_id_list(individuals, '@I3@'),
                          'Thelma Lucella /Philbrook/ (@I3@)')
-
+        
+    def test_validate_marriage_dates(self):
+        self.assertEqual(validate_marriage_dates(families[0], individuals),
+                         'no marriage')
+        self.assertEqual(validate_marriage_dates(families[1], individuals),
+                         'no error')
+        self.assertEqual(validate_marriage_dates(families[4], individuals),
+                         'after wife')
+        self.assertEqual(validate_marriage_dates(families[3], individuals),
+                         'after husband')
+        
+    def test_validate_marriage_divorce(self):
+        self.assertEqual(validate_marriage_divorce(families[0]), 'no marriage')
+        self.assertEqual(validate_marriage_divorce(families[1]), 'no error')
+        self.assertEqual(validate_marriage_divorce(families[2]), 'after divorce')
 
 if __name__ == '__main__':
     unittest.main(exit=False, verbosity=2)

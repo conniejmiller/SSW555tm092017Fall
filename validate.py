@@ -129,6 +129,46 @@ def valid_lifetime(birth, death):
             return False
 
 
+def validate_marriage_dates(family, indi_list):
+    """ Verify marriage occurs before death of either spouse """
+    wife_death = get_death(indi_list, family['WIFE'])
+    husb_death = get_death(indi_list, family['HUSB'])
+    marriage_date = family['MARR']
+    
+    if marriage_date == '':
+        print("Error US05: Family %s has no marriage date." %
+              (family['ID']))
+        return 'no marriage'
+    else:
+        if wife_death != '' and date_compare(wife_death, marriage_date):
+            print("Error US05: Marriage in family %s occurred after wife's death." %
+                  (family['ID']))
+            return 'after wife'
+        if husb_death != '' and date_compare(husb_death, marriage_date):
+            print("Error US05: Marriage in family %s occurred after husband's death." %
+                  (family['ID']))
+            return 'after husband'
+
+    return 'no error'
+
+
+def validate_marriage_divorce(family):
+    """ Verify marriage and divorce occur in proper sequence """
+    marriage_date = family['MARR']
+    divorce_date = family['DIV']
+    
+    if marriage_date == '':
+        print("Error US04: Family %s has no marriage date." %
+              (family['ID']))
+        return 'no marriage'
+    elif divorce_date != '' and date_compare(divorce_date, marriage_date):
+        print("Error US04: Marriage in family %s occurred after the divorce." %
+              (family['ID']))
+        return 'after divorce'
+
+    return 'no error'
+
+
 def validate_dates(indi_list, fam_list):
     for row in indi_list:
         birth_date = row["BIRT"]
@@ -221,3 +261,7 @@ def validate_dates(indi_list, fam_list):
                           (get_name_id_list(indi_list, row["WIFE"])) +
                           " was older than 60 when %s was born." %
                            (get_name_id_list(indi_list, child)))
+                    
+        # validate marriage dates
+        validate_marriage_divorce(row)
+        validate_marriage_dates(row, indi_list)
