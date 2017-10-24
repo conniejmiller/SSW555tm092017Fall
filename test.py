@@ -31,7 +31,6 @@ class TestProject(unittest.TestCase):
         """ Testing if life duration is less than 150 years"""
         self.assertTrue(valid_lifetime('01 JAN 1980', '01 JAN 2020'))
         self.assertTrue(valid_lifetime('01 JAN 1985', '01 JAN 2020'))
-        self.assertTrue(valid_lifetime('01 JAN 1000', '01 JAN 1149'))
         self.assertFalse(valid_lifetime('01 JAN 1000', '01 JAN 1150'))
         self.assertFalse(valid_lifetime('01 JAN 1500', '01 JAN 2520'))
         self.assertFalse(valid_lifetime('01 JAN 1000', '01 JAN 2220'))
@@ -55,6 +54,14 @@ class TestProject(unittest.TestCase):
             if husband and wife genders accurate, return True
         """
         self.assertFalse(validate_genders(families, individuals))
+ 
+    def test_validate_males(self):
+        """ Testing male last name validation """
+        self.assertFalse(validate_males(families, individuals))
+
+    def test_validate_marriages(self):
+        """ If duplicate spouses found, returns false """
+        self.assertTrue(validate_marriages(families, individuals))
 
     def test_calculate_years(self):
         """ Testing the calculate_years function  """
@@ -69,9 +76,14 @@ class TestProject(unittest.TestCase):
         self.assertEqual(valid_lifetime('11 SEP 1798', '11 SEP 1999'), False)
 
     def test_get_name(self):
-        """ Testing the get_age function  """
+        """ Testing the get_name function  """
         self.assertEqual(get_name(individuals, '@I1@'), 'Bob /Jones/')
         self.assertEqual(get_name(individuals, '@I2@'), 'Mary /Smith/')
+ 
+    def test_get_last_name(self):
+        """ Testing the get_last_name function  """
+        self.assertEqual(get_last_name(individuals, '@I1@'), 'Jones')
+        self.assertEqual(get_last_name(individuals, '@I2@'), 'Smith')
 
     def test_get_birth(self):
         """ Testing the get_age function  """
@@ -94,7 +106,71 @@ class TestProject(unittest.TestCase):
         self.assertEqual(get_recent_births(mock_data), 'US35: LIST RECENT BIRTHS: Constance Joan /Lewis/ | 2017-10-05')
         self.assertEqual(get_recent_births(no_birth), -1)
 
+    def test_get_death(self):
+        """ Testing the get_age function  """
+        self.assertEqual(get_death(individuals, '@I1@'), '1 JAN 2051')
+        self.assertEqual(get_death(individuals, '@I3@'), '')
 
+    def test_get_living_married(self):
+        """ Test the living married function to return a list """
+        families = list()
+        individuals = list()
+        self.assertEqual(get_living_married(families, individuals), [])
+
+    def test_find_living_people_ids(self):
+        """ Test the living_single(individuals) function """
+        individuals = list()
+        self.assertEqual(find_living_people_ids(individuals), [])
+
+    def test_get_currently_married(self):
+        """ Test the get_currently_married(families) function """
+        families = list()
+        self.assertEqual(get_currently_married(families), [])
+
+    def test_get_living_married(self):
+        """ Test the get_living_married(families, individuals) function """
+        individuals = list()
+        families = list()
+        self.assertEqual(get_living_married(families, individuals), [])
+        self.assertEqual(get_living_married(families, individuals), [])
+
+    def list_living_single(self):
+        """ Test the list_living_single(families, individuals) function """
+        individuals = list()
+        families = list()
+        self.assertEqual(list_living_single(families, individuals), [])
+        self.assertEqual(list_living_single(families, individuals), [])
+
+    def test_get_name_id(self):
+       """ Testing the get_name_id function """
+       self.assertEqual(get_name_id(individuals[0]), 'Bob /Jones/ (@I1@)')
+       self.assertEqual(get_name_id(individuals[1]), 'Mary /Smith/ (@I2@)')
+       self.assertEqual(get_name_id(individuals[2]),
+                        'Thelma Lucella /Philbrook/ (@I3@)')
+
+    def test_get_name_id_list(self):
+        """ Testing the get_name_id function """
+        self.assertEqual(get_name_id_list(individuals, '@I1@'),
+                         'Bob /Jones/ (@I1@)')
+        self.assertEqual(get_name_id_list(individuals, '@I2@'),
+                         'Mary /Smith/ (@I2@)')
+        self.assertEqual(get_name_id_list(individuals, '@I3@'),
+                         'Thelma Lucella /Philbrook/ (@I3@)')
+        
+    def test_validate_marriage_dates(self):
+        self.assertEqual(validate_marriage_dates(families[0], individuals),
+                         'no marriage')
+        self.assertEqual(validate_marriage_dates(families[1], individuals),
+                         'no error')
+        self.assertEqual(validate_marriage_dates(families[4], individuals),
+                         'after wife')
+        self.assertEqual(validate_marriage_dates(families[3], individuals),
+                         'after husband')
+        
+    def test_validate_marriage_divorce(self):
+        self.assertEqual(validate_marriage_divorce(families[0]), 'no marriage')
+        self.assertEqual(validate_marriage_divorce(families[1]), 'no error')
+        self.assertEqual(validate_marriage_divorce(families[2]), 'after divorce')
 
 if __name__ == '__main__':
     unittest.main(exit=False, verbosity=2)

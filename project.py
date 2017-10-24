@@ -102,12 +102,15 @@ class Gedcom():
         list_deceased(self.individual)
         get_recent_deaths(self.individual)
         get_recent_births(self.individual)
-
+        get_living_married(self.family, self.individual)
+        list_living_single(self.individual, self.family)
 
     def validate(self):
         """Validate the contents of the GEDCOM file"""
         validate_dates(self.individual, self.family)
         validate_genders(self.family, self.individual)
+        validate_males(self.family, self.individual)
+        validate_marriages(self.family, self.individual)
 
 
 def main():
@@ -117,7 +120,6 @@ def main():
 
     gedcom.display()
     gedcom.validate()
-
 
 if __name__ == '__main__':
     main()
