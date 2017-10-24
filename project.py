@@ -103,7 +103,6 @@ class Gedcom():
         get_recent_deaths(self.individual)
         get_recent_births(self.individual)
 
-
     def validate(self):
         """Validate the contents of the GEDCOM file"""
         validate_dates(self.individual, self.family)
@@ -114,7 +113,6 @@ def main():
     """ Main processing function
     """
     gedcom = Gedcom(FILE_NAME)
-
     gedcom.display()
     gedcom.validate()
 
