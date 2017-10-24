@@ -100,6 +100,9 @@ class Gedcom():
         """Display the contents of the GEDCOM file"""
         print_table(self.individual, self.family)
         list_deceased(self.individual)
+        get_recent_deaths(self.individual)
+        get_recent_births(self.individual)
+
 
     def validate(self):
         """Validate the contents of the GEDCOM file"""

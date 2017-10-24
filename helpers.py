@@ -1,5 +1,5 @@
 from math import floor
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 def is_deceased(row_death):
@@ -41,6 +41,34 @@ def date_compare(date1, date2):
         return False
 
 
+def get_recent_deaths(individuals):
+    """ Return a list of individuals who've died within the last 30 days. 
+        Return -1 if individuals have died after the last 30 days. """ 
+    past_30_days = datetime.now().date() + timedelta(days=-30)
+    for individual in individuals:
+        if is_deceased(individual["DEAT"]):
+            dt = datetime.strptime(individual["DEAT"], '%d %b %Y').date()
+            if dt >= past_30_days:
+                print('US36: LIST RECENT DEATHS: {} | {}'.format(individual["NAME"],dt))
+                return 'US36: LIST RECENT DEATHS: {} | {}'.format(individual["NAME"],dt)
+        return -1
+
+
+def get_recent_births(individuals):
+    """ Return a list of individuals who've been born within the last 30 days. 
+        Return -1 if individuals are born after the last 30 days. """ 
+    past_30_days = datetime.now().date() + timedelta(days=-30)
+    for individual in individuals:
+        if individual["BIRT"]:
+            dt = datetime.strptime(individual["BIRT"], '%d %b %Y').date()
+            if dt >= past_30_days:
+                print('US35: LIST RECENT BIRTHS: {} | {}'.format(individual["NAME"],dt))
+                return 'US35: LIST RECENT BIRTHS: {} | {}'.format(individual["NAME"],dt)
+        return -1
+
+
+
+
 def get_name(list, id):
     """ Get the name for an individual.  """
     for row in list:
@@ -64,3 +92,5 @@ def calculate_years(date1, date2):
 
     years = (first_date - second_date).days / 365
     return floor(abs(years))
+
+
