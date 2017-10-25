@@ -90,6 +90,26 @@ class TestProject(unittest.TestCase):
         self.assertEqual(get_birth(individuals, '@I1@'), '1 JAN 1900')
         self.assertEqual(get_birth(individuals, '@I3@'), '18 FEB 1939')
 
+    def test_get_recent_deaths(self):
+        """ Testing the get_recent_deaths function  """
+        past_30_days = datetime.now().date() + timedelta(days=-30)
+        mock_data = [{'BIRT': '9 FEB 1962', 'SEX': 'F', 'ID': 'p1', 'DEAT': '18 OCT 2017', 'NAME': 'Constance Joan /Lewis/'}]
+        no_death = [{'BIRT': '', 'SEX': 'F', 'ID': 'p1', 'DEAT': '', 'NAME': 'Doe John /Lewis/'}]
+        death_after_30_days = [{'BIRT': '', 'SEX': 'F', 'ID': 'p1', 'DEAT': '10 SEP 2017', 'NAME': 'Doe John /Lewis/'}]
+        self.assertEqual(get_recent_deaths(mock_data), 'US36: LIST RECENT DEATHS: Constance Joan /Lewis/ | 2017-10-18')
+        self.assertEqual(get_recent_deaths(no_death), -1)
+        self.assertEqual(get_recent_deaths(death_after_30_days), -1)
+
+    def test_get_recent_births(self):
+        """ Testing the get_recent_births function  """
+        past_30_days = datetime.now().date() + timedelta(days=-30)
+        mock_data = [{'BIRT': '05 OCT 2017', 'SEX': 'F', 'ID': 'p1', 'DEAT': '9 FEB 1962', 'NAME': 'Constance Joan /Lewis/'}]
+        no_birth = [{'BIRT': '', 'SEX': 'F', 'ID': 'p1', 'DEAT': '9 FEB 1962', 'NAME': 'Doe John /Lewis/'}]
+        born_after_30_days = [{'BIRT': '11 SEP 1999', 'SEX': 'F', 'ID': 'p1', 'DEAT': '10 SEP 2017', 'NAME': 'Doe John /Lewis/'}]
+        self.assertEqual(get_recent_births(mock_data), 'US35: LIST RECENT BIRTHS: Constance Joan /Lewis/ | 2017-10-05')
+        self.assertEqual(get_recent_births(no_birth), -1)
+        self.assertEqual(get_recent_births(born_after_30_days), -1)
+
     def test_get_death(self):
         """ Testing the get_age function  """
         self.assertEqual(get_death(individuals, '@I1@'), '1 JAN 2051')
@@ -155,6 +175,7 @@ class TestProject(unittest.TestCase):
         self.assertEqual(validate_marriage_divorce(families[0]), 'no marriage')
         self.assertEqual(validate_marriage_divorce(families[1]), 'no error')
         self.assertEqual(validate_marriage_divorce(families[2]), 'after divorce')
+
 
 if __name__ == '__main__':
     unittest.main(exit=False, verbosity=2)
