@@ -116,7 +116,6 @@ class TestProject(unittest.TestCase):
         individuals = list()
         families = list()
         self.assertEqual(get_living_married(families, individuals), [])
-        self.assertEqual(get_living_married(families, individuals), [])
 
     def test_unique_id(self):
         """ Test the validate_ids function"""
