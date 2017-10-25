@@ -100,6 +100,8 @@ class Gedcom():
         """Display the contents of the GEDCOM file"""
         print_table(self.individual, self.family)
         list_deceased(self.individual)
+        get_recent_deaths(self.individual)
+        get_recent_births(self.individual)
         get_living_married(self.family, self.individual)
         list_living_single(self.individual, self.family)
 
@@ -117,7 +119,6 @@ def main():
     """ Main processing function
     """
     gedcom = Gedcom(FILE_NAME)
-
     gedcom.display()
     gedcom.validate()
 
