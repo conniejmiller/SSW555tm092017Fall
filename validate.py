@@ -1,7 +1,6 @@
 from datetime import datetime
 from math import floor
 from helpers import *
-from collections import Counter
 
 
 def get_age(list, id):
@@ -89,8 +88,7 @@ def validate_marriages(families, individuals):
             spouse_list.append(family['WIFE'])
             spouse_list.append(family['HUSB'])
 
-    spouse_duplicates = [spouse for spouse,
-                         count in Counter(spouse_list).items() if count > 1]
+    spouse_duplicates = find_duplicates(spouse_list)
 
     for spouse in spouse_duplicates:
         duplicates = True
@@ -134,7 +132,7 @@ def validate_marriage_dates(family, indi_list):
     wife_death = get_death(indi_list, family['WIFE'])
     husb_death = get_death(indi_list, family['HUSB'])
     marriage_date = family['MARR']
-    
+
     if marriage_date == '':
         print("Error US05: Family %s has no marriage date." %
               (family['ID']))
@@ -156,7 +154,7 @@ def validate_marriage_divorce(family):
     """ Verify marriage and divorce occur in proper sequence """
     marriage_date = family['MARR']
     divorce_date = family['DIV']
-    
+
     if marriage_date == '':
         print("Error US04: Family %s has no marriage date." %
               (family['ID']))
@@ -169,7 +167,7 @@ def validate_marriage_divorce(family):
     return 'no error'
 
 
-def validate_dates(indi_list, fam_list):
+def validate_dates(fam_list, indi_list):
     for row in indi_list:
         birth_date = row["BIRT"]
         death_date = row["DEAT"]
@@ -178,7 +176,7 @@ def validate_dates(indi_list, fam_list):
             print("Error US42: Invalid birth month for %s" %
                   (get_name_id(row)))
         else:
-            if not date_compare(birth_date,''):
+            if not date_compare(birth_date, ''):
                 print("Error US01: Birth date of" +
                       " %s occurs after the current date." %
                       (get_name_id(row)))
@@ -191,7 +189,7 @@ def validate_dates(indi_list, fam_list):
             print("Error US42: Invalid death month for %s" %
                   (get_name_id(row)))
         elif death_date != '':
-            if not date_compare(row["DEAT"],''):
+            if not date_compare(row["DEAT"], ''):
                 print("Error US01: Death date of" +
                       " %s occurs after the current date." %
                       (get_name_id(row)))
@@ -203,7 +201,7 @@ def validate_dates(indi_list, fam_list):
     for row in fam_list:
         marriage_date = row["MARR"]
         divorce_date = row["DIV"]
-        
+
         # if marriage date was not defined - anomaly
         if marriage_date == '':
             print("Anomaly: No marriage date exists for family (%s)" %
@@ -255,13 +253,33 @@ def validate_dates(indi_list, fam_list):
                     print("Anomaly US12: Father %s" %
                           (get_name_id_list(indi_list, row["HUSB"])) +
                           " was older than 80 when %s was born." %
-                           (get_name_id_list(indi_list, child)))
+                          (get_name_id_list(indi_list, child)))
                 elif (mom_age - child_age) >= 60:
                     print("Anomaly US12: Mother %s" %
                           (get_name_id_list(indi_list, row["WIFE"])) +
                           " was older than 60 when %s was born." %
-                           (get_name_id_list(indi_list, child)))
-                    
+                          (get_name_id_list(indi_list, child)))
+ 
         # validate marriage dates
         validate_marriage_divorce(row)
         validate_marriage_dates(row, indi_list)
+
+
+def validate_ids(family, individual):
+    """ Valid ID uniquness"""
+    ids = []
+    valid = True
+
+    for row in individual:
+        ids.append(row['ID'])
+
+    for row in family:
+        ids.append(row['ID'])
+
+    duplicates = find_duplicates(ids)
+
+    for entry in duplicates:
+        valid = False
+        print("Anomaly US22: ID %s is duplicated." % entry)
+
+    return valid

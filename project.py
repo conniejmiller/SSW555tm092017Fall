@@ -107,10 +107,11 @@ class Gedcom():
 
     def validate(self):
         """Validate the contents of the GEDCOM file"""
-        validate_dates(self.individual, self.family)
+        validate_dates(self.family, self.individual)
         validate_genders(self.family, self.individual)
         validate_males(self.family, self.individual)
         validate_marriages(self.family, self.individual)
+        validate_ids(self.family, self.individual)
 
 
 def main():

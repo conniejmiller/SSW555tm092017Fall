@@ -14,10 +14,10 @@ class TestProject(unittest.TestCase):
 
     def test_date_compare(self):
         """ Testing the date_compare function  """
-        self.assertEqual(date_compare('10 SEP 2017',''), True)
-        self.assertTrue(date_compare('10 SEP 2017',''))
-        self.assertEqual(date_compare('10 SEP 2018','10 SEP 2017'), False)
-        self.assertEqual(date_compare('20 SEP 2017','10 SEP 2018'), True)
+        self.assertEqual(date_compare('10 SEP 2017', ''), True)
+        self.assertTrue(date_compare('10 SEP 2017', ''))
+        self.assertEqual(date_compare('10 SEP 2018', '10 SEP 2017'), False)
+        self.assertEqual(date_compare('20 SEP 2017', '10 SEP 2018'), True)
 
     def test_is_deceased(self):
         """ Testing the is_deceased function  """
@@ -54,7 +54,7 @@ class TestProject(unittest.TestCase):
             if husband and wife genders accurate, return True
         """
         self.assertFalse(validate_genders(families, individuals))
- 
+
     def test_validate_males(self):
         """ Testing male last name validation """
         self.assertFalse(validate_males(families, individuals))
@@ -79,7 +79,7 @@ class TestProject(unittest.TestCase):
         """ Testing the get_name function  """
         self.assertEqual(get_name(individuals, '@I1@'), 'Bob /Jones/')
         self.assertEqual(get_name(individuals, '@I2@'), 'Mary /Smith/')
- 
+
     def test_get_last_name(self):
         """ Testing the get_last_name function  """
         self.assertEqual(get_last_name(individuals, '@I1@'), 'Jones')
@@ -136,7 +136,10 @@ class TestProject(unittest.TestCase):
         individuals = list()
         families = list()
         self.assertEqual(get_living_married(families, individuals), [])
-        self.assertEqual(get_living_married(families, individuals), [])
+
+    def test_unique_id(self):
+        """ Test the validate_ids function"""
+        self.assertFalse(validate_ids(families, individuals))
 
     def list_living_single(self):
         """ Test the list_living_single(families, individuals) function """
@@ -146,11 +149,11 @@ class TestProject(unittest.TestCase):
         self.assertEqual(list_living_single(families, individuals), [])
 
     def test_get_name_id(self):
-       """ Testing the get_name_id function """
-       self.assertEqual(get_name_id(individuals[0]), 'Bob /Jones/ (@I1@)')
-       self.assertEqual(get_name_id(individuals[1]), 'Mary /Smith/ (@I2@)')
-       self.assertEqual(get_name_id(individuals[2]),
-                        'Thelma Lucella /Philbrook/ (@I3@)')
+        """ Testing the get_name_id function """
+        self.assertEqual(get_name_id(individuals[0]), 'Bob /Jones/ (@I1@)')
+        self.assertEqual(get_name_id(individuals[1]), 'Mary /Smith/ (@I2@)')
+        self.assertEqual(get_name_id(individuals[2]),
+                         'Thelma Lucella /Philbrook/ (@I3@)')
 
     def test_get_name_id_list(self):
         """ Testing the get_name_id function """
@@ -160,7 +163,7 @@ class TestProject(unittest.TestCase):
                          'Mary /Smith/ (@I2@)')
         self.assertEqual(get_name_id_list(individuals, '@I3@'),
                          'Thelma Lucella /Philbrook/ (@I3@)')
-        
+
     def test_validate_marriage_dates(self):
         self.assertEqual(validate_marriage_dates(families[0], individuals),
                          'no marriage')
@@ -170,11 +173,12 @@ class TestProject(unittest.TestCase):
                          'after wife')
         self.assertEqual(validate_marriage_dates(families[3], individuals),
                          'after husband')
-        
+
     def test_validate_marriage_divorce(self):
         self.assertEqual(validate_marriage_divorce(families[0]), 'no marriage')
         self.assertEqual(validate_marriage_divorce(families[1]), 'no error')
-        self.assertEqual(validate_marriage_divorce(families[2]), 'after divorce')
+        self.assertEqual(validate_marriage_divorce(families[2]),
+                         'after divorce')
 
 
 if __name__ == '__main__':

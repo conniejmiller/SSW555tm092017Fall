@@ -1,7 +1,7 @@
 from math import floor
 from datetime import datetime, timedelta
 import validate
-
+from collections import Counter
 
 
 def is_deceased(row_death):
@@ -188,3 +188,8 @@ def get_name_id_list(list, id):
             out_string = row["NAME"] + ' (' + row["ID"] + ')'
             return out_string
     return "Unknown"
+
+
+def find_duplicates(list):
+    """ Find duplicates in list, return list with duplicate values"""
+    return [item for item, count in Counter(list).items() if count > 1]
