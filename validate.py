@@ -283,3 +283,20 @@ def validate_ids(family, individual):
         print("Anomaly US22: ID %s is duplicated." % entry)
 
     return valid
+
+
+def validate_name_birth(individual):
+    """ Combinations of name and birth should be unique """
+    name_birth_pairs = []
+    valid = True
+
+    for row in individual:
+        name_birth = (row['NAME'], row['BIRT'])
+        if name_birth not in name_birth_pairs:
+            name_birth_pairs.append(name_birth)
+        else:
+            print("Anomaly US23: Name %s and Birth %s is duplicated" %
+                  name_birth)
+            valid = False
+
+    return valid

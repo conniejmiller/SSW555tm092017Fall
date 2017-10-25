@@ -112,6 +112,7 @@ class Gedcom():
         validate_males(self.family, self.individual)
         validate_marriages(self.family, self.individual)
         validate_ids(self.family, self.individual)
+        validate_name_birth(self.individual)
 
 
 def main():
