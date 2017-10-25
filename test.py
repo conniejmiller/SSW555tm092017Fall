@@ -161,5 +161,18 @@ class TestProject(unittest.TestCase):
         self.assertEqual(validate_marriage_divorce(families[2]),
                          'after divorce')
 
+    def test_birth_name(self):
+        bad_data = [{'BIRT': '05 OCT 2017', 'SEX': 'F', 'ID': 'p1', 
+                     'DEAT': '9 FEB 1962', 'NAME': 'Constance Joan /Lewis/'}, 
+                    {'BIRT': '05 OCT 2017', 'SEX': 'F', 'ID': 'p1', 
+                     'DEAT': '9 FEB 1962', 'NAME': 'Constance Joan /Lewis/'}]
+        good_data = [{'BIRT': '05 OCT 2017', 'SEX': 'F', 'ID': 'p1', 
+                      'DEAT': '9 FEB 1962', 'NAME': 'Constance Joan /Lewis/'}, 
+                     {'BIRT': '05 OCT 2017', 'SEX': 'F', 'ID': 'p1', 
+                      'DEAT': '9 FEB 1962', 'NAME': 'Constance Jean /Lewis/'}]
+        self.assertTrue(validate_name_birth(good_data))
+        self.assertFalse(validate_name_birth(bad_data))
+
+
 if __name__ == '__main__':
     unittest.main(exit=False, verbosity=2)
