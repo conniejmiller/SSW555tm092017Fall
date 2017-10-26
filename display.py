@@ -1,6 +1,6 @@
 from prettytable import PrettyTable
 from operator import itemgetter
-from helpers import *
+from helpers import valid_tag, get_name
 
 
 def print_line(level, tag, args):
@@ -58,8 +58,10 @@ def print_table(individual, family):
         families.add_row([row["ID"],
                           row["MARR"],
                           row["DIV"],
-                          row["HUSB"] + ":" + get_name(individual, row["HUSB"]),
-                          row["WIFE"] + ":" + get_name(individual, row["WIFE"]),
+                          row["HUSB"] + ":" +
+                          get_name(individual, row["HUSB"]),
+                          row["WIFE"] + ":" +
+                          get_name(individual, row["WIFE"]),
                           row["CHIL"]])
 
     print(families)
