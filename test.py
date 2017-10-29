@@ -1,8 +1,14 @@
 import unittest
-from project import *
-from validate import *
-from display import *
-from helpers import *
+from project import Gedcom
+from validate import valid_month, valid_lifetime, validate_genders, get_age
+from validate import validate_males, validate_marriages, validate_ids
+from validate import validate_marriage_dates, validate_marriage_divorce
+from validate import validate_name_birth
+from helpers import date_compare, is_deceased, calculate_years, get_name
+from helpers import get_last_name, get_birth, get_recent_deaths
+from helpers import get_death, get_living_married, find_living_people_ids
+from helpers import get_currently_married, list_living_single, get_name_id
+from helpers import get_name_id_list, get_recent_births
 
 TEST_FILE_NAME = 'data/testing.ged'
 gedcom = Gedcom(TEST_FILE_NAME)
@@ -92,17 +98,15 @@ class TestProject(unittest.TestCase):
 
     def test_get_recent_deaths(self):
         """ Testing the get_recent_deaths function  """
-        mock_data = [{'BIRT': '9 FEB 1962', 'SEX': 'F', 'ID': 'p1', 'DEAT': '20 OCT 2017', 'NAME': 'Bob /Jones/'}]
-
+        mock_data = [{'BIRT': '9 FEB 1962', 'SEX': 'F', 'ID': 'p1',
+                      'DEAT': '20 OCT 2017', 'NAME': 'Bob /Jones/'}]
         self.assertEqual(get_recent_deaths(mock_data), ['Bob /Jones/'])
-
 
     def test_get_recent_births(self):
         """ Testing the get_recent_births function  """
-        mock_data = [{'BIRT': '20 OCT 2017', 'SEX': 'F', 'ID': 'p1', 'DEAT': '9 FEB 1962', 'NAME': 'Andrew /Stewart/'}]
-
+        mock_data = [{'BIRT': '20 OCT 2017', 'SEX': 'F', 'ID': 'p1',
+                      'DEAT': '9 FEB 1962', 'NAME': 'Andrew /Stewart/'}]
         self.assertEqual(get_recent_births(mock_data), ['Andrew /Stewart/'])
-
 
     def test_get_death(self):
         """ Testing the get_age function  """
@@ -124,12 +128,6 @@ class TestProject(unittest.TestCase):
         """ Test the get_currently_married(families) function """
         families = list()
         self.assertEqual(get_currently_married(families), [])
-
-    def test_get_living_married(self):
-        """ Test the get_living_married(families, individuals) function """
-        individuals = list()
-        families = list()
-        self.assertEqual(get_living_married(families, individuals), [])
 
     def test_unique_id(self):
         """ Test the validate_ids function"""
@@ -175,13 +173,13 @@ class TestProject(unittest.TestCase):
                          'after divorce')
 
     def test_birth_name(self):
-        bad_data = [{'BIRT': '05 OCT 2017', 'SEX': 'F', 'ID': 'p1', 
-                     'DEAT': '9 FEB 1962', 'NAME': 'Constance Joan /Lewis/'}, 
-                    {'BIRT': '05 OCT 2017', 'SEX': 'F', 'ID': 'p1', 
+        bad_data = [{'BIRT': '05 OCT 2017', 'SEX': 'F', 'ID': 'p1',
+                     'DEAT': '9 FEB 1962', 'NAME': 'Constance Joan /Lewis/'},
+                    {'BIRT': '05 OCT 2017', 'SEX': 'F', 'ID': 'p1',
                      'DEAT': '9 FEB 1962', 'NAME': 'Constance Joan /Lewis/'}]
-        good_data = [{'BIRT': '05 OCT 2017', 'SEX': 'F', 'ID': 'p1', 
-                      'DEAT': '9 FEB 1962', 'NAME': 'Constance Joan /Lewis/'}, 
-                     {'BIRT': '05 OCT 2017', 'SEX': 'F', 'ID': 'p1', 
+        good_data = [{'BIRT': '05 OCT 2017', 'SEX': 'F', 'ID': 'p1',
+                      'DEAT': '9 FEB 1962', 'NAME': 'Constance Joan /Lewis/'},
+                     {'BIRT': '05 OCT 2017', 'SEX': 'F', 'ID': 'p1',
                       'DEAT': '9 FEB 1962', 'NAME': 'Constance Jean /Lewis/'}]
         self.assertTrue(validate_name_birth(good_data))
         self.assertFalse(validate_name_birth(bad_data))
