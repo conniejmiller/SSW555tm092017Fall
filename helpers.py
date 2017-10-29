@@ -120,7 +120,7 @@ def get_recent_deaths(individuals):
             dday = datetime.strptime(individual["DEAT"], '%d %b %Y')
             days = today - dday
             if days <= DD and dday < today:
-                print('US36: LIST RECENT DEATHS: {} | {}'.format(individual["NAME"],dday))
+                print('US36: LIST RECENT DEATHS: {} | {}'.format(individual['NAME'], dday.strftime('%d %b %Y')))
                 names.append(individual["NAME"])
     return names
 
@@ -135,7 +135,7 @@ def get_recent_births(individuals):
             bday = datetime.strptime(individual["BIRT"], '%d %b %Y')
             days = today - bday
             if days < DD and bday < today:
-                print('US35: LIST RECENT BIRTHS: {} | {}'.format(individual["NAME"],bday))
+                print('US35: LIST RECENT BIRTHS: {} | {}'.format(individual['NAME'], bday.strftime('%d %b %Y')))
                 names.append(individual["NAME"])
     return names
        
