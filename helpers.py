@@ -1,5 +1,5 @@
 from math import floor
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import validate
 from collections import Counter
 
@@ -112,28 +112,33 @@ def date_compare(date1, date2):
 def get_recent_deaths(individuals):
     """ Return a list of individuals who've died within the last 30 days. 
         Return -1 if individuals have not died within the last 30 days. """ 
-    past_30_days = datetime.now().date() + timedelta(days=-30)
+    today = datetime.now()
+    DD = timedelta(days=30)
+    names = []
     for individual in individuals:
-        if is_deceased(individual["DEAT"]):
-            dt = datetime.strptime(individual["DEAT"], '%d %b %Y').date()
-            if dt >= past_30_days and dt <= datetime.now().date():
-                print('US36: LIST RECENT DEATHS: {} | {}'.format(individual["NAME"],dt))
-                return 'US36: LIST RECENT DEATHS: {} | {}'.format(individual["NAME"],dt)
-        return -1
-
+        if individual["DEAT"]:
+            dday = datetime.strptime(individual["DEAT"], '%d %b %Y')
+            days = today - dday
+            if days <= DD and dday < today:
+                print('US36: LIST RECENT DEATHS: {} | {}'.format(individual['NAME'], dday.strftime('%d %b %Y')))
+                names.append(individual["NAME"])
+    return names
 
 def get_recent_births(individuals):
     """ Return a list of individuals who've been born within the last 30 days. 
         Return -1 if individuals were not born within the last 30 days. """ 
-    past_30_days = datetime.now().date() + timedelta(days=-30)
+    today = datetime.now()
+    DD = timedelta(days=30)
+    names = []
     for individual in individuals:
         if individual["BIRT"]:
-            dt = datetime.strptime(individual["BIRT"], '%d %b %Y').date()
-            if dt >= past_30_days and dt <= datetime.now().date():
-                print('US35: LIST RECENT BIRTHS: {} | {}'.format(individual["NAME"],dt))
-                return 'US35: LIST RECENT BIRTHS: {} | {}'.format(individual["NAME"],dt)
-        return -1
-
+            bday = datetime.strptime(individual["BIRT"], '%d %b %Y')
+            days = today - bday
+            if days < DD and bday < today:
+                print('US35: LIST RECENT BIRTHS: {} | {}'.format(individual['NAME'], bday.strftime('%d %b %Y')))
+                names.append(individual["NAME"])
+    return names
+       
 
 def get_name(list, id):
     """ Get the name for an individual.  """
