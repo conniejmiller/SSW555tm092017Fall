@@ -122,10 +122,10 @@ def get_recent_deaths(individuals):
             if days < DD and dday < today:
                 print('US36: LIST RECENT DEATHS: {} | {}'.format(individual["NAME"],dday))
                 names.append(individual["NAME"])
-                return names
+                
             else:
                 return -1
-
+    return names
 
 def get_recent_births(individuals):
     """ Return a list of individuals who've been born within the last 30 days. 
@@ -140,9 +140,9 @@ def get_recent_births(individuals):
             if days < DD and bday < today:
                 print('US35: LIST RECENT BIRTHS: {} | {}'.format(individual["NAME"],bday))
                 names.append(individual["NAME"])
-                return names
         else:
             return -1
+    return names
        
 
 def get_name(list, id):
