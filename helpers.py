@@ -116,15 +116,12 @@ def get_recent_deaths(individuals):
     DD = timedelta(days=30)
     names = []
     for individual in individuals:
-        if is_deceased(individual["DEAT"]):
+        if individual["DEAT"]:
             dday = datetime.strptime(individual["DEAT"], '%d %b %Y')
             days = today - dday
-            if days < DD and dday < today:
+            if days <= DD and dday < today:
                 print('US36: LIST RECENT DEATHS: {} | {}'.format(individual["NAME"],dday))
                 names.append(individual["NAME"])
-                
-            else:
-                return -1
     return names
 
 def get_recent_births(individuals):
@@ -140,8 +137,6 @@ def get_recent_births(individuals):
             if days < DD and bday < today:
                 print('US35: LIST RECENT BIRTHS: {} | {}'.format(individual["NAME"],bday))
                 names.append(individual["NAME"])
-        else:
-            return -1
     return names
        
 
