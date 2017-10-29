@@ -1,6 +1,8 @@
-from validate import *
-from display import *
-from helpers import *
+from validate import validate_dates, validate_genders, validate_males
+from validate import validate_marriages, validate_ids, validate_name_birth
+from display import print_table
+from helpers import list_deceased, get_recent_deaths, get_recent_births
+from helpers import get_living_married, list_living_single
 
 FILE_NAME = 'data/baseline_input.ged'
 TEST_FILE_NAME = 'data/testing.ged'

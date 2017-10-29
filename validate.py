@@ -1,6 +1,6 @@
 from datetime import datetime
-from math import floor
-from helpers import *
+from helpers import calculate_years, get_name_id, date_compare, get_death
+from helpers import get_birth, get_name_id_list, get_last_name, find_duplicates
 
 
 def get_age(list, id):
@@ -39,13 +39,15 @@ def validate_genders(families, individuals):
         for individual in individuals:
             if individual['ID'] == wife_id:
                 if individual['SEX'] != 'F':
-                    print("Anomaly US21: Wife %s in family (%s) is not female." %
+                    print("Anomaly US21: " +
+                          "Wife %s in family (%s) is not female." %
                           (get_name_id(individual),
                            spouse['ID']))
                     all_good = False
             elif individual['ID'] == husband_id:
                 if individual['SEX'] != 'M':
-                    print("Anomaly US21: Husband %s in family (%s) is not male." %
+                    print("Anomaly US21: " +
+                          "Husband %s in family (%s) is not male." %
                           (get_name_id(individual),
                            spouse['ID']))
                     all_good = False
@@ -67,13 +69,14 @@ def validate_males(families, individuals):
                 if individual['ID'] == person:
                     if individual['SEX'] == 'M':
                         if last_name != "":
-                            if (last_name !=
-                                get_last_name(individuals, individual['ID'])):
-                                print("Anomaly US16: Male %s has differing last name." %
+                            if (last_name != get_last_name(individuals,
+                                                           individual['ID'])):
+                                print("Anomaly US16: " +
+                                      "Male %s has differing last name." %
                                       (get_name_id(individual)))
                                 valid = False
                         else:
-                            last_name = get_last_name(individuals, 
+                            last_name = get_last_name(individuals,
                                                       individual['ID'])
     return valid
 
@@ -94,7 +97,8 @@ def validate_marriages(families, individuals):
         duplicates = True
         for individual in individuals:
             if individual['ID'] == spouse:
-                print("Anomaly US11: Spouse %s is a spouse in multiple families." %
+                print("Anomaly US11: " +
+                      "Spouse %s is a spouse in multiple families." %
                       (get_name_id(individual)))
 
     return duplicates
@@ -139,11 +143,13 @@ def validate_marriage_dates(family, indi_list):
         return 'no marriage'
     else:
         if wife_death != '' and date_compare(wife_death, marriage_date):
-            print("Error US05: Marriage in family %s occurred after wife's death." %
+            print("Error US05: " +
+                  "Marriage in family %s occurred after wife's death." %
                   (family['ID']))
             return 'after wife'
         if husb_death != '' and date_compare(husb_death, marriage_date):
-            print("Error US05: Marriage in family %s occurred after husband's death." %
+            print("Error US05: " +
+                  "Marriage in family %s occurred after husband's death." %
                   (family['ID']))
             return 'after husband'
 
@@ -209,7 +215,7 @@ def validate_dates(fam_list, indi_list):
         elif not valid_month(marriage_date):
             print("Error US42: Invalid marriage month for %s and %s" %
                   (get_name_id_list(indi_list, row["HUSB"]),
-                   get_name_id_liet(indi_list, row["WIFE"])))
+                   get_name_id_list(indi_list, row["WIFE"])))
         else:
             if not date_compare(marriage_date, ''):
                 print("Error US01: Marriage date of %s and %s" %
@@ -259,7 +265,7 @@ def validate_dates(fam_list, indi_list):
                           (get_name_id_list(indi_list, row["WIFE"])) +
                           " was older than 60 when %s was born." %
                           (get_name_id_list(indi_list, child)))
- 
+
         # validate marriage dates
         validate_marriage_divorce(row)
         validate_marriage_dates(row, indi_list)

@@ -1,4 +1,18 @@
+Anomaly US23: Name Constance Joan /Lewis/ and Birth 05 OCT 2017 is duplicated
+US35: Recent Birth: Andrew /Stewart/ | 20 Oct 2017
+US36: Recent Death: Bob /Jones/ | 20 Oct 2017
+Anomaly US22: ID @I7@ is duplicated.
+Anomaly US21: Wife Mary /Smith/ (@I2@) in family (@F1@) is not female.
+Anomaly US21: Husband Carol /Smith/ (@I6@) in family (@F4@) is not male.
+Anomaly US16: Male Joe /Wright/ (@I7@) has differing last name.
+Anomaly US16: Male Joe /Smith/ (@I7@) has differing last name.
+Error US05: Family @F1@ has no marriage date.
+Error US05: Marriage in family @F5@ occurred after wife's death.
+Error US05: Marriage in family @F4@ occurred after husband's death.
+Error US04: Family @F1@ has no marriage date.
+Error US04: Marriage in family @F3@ occurred after the divorce.
+Anomaly US11: Spouse Ruth /Jones/ (@I10@) is a spouse in multiple families.
 ----------------------------------------------------------------------
-Ran 21 tests in 0.232s
+Ran 25 tests in 0.433s
 
 OK
