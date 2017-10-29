@@ -67,7 +67,6 @@ def list_living_single(individuals, families):
         Compare the ID of married people to living people over 30.
         If the person's ID is NOT IN the married people list,
         return the ID. """
-
     wife = None
     husb = None
     living_people_ids = []  # all living people
@@ -89,7 +88,8 @@ def list_living_single(individuals, families):
 
     for person in find_living_people_ids(individuals):
         if person[0] in living_single_people_over_30:
-            print("US31: Living single person over 30: {}, {}".format(person[0], person[1]))
+            print("US31: Living single person over 30: {}, {}"
+                  .format(person[0], person[1]))
 
 
 def date_compare(date1, date2):
@@ -110,7 +110,7 @@ def date_compare(date1, date2):
 
 
 def get_recent_deaths(individuals):
-    """ Return a list of individuals who've died within the last 30 days. 
+    """ Return a list of individuals who've died within the last 30 days.
         Return -1 if individuals have not died within the last 30 days. """ 
     today = datetime.now()
     DD = timedelta(days=30)
@@ -120,25 +120,28 @@ def get_recent_deaths(individuals):
             dday = datetime.strptime(individual["DEAT"], '%d %b %Y')
             days = today - dday
             if days <= DD and dday < today:
-                print('US36: LIST RECENT DEATHS: {} | {}'.format(individual['NAME'], dday.strftime('%d %b %Y')))
+                print('US36: Recent Death: {} | {}'.format(individual['NAME'],
+                      dday.strftime('%d %b %Y')))
                 names.append(individual["NAME"])
     return names
 
+
 def get_recent_births(individuals):
-    """ Return a list of individuals who've been born within the last 30 days. 
+    """ Return a list of individuals who've been born within the last 30 days.
         Return -1 if individuals were not born within the last 30 days. """ 
     today = datetime.now()
     DD = timedelta(days=30)
     names = []
     for individual in individuals:
-        if individual["BIRT"]:
+        if validate.valid_month(individual["BIRT"]):
             bday = datetime.strptime(individual["BIRT"], '%d %b %Y')
             days = today - bday
             if days < DD and bday < today:
-                print('US35: LIST RECENT BIRTHS: {} | {}'.format(individual['NAME'], bday.strftime('%d %b %Y')))
+                print('US35: Recent Birth: {} | {}'.format(individual['NAME'],
+                      bday.strftime('%d %b %Y')))
                 names.append(individual["NAME"])
     return names
-       
+
 
 def get_name(list, id):
     """ Get the name for an individual.  """
@@ -157,6 +160,7 @@ def get_last_name(list, id):
     else:
         return "Unknown"
 
+
 def get_birth(list, id):
     """ Get the birth date for an individual.  """
     for row in list:
@@ -172,6 +176,7 @@ def get_death(list, id):
             return row["DEAT"]
     return "Unknown"
 
+
 def calculate_years(date1, date2):
     """ this returns the number of years between 2 exact format dates """
     first_date = datetime.strptime(date1, '%d %b %Y').date()
@@ -179,6 +184,7 @@ def calculate_years(date1, date2):
 
     years = (first_date - second_date).days / 365
     return floor(abs(years))
+
 
 def get_name_id(indi):
     """ return name and ID for printing """
