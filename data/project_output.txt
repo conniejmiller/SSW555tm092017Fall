@@ -20,7 +20,7 @@
 +------+-------------+-------------+--------------------------+---------------------------------+------------------+
 |  ID  |   MARRIED   |   DIVORCED  |         HUSBAND          |               WIFE              |     CHILDREN     |
 +------+-------------+-------------+--------------------------+---------------------------------+------------------+
-| @F1@ |             |             |     @I1@:Bob /Jones/     |        @I2@:Mary /Smith/        |        []        |
+| @F1@ |             |             |     @I1@:Bob /Jones/     |        @I2@:Mary /Smith/        |    ['@I10@']     |
 | @F2@ | 19 MAR 1989 |             | @I4@:John Walter /Lewis/ | @I3@:Thelma Lucella /Philbrook/ | ['@I5@', '@I7@'] |
 | @F3@ |  8 APR 1962 | 18 JUN 1957 |    @I7@:Joe /Wright/     |    @I5@:Patricia Jane /Lewis/   |        []        |
 | @F4@ |  9 APR 1962 |             |    @I6@:Carol /Smith/    |        @I10@:Ruth /Jones/       |        []        |
@@ -66,3 +66,4 @@ Anomaly US11: Spouse Ruth /Jones/ (@I10@) is a spouse in multiple families.
 Error US06: Divorce in family @F6@ occurred after death of one spouse.
 Anomaly US22: ID @I7@ is duplicated.
 Anomaly US23: Name Andrew /Stewart/ and Birth 30 JAN 1977 is duplicated
+Anomaly US18: Spouses in family @F3@ share at least one parent.
