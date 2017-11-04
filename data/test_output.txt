@@ -12,8 +12,6 @@ Error US05: Marriage in family @F4@ occurred after husband's death.
 Error US04: Family @F1@ has no marriage date.
 Error US04: Marriage in family @F3@ occurred after the divorce.
 Anomaly US11: Spouse Ruth /Jones/ (@I10@) is a spouse in multiple families.
-
-----------------------------------------------------------------------
-Ran 26 tests in 0.359s
+Ran 29 tests in 0.410s
 
 OK
