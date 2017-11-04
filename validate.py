@@ -1,7 +1,7 @@
 from datetime import datetime
 from helpers import calculate_years, get_name_id, date_compare, get_death
 from helpers import get_birth, get_name_id_list, get_last_name
-from helpers import find_duplicates, valid_divorce
+from helpers import find_duplicates, valid_divorce, siblings
 
 
 def get_age(list, id):
@@ -317,4 +317,15 @@ def validate_divorces(families, individuals):
                   "family %s occurred after death of one spouse." %
                   spouse['ID'])
     return True
+
+
+def validate_siblings(families):
+    """ Identify families where siblings married. """
+    for spouse in families:
+        if siblings(spouse['WIFE'], spouse['HUSB'], families):
+            print("Anomaly US18: " +
+                  "Spouses in family %s share at least one parent." %
+                  spouse['ID'])
+    return True
+
 
