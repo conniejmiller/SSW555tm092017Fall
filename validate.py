@@ -1,6 +1,7 @@
 from datetime import datetime
 from helpers import calculate_years, get_name_id, date_compare, get_death
-from helpers import get_birth, get_name_id_list, get_last_name, find_duplicates
+from helpers import get_birth, get_name_id_list, get_last_name
+from helpers import find_duplicates, valid_divorce
 
 
 def get_age(list, id):
@@ -306,3 +307,14 @@ def validate_name_birth(individual):
             valid = False
 
     return valid
+
+
+def validate_divorces(families, individuals):
+    """ Identify families where divorce occurred after one spouse died. """
+    for spouse in families:
+        if not valid_divorce(spouse, individuals):
+            print("Error US06: Divorce in " +
+                  "family %s occurred after death of one spouse." %
+                  spouse['ID'])
+    return True
+
