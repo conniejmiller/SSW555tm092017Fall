@@ -1,6 +1,6 @@
 from validate import validate_dates, validate_genders, validate_males
 from validate import validate_marriages, validate_ids, validate_name_birth
-from validate import validate_divorces
+from validate import validate_divorces, validate_siblings
 from display import print_table
 from helpers import list_deceased, get_recent_deaths, get_recent_births
 from helpers import get_living_married, list_living_single
@@ -117,6 +117,7 @@ class Gedcom():
         validate_marriages(self.family, self.individual)
         validate_ids(self.family, self.individual)
         validate_name_birth(self.individual)
+        validate_siblings(self.family)
 
 
 def main():
