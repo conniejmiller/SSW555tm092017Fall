@@ -221,3 +221,38 @@ def valid_divorce(family, indi_list):
             return False
         else:
             return True
+
+
+def get_mom(indi, fam_list):
+    """ returns ID of the individual's mother """
+    for family in fam_list:
+        for child in family['CHIL']:
+            if indi == child:
+                return family['WIFE']
+    return 'unknown'
+
+
+def get_dad(indi, fam_list):
+    """ returns ID of the individual's father """
+    for family in fam_list:
+        for child in family['CHIL']:
+            if indi == child:
+                return family['HUSB']
+    return 'unknown'
+
+
+def siblings(indi1, indi2, fam_list):
+    """ returns true if the input individuals share a parent,
+    returns false otherwise (even if undetermined) """
+    mom1 = get_mom(indi1, fam_list)
+    mom2 = get_mom(indi2, fam_list)
+    dad1 = get_dad(indi1, fam_list)
+    dad2 = get_dad(indi2, fam_list)
+
+    if (mom1 == mom2 and mom1 != 'unknown'):
+        return True
+    elif (dad1 == dad2 and dad1 != 'unknown'):
+        return True
+    else:
+        return False
+
