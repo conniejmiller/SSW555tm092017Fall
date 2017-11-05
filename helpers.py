@@ -111,7 +111,7 @@ def date_compare(date1, date2):
 
 def get_recent_deaths(individuals):
     """ Return a list of individuals who've died within the last 30 days.
-        Return -1 if individuals have not died within the last 30 days. """ 
+        Return -1 if individuals have not died within the last 30 days. """
     today = datetime.now()
     DD = timedelta(days=30)
     names = []
@@ -128,7 +128,7 @@ def get_recent_deaths(individuals):
 
 def get_recent_births(individuals):
     """ Return a list of individuals who've been born within the last 30 days.
-        Return -1 if individuals were not born within the last 30 days. """ 
+        Return -1 if individuals were not born within the last 30 days. """
     today = datetime.now()
     DD = timedelta(days=30)
     names = []
@@ -204,3 +204,55 @@ def get_name_id_list(list, id):
 def find_duplicates(list):
     """ Find duplicates in list, return list with duplicate values"""
     return [item for item, count in Counter(list).items() if count > 1]
+
+
+def valid_divorce(family, indi_list):
+    """ returns false if one spouse died before the divorce. """
+    divorce_date = family['DIV']
+    if divorce_date == '':
+        return True
+    else:
+        husband_death = get_death(indi_list, family['HUSB'])
+        wife_death = get_death(indi_list, family['WIFE'])
+        if ((husband_death != '' and
+             date_compare(husband_death, divorce_date)) or
+            (wife_death != '' and
+             date_compare(wife_death, divorce_date))):
+            return False
+        else:
+            return True
+
+
+def get_mom(indi, fam_list):
+    """ returns ID of the individual's mother """
+    for family in fam_list:
+        for child in family['CHIL']:
+            if indi == child:
+                return family['WIFE']
+    return 'unknown'
+
+
+def get_dad(indi, fam_list):
+    """ returns ID of the individual's father """
+    for family in fam_list:
+        for child in family['CHIL']:
+            if indi == child:
+                return family['HUSB']
+    return 'unknown'
+
+
+def siblings(indi1, indi2, fam_list):
+    """ returns true if the input individuals share a parent,
+    returns false otherwise (even if undetermined) """
+    mom1 = get_mom(indi1, fam_list)
+    mom2 = get_mom(indi2, fam_list)
+    dad1 = get_dad(indi1, fam_list)
+    dad2 = get_dad(indi2, fam_list)
+
+    if (mom1 == mom2 and mom1 != 'unknown'):
+        return True
+    elif (dad1 == dad2 and dad1 != 'unknown'):
+        return True
+    else:
+        return False
+

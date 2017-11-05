@@ -8,7 +8,8 @@ from helpers import date_compare, is_deceased, calculate_years, get_name
 from helpers import get_last_name, get_birth, get_recent_deaths
 from helpers import get_death, get_living_married, find_living_people_ids
 from helpers import get_currently_married, list_living_single, get_name_id
-from helpers import get_name_id_list, get_recent_births
+from helpers import get_name_id_list, get_recent_births, valid_divorce
+from helpers import siblings, get_mom, get_dad
 
 TEST_FILE_NAME = 'data/testing.ged'
 gedcom = Gedcom(TEST_FILE_NAME)
@@ -183,6 +184,27 @@ class TestProject(unittest.TestCase):
                       'DEAT': '9 FEB 1962', 'NAME': 'Constance Jean /Lewis/'}]
         self.assertTrue(validate_name_birth(good_data))
         self.assertFalse(validate_name_birth(bad_data))
+
+    def test_valid_divorce(self):
+        self.assertTrue(valid_divorce(families[0], individuals))
+        self.assertTrue(valid_divorce(families[2], individuals))
+        self.assertFalse(valid_divorce(families[5], individuals))
+
+    def test_get_mom(self):
+        self.assertEqual(get_mom('@I5@', families), '@I3@')
+        self.assertNotEqual(get_mom('@I5@', families), '@I4@')
+        self.assertEqual(get_mom('@I3@', families), 'unknown')
+
+    def test_get_dad(self):
+        self.assertEqual(get_dad('@I5@', families), '@I4@')
+        self.assertNotEqual(get_dad('@I5@', families), '@I3@')
+        self.assertEqual(get_dad('@I3@', families), 'unknown')
+
+    def test_siblings(self):
+        self.assertFalse(siblings('@I1@', '@I5@', families))
+        self.assertTrue(siblings('@I5@', '@I7@', families))
+        self.assertFalse(siblings('@I1@', '@I2@', families))
+        self.assertFalse(siblings('@I3@', '@I2@', families))
 
 
 if __name__ == '__main__':

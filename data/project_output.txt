@@ -13,21 +13,23 @@
 |  @I4@ | John Walter /Lewis/        |   M    | 30 JAN 1937 |             |
 |  @I5@ | Patricia Jane /Lewis/      |   F    |  9 FEB 2002 |             |
 |  @I6@ | Carol /Smith/              |   F    |  1 JAN 2051 |  1 FEB 1951 |
-|  @I7@ | Joe /Wright/               |   M    | 21 JAN 1957 |             |
+|  @I7@ | Joe /Wright/               |   M    | 21 JAN 1957 | 21 JAN 1959 |
 |  @I7@ | Joe /Smith/                |   M    | 21 JAN 1957 |             |
 |  @I9@ | George /Johnson/           |   M    | 30 JAN 1977 |             |
 +-------+----------------------------+--------+-------------+-------------+
 +------+-------------+-------------+--------------------------+---------------------------------+------------------+
 |  ID  |   MARRIED   |   DIVORCED  |         HUSBAND          |               WIFE              |     CHILDREN     |
 +------+-------------+-------------+--------------------------+---------------------------------+------------------+
-| @F1@ |             |             |     @I1@:Bob /Jones/     |        @I2@:Mary /Smith/        |        []        |
+| @F1@ |             |             |     @I1@:Bob /Jones/     |        @I2@:Mary /Smith/        |    ['@I10@']     |
 | @F2@ | 19 MAR 1989 |             | @I4@:John Walter /Lewis/ | @I3@:Thelma Lucella /Philbrook/ | ['@I5@', '@I7@'] |
 | @F3@ |  8 APR 1962 | 18 JUN 1957 |    @I7@:Joe /Wright/     |    @I5@:Patricia Jane /Lewis/   |        []        |
 | @F4@ |  9 APR 1962 |             |    @I6@:Carol /Smith/    |        @I10@:Ruth /Jones/       |        []        |
 | @F5@ | 19 MAY 2004 |             |  @I11@:Andrew /Stewart/  |        @I10@:Ruth /Jones/       |        []        |
+| @F6@ |  8 APR 1997 | 18 JUN 2007 |    @I7@:Joe /Wright/     |        @I10@:Ruth /Jones/       |        []        |
 +------+-------------+-------------+--------------------------+---------------------------------+------------------+
 US29: Deceased: Bob /Jones/, 1 JAN 2051
 US29: Deceased: Carol /Smith/, 1 FEB 1951
+US29: Deceased: Joe /Wright/, 21 JAN 1959
 US29: Deceased: Ruth /Jones/, 30 MAY 1999
 US29: Deceased: Hank /Frank/, 20 OCT 2017
 US29: Deceased: Mike /Frank/, 20 OCT 2017
@@ -50,14 +52,18 @@ Error US05: Family @F1@ has no marriage date.
 Anomaly US12: Mother Thelma Lucella /Philbrook/ (@I3@) was older than 60 when Patricia Jane /Lewis/ (@I5@) was born.
 Error US02: Birth date of Patricia Jane /Lewis/ (@I5@) occurs after the marriage date for family (@F3@).
 Error US04: Marriage in family @F3@ occurred after the divorce.
+Error US05: Marriage in family @F3@ occurred after husband's death.
 Error US02: Birth date of Ruth /Jones/ (@I10@) occurs after the marriage date for family (@F4@).
 Error US02: Birth date of Carol /Smith/ (@I6@) occurs after the marriage date for family (@F4@).
 Error US05: Marriage in family @F4@ occurred after husband's death.
 Error US05: Marriage in family @F5@ occurred after wife's death.
+Error US05: Marriage in family @F6@ occurred after husband's death.
 Anomaly US21: Wife Mary /Smith/ (@I2@) in family (@F1@) is not female.
 Anomaly US21: Husband Carol /Smith/ (@I6@) in family (@F4@) is not male.
 Anomaly US16: Male Joe /Wright/ (@I7@) has differing last name.
 Anomaly US16: Male Joe /Smith/ (@I7@) has differing last name.
 Anomaly US11: Spouse Ruth /Jones/ (@I10@) is a spouse in multiple families.
+Error US06: Divorce in family @F6@ occurred after death of one spouse.
 Anomaly US22: ID @I7@ is duplicated.
 Anomaly US23: Name Andrew /Stewart/ and Birth 30 JAN 1977 is duplicated
+Anomaly US18: Spouses in family @F3@ share at least one parent.
