@@ -3,7 +3,8 @@ from validate import validate_marriages, validate_ids, validate_name_birth
 from validate import validate_divorces, validate_siblings
 from display import print_table
 from helpers import list_deceased, get_recent_deaths, get_recent_births
-from helpers import get_living_married, list_living_single
+from helpers import get_living_married, list_living_single, create_family_dict, process_partial_dates
+from pprint import pprint
 
 FILE_NAME = 'data/baseline_input.ged'
 TEST_FILE_NAME = 'data/testing.ged'
@@ -107,6 +108,8 @@ class Gedcom():
         get_recent_births(self.individual)
         get_living_married(self.family, self.individual)
         list_living_single(self.individual, self.family)
+        create_family_dict(self.family, self.individual)
+        process_partial_dates('30 JUL 1988')
 
     def validate(self):
         """Validate the contents of the GEDCOM file"""

@@ -2,7 +2,7 @@ from prettytable import PrettyTable
 from operator import itemgetter
 from helpers import get_name
 from validate import valid_tag
-
+ 
 
 def print_line(level, tag, args):
     """ Print the formatted line of level, tag, and arguments """

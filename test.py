@@ -1,4 +1,6 @@
 import unittest
+from inspect import signature
+from collections import defaultdict
 from project import Gedcom
 from validate import valid_month, valid_lifetime, validate_genders, get_age
 from validate import validate_males, validate_marriages, validate_ids
@@ -9,7 +11,7 @@ from helpers import get_last_name, get_birth, get_recent_deaths
 from helpers import get_death, get_living_married, find_living_people_ids
 from helpers import get_currently_married, list_living_single, get_name_id
 from helpers import get_name_id_list, get_recent_births, valid_divorce
-from helpers import siblings, get_mom, get_dad
+from helpers import siblings, get_mom, get_dad, create_family_dict, find_duplicate_children, process_partial_dates
 
 TEST_FILE_NAME = 'data/testing.ged'
 gedcom = Gedcom(TEST_FILE_NAME)
@@ -18,6 +20,28 @@ families = gedcom.family
 
 
 class TestProject(unittest.TestCase):
+
+
+    def test_create_family_dict(self):
+        """ Test create_family_dict(fam, ind). """
+        sig = signature(create_family_dict)
+        params = len(sig.parameters)
+        self.assertEqual(params, 2)
+        self.assertEqual(create_family_dict(families, individuals), "Anomaly: US25: Duplicate child name and birthday: [('Jane', '9 FEB 2010')]")
+
+    def test_find_duplicate_children(self):
+        """ Test find_duplicate_children(children_list). """
+        sig = signature(find_duplicate_children)
+        params = len(sig.parameters)
+        self.assertEqual(params, 1)
+
+    def test_process_partial_dates(self):
+        """ Test process_partial_dates(date). """
+        sig = signature(process_partial_dates)
+        params = len(sig.parameters)
+        self.assertEqual(params, 1)
+        self.assertEqual(process_partial_dates('JUL 1988'), '1 JUL 1988')
+        self.assertEqual(process_partial_dates('1988'), '1 JAN 1988')
 
     def test_date_compare(self):
         """ Testing the date_compare function  """
