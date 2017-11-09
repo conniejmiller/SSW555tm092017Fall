@@ -1,7 +1,6 @@
-from math import floor
-from datetime import datetime, timedelta, date
-import validate
 from collections import Counter
+from datetime import date, datetime, timedelta
+from math import floor
 
 
 def is_deceased(row_death):
@@ -82,7 +81,7 @@ def list_living_single(individuals, families):
         family_ids.extend([wife, husb])
 
     for ID in living_people_ids:
-        age = int(validate.get_age(individuals, ID))
+        age = int(get_age(individuals, ID))
         if age > 30 and ID not in family_ids:
             living_single_people_over_30.append(ID)
 
@@ -133,13 +132,12 @@ def get_recent_births(individuals):
     DD = timedelta(days=30)
     names = []
     for individual in individuals:
-        if validate.valid_month(individual["BIRT"]):
-            bday = datetime.strptime(individual["BIRT"], '%d %b %Y')
-            days = today - bday
-            if days < DD and bday < today:
-                print('US35: Recent Birth: {} | {}'.format(individual['NAME'],
-                      bday.strftime('%d %b %Y')))
-                names.append(individual["NAME"])
+        bday = datetime.strptime(individual["BIRT"], '%d %b %Y')
+        days = today - bday
+        if days < DD and bday < today:
+            print('US35: Recent Birth: {} | {}'.format(individual['NAME'],
+                    bday.strftime('%d %b %Y')))
+            names.append(individual["NAME"])
     return names
 
 
@@ -159,6 +157,16 @@ def get_last_name(list, id):
         return names[-2]
     else:
         return "Unknown"
+
+
+def get_age(list, id):
+    """ This returns the the age of a given individual """
+    for row in list:
+        if row["ID"] == id:
+            birth_date = row["BIRT"]
+            today = datetime.now().date().strftime('%d %b %Y')
+            return calculate_years(birth_date, today)
+    return -1
 
 
 def get_birth(list, id):
@@ -256,3 +264,7 @@ def siblings(indi1, indi2, fam_list):
     else:
         return False
 
+
+def sort_siblings(children, individuals):
+    """ Sorts the given list by decreasing age """
+    children.sort(key=lambda x: get_age(individuals, x), reverse=True)

@@ -3,7 +3,7 @@ from validate import validate_marriages, validate_ids, validate_name_birth
 from validate import validate_divorces, validate_siblings
 from display import print_table
 from helpers import list_deceased, get_recent_deaths, get_recent_births
-from helpers import get_living_married, list_living_single
+from helpers import get_living_married, list_living_single, sort_siblings
 
 FILE_NAME = 'data/baseline_input.ged'
 TEST_FILE_NAME = 'data/testing.ged'
@@ -80,6 +80,8 @@ class Gedcom():
                 elif tag == "CHIL":
                     fam_dict[tag].append(words[2])
 
+        sort_siblings(fam_dict["CHIL"], individual)
+        
         # now print the last one
         if this_type == 'INDI':
             individual.append(indi_dict)
