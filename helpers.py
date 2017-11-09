@@ -132,12 +132,16 @@ def get_recent_births(individuals):
     DD = timedelta(days=30)
     names = []
     for individual in individuals:
-        bday = datetime.strptime(individual["BIRT"], '%d %b %Y')
-        days = today - bday
-        if days < DD and bday < today:
-            print('US35: Recent Birth: {} | {}'.format(individual['NAME'],
-                    bday.strftime('%d %b %Y')))
-            names.append(individual["NAME"])
+        try:
+            bday = datetime.strptime(individual["BIRT"], '%d %b %Y')
+            days = today - bday
+            if days < DD and bday < today:
+                print('US35: Recent Birth: {} | {}'.format(individual['NAME'],
+                       bday.strftime('%d %b %Y')))
+                names.append(individual["NAME"])
+        except ValueError:
+            # Invalid date, carry on
+            pass
     return names
 
 
@@ -187,11 +191,14 @@ def get_death(list, id):
 
 def calculate_years(date1, date2):
     """ this returns the number of years between 2 exact format dates """
-    first_date = datetime.strptime(date1, '%d %b %Y').date()
-    second_date = datetime.strptime(date2, '%d %b %Y').date()
+    try:
+        first_date = datetime.strptime(date1, '%d %b %Y').date()
+        second_date = datetime.strptime(date2, '%d %b %Y').date()
 
-    years = (first_date - second_date).days / 365
-    return floor(abs(years))
+        years = (first_date - second_date).days / 365
+        return floor(abs(years))
+    except ValueError:
+        return 0
 
 
 def get_name_id(indi):
