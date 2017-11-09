@@ -51,17 +51,18 @@ def process_partial_dates(date):
         month_and_year = copy[:2]
         month_and_year.insert(0, '1')
         date = " ".join(month_and_year)
-        print("US41: {}".format(date))
         return date
     elif len(d) == 1:
         copy = d[:]
         copy.insert(0, '1')
         copy.insert(1, 'JAN')
         date = " ".join(copy)
-        print("US41: {}".format(date))
+        return date
+    elif len(d) == 0:
         return date
     else:
         print("Error: US41: Incorrect date format: {}".format(date))
+        return date
 
 
 def is_deceased(row_death):

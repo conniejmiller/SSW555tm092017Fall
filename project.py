@@ -86,6 +86,16 @@ class Gedcom():
             individual.append(indi_dict)
         elif this_type == 'FAM':
             family.append(fam_dict)
+        
+        for row in family:
+            if row['MARR'] or row['DIV']:  
+                row['MARR'] = process_partial_dates(row['MARR'])
+                row['DIV'] = process_partial_dates(row['DIV'])
+
+        for row in individual:
+            if row['BIRT'] or row['DEAT']:  
+                row['BIRT'] = process_partial_dates(row['BIRT'])
+                row['DEAT'] = process_partial_dates(row['DEAT'])
 
         return individual, family
 
@@ -109,7 +119,6 @@ class Gedcom():
         get_living_married(self.family, self.individual)
         list_living_single(self.individual, self.family)
         create_family_dict(self.family, self.individual)
-        process_partial_dates('30 JUL 1988')
 
     def validate(self):
         """Validate the contents of the GEDCOM file"""
