@@ -4,6 +4,7 @@ from validate import validate_divorces, validate_siblings
 from display import print_table
 from helpers import list_deceased, get_recent_deaths, get_recent_births
 from helpers import get_living_married, list_living_single, sort_siblings
+from helpers import list_large_age_differences
 
 FILE_NAME = 'data/baseline_input.ged'
 TEST_FILE_NAME = 'data/testing.ged'
@@ -81,7 +82,7 @@ class Gedcom():
                     fam_dict[tag].append(words[2])
 
         sort_siblings(fam_dict["CHIL"], individual)
-        
+
         # now print the last one
         if this_type == 'INDI':
             individual.append(indi_dict)
@@ -109,6 +110,7 @@ class Gedcom():
         get_recent_births(self.individual)
         get_living_married(self.family, self.individual)
         list_living_single(self.individual, self.family)
+        list_large_age_differences(self.family, self.individual)
 
     def validate(self):
         """Validate the contents of the GEDCOM file"""
