@@ -1,6 +1,68 @@
-from collections import Counter
-from datetime import date, datetime, timedelta
 from math import floor
+from datetime import datetime, timedelta, date
+import validate
+from collections import Counter, defaultdict
+from pprint import pprint
+from itertools import chain
+
+def find_duplicate_children(children_list):
+    """ Count for duplicate children names and birthday dictionaries in a list of children dictionaries. """
+    duplicates = []
+    for child in children_list:
+        c = list(child) # change from type dict_values to list
+        if len(child) <= 1:
+            continue
+        if len(child) > 1:
+            children = [t for t in set([tuple(d.items()) for d in c])]
+            b = [tuple(chain(*row)) for row in children]
+            if len(b) == len(set(b)) == False:
+                continue
+            elif len(b) == len(set(b)) == True:
+                duplicates.append("Anomaly: US25: Duplicate child name and birthday: {}".format(b))
+                print(" ".join(duplicates))
+    return " ".join(duplicates)
+                
+
+def create_family_dict(fam, ind):
+    """ Return a dict list of children in each family. """
+    dd = defaultdict(lambda: defaultdict(lambda: defaultdict(str)))
+
+    for spouse in fam:
+        for person in ind:
+            name = person['NAME'].split(' ')[0]
+            bday = person['BIRT']
+            
+            for child_id in spouse['CHIL']:
+                if person['ID'] == child_id:
+                    dd[spouse['ID']][child_id][name] = bday
+   
+    children_list = [ chil.values() for fam_id, chil in dd.items()] 
+    return find_duplicate_children(children_list)
+
+
+def process_partial_dates(date):
+    """ Return partial dates without days or without days and months 
+    with default a date. """ 
+    d = date.split()
+    if len(d) == 3:
+        return date 
+    elif len(d) == 2:
+        copy = d[:]
+        month_and_year = copy[:2]
+        month_and_year.insert(0, '1')
+        date = " ".join(month_and_year)
+        return date
+    elif len(d) == 1:
+        copy = d[:]
+        copy.insert(0, '1')
+        copy.insert(1, 'JAN')
+        date = " ".join(copy)
+        return date
+    elif len(d) == 0:
+        return date
+    else:
+        print("Error: US41: Incorrect date format: {}".format(date))
+        return date
 
 
 def is_deceased(row_death):

@@ -1,4 +1,6 @@
 Anomaly US23: Name Constance Joan /Lewis/ and Birth 05 OCT 2017 is duplicated
+Anomaly: US25: Duplicate child name and birthday: [('Jane', '9 FEB 2010')]
+Error: US41: Incorrect date format: 1 h i 1960
 US35: Recent Birth: Andrew /Stewart/ | 20 Oct 2017
 US36: Recent Death: Bob /Jones/ | 20 Oct 2017
 Anomaly US22: ID @I7@ is duplicated.

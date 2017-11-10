@@ -2,7 +2,9 @@ from validate import validate_dates, validate_genders, validate_males
 from validate import validate_marriages, validate_ids, validate_name_birth
 from validate import validate_divorces, validate_siblings
 from display import print_table
-from helpers import list_deceased, get_recent_deaths, get_recent_births
+from helpers import list_deceased, get_recent_deaths, get_recent_births2
+from helpers import get_living_married, list_living_single, create_family_dict, process_partial_dates
+from pprint import pprint
 from helpers import get_living_married, list_living_single, sort_siblings
 from helpers import list_large_age_differences
 
@@ -88,6 +90,16 @@ class Gedcom():
             individual.append(indi_dict)
         elif this_type == 'FAM':
             family.append(fam_dict)
+        
+        for row in family:
+            if row['MARR'] or row['DIV']:  
+                row['MARR'] = process_partial_dates(row['MARR'])
+                row['DIV'] = process_partial_dates(row['DIV'])
+
+        for row in individual:
+            if row['BIRT'] or row['DEAT']:  
+                row['BIRT'] = process_partial_dates(row['BIRT'])
+                row['DEAT'] = process_partial_dates(row['DEAT'])
 
         return individual, family
 
@@ -110,6 +122,7 @@ class Gedcom():
         get_recent_births(self.individual)
         get_living_married(self.family, self.individual)
         list_living_single(self.individual, self.family)
+        create_family_dict(self.family, self.individual)
         list_large_age_differences(self.family, self.individual)
 
     def validate(self):
