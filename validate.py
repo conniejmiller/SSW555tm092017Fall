@@ -1,19 +1,7 @@
 from datetime import datetime
 from helpers import calculate_years, get_name_id, date_compare, get_death
-from helpers import get_birth, get_name_id_list, get_last_name
+from helpers import get_birth, get_name_id_list, get_last_name, get_age
 from helpers import find_duplicates, valid_divorce, siblings
-
-
-def get_age(list, id):
-    """ This returns the the age of a given individual """
-    for row in list:
-        if row["ID"] == id:
-            birth_date = row["BIRT"]
-            if valid_month(birth_date):
-                today = datetime.now().date().strftime('%d %b %Y')
-                return calculate_years(birth_date, today)
-            return -1
-    return -1
 
 
 def valid_tag(level, tag):
