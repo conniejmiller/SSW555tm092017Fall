@@ -275,3 +275,25 @@ def siblings(indi1, indi2, fam_list):
 def sort_siblings(children, individuals):
     """ Sorts the given list by decreasing age """
     children.sort(key=lambda x: get_age(individuals, x), reverse=True)
+
+
+def list_large_age_differences(families, individuals):
+    """ Takes a list of families as a parameter checks for
+        a 2x difference in age at time of marriage """
+    for family in families:
+        marriage_date = family["MARR"]
+        if marriage_date != '':
+            husb = calculate_years(get_birth(individuals, 
+                                             family["HUSB"]),
+                                   marriage_date)
+            wife = calculate_years(get_birth(individuals, 
+                                             family["WIFE"]), 
+                                   marriage_date)
+            if husb > wife:
+                if floor(husb / wife) >= 2:
+                    print("US34: Husband %s is %d times older than wife %s" %
+                          (family["HUSB"], floor(husb / wife), family["WIFE"]))
+            elif wife > husb:
+                if floor(wife / husb) >= 2:
+                    print("US34: Wife %s is %d times older than husband %s" %
+                          (family["WIFE"], floor(husb / wife), family["HUSB"]))
