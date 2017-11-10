@@ -143,7 +143,7 @@ def list_living_single(individuals, families):
         family_ids.extend([wife, husb])
 
     for ID in living_people_ids:
-        age = int(validate.get_age(individuals, ID))
+        age = int(get_age(individuals, ID))
         if age > 30 and ID not in family_ids:
             living_single_people_over_30.append(ID)
 
@@ -194,13 +194,16 @@ def get_recent_births(individuals):
     DD = timedelta(days=30)
     names = []
     for individual in individuals:
-        if validate.valid_month(individual["BIRT"]):
+        try:
             bday = datetime.strptime(individual["BIRT"], '%d %b %Y')
             days = today - bday
             if days < DD and bday < today:
                 print('US35: Recent Birth: {} | {}'.format(individual['NAME'],
-                      bday.strftime('%d %b %Y')))
+                       bday.strftime('%d %b %Y')))
                 names.append(individual["NAME"])
+        except ValueError:
+            # Invalid date, carry on
+            pass
     return names
 
 
@@ -222,6 +225,16 @@ def get_last_name(list, id):
         return "Unknown"
 
 
+def get_age(list, id):
+    """ This returns the the age of a given individual """
+    for row in list:
+        if row["ID"] == id:
+            birth_date = row["BIRT"]
+            today = datetime.now().date().strftime('%d %b %Y')
+            return calculate_years(birth_date, today)
+    return -1
+
+
 def get_birth(list, id):
     """ Get the birth date for an individual.  """
     for row in list:
@@ -240,11 +253,14 @@ def get_death(list, id):
 
 def calculate_years(date1, date2):
     """ this returns the number of years between 2 exact format dates """
-    first_date = datetime.strptime(date1, '%d %b %Y').date()
-    second_date = datetime.strptime(date2, '%d %b %Y').date()
+    try:
+        first_date = datetime.strptime(date1, '%d %b %Y').date()
+        second_date = datetime.strptime(date2, '%d %b %Y').date()
 
-    years = (first_date - second_date).days / 365
-    return floor(abs(years))
+        years = (first_date - second_date).days / 365
+        return floor(abs(years))
+    except ValueError:
+        return 0
 
 
 def get_name_id(indi):
@@ -317,3 +333,29 @@ def siblings(indi1, indi2, fam_list):
     else:
         return False
 
+
+def sort_siblings(children, individuals):
+    """ Sorts the given list by decreasing age """
+    children.sort(key=lambda x: get_age(individuals, x), reverse=True)
+
+
+def list_large_age_differences(families, individuals):
+    """ Takes a list of families as a parameter checks for
+        a 2x difference in age at time of marriage """
+    for family in families:
+        marriage_date = family["MARR"]
+        if marriage_date != '':
+            husb = calculate_years(get_birth(individuals, 
+                                             family["HUSB"]),
+                                   marriage_date)
+            wife = calculate_years(get_birth(individuals, 
+                                             family["WIFE"]), 
+                                   marriage_date)
+            if husb > wife:
+                if floor(husb / wife) >= 2:
+                    print("US34: Husband %s is %d times older than wife %s" %
+                          (family["HUSB"], floor(husb / wife), family["WIFE"]))
+            elif wife > husb:
+                if floor(wife / husb) >= 2:
+                    print("US34: Wife %s is %d times older than husband %s" %
+                          (family["WIFE"], floor(husb / wife), family["HUSB"]))

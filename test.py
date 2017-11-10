@@ -2,7 +2,7 @@ import unittest
 from inspect import signature
 from collections import defaultdict
 from project import Gedcom
-from validate import valid_month, valid_lifetime, validate_genders, get_age
+from validate import valid_month, valid_lifetime, validate_genders
 from validate import validate_males, validate_marriages, validate_ids
 from validate import validate_marriage_dates, validate_marriage_divorce
 from validate import validate_name_birth
@@ -12,6 +12,7 @@ from helpers import get_death, get_living_married, find_living_people_ids
 from helpers import get_currently_married, list_living_single, get_name_id
 from helpers import get_name_id_list, get_recent_births, valid_divorce
 from helpers import siblings, get_mom, get_dad, create_family_dict, find_duplicate_children, process_partial_dates
+from helpers import siblings, get_mom, get_dad, get_age, sort_siblings
 
 TEST_FILE_NAME = 'data/testing.ged'
 gedcom = Gedcom(TEST_FILE_NAME)
@@ -229,6 +230,12 @@ class TestProject(unittest.TestCase):
         self.assertTrue(siblings('@I5@', '@I7@', families))
         self.assertFalse(siblings('@I1@', '@I2@', families))
         self.assertFalse(siblings('@I3@', '@I2@', families))
+
+    def test_sibling_order(self):
+        """ Ensure siblings are ordered by age """
+        self.assertEqual(families[1]['CHIL'], ['@I5@', '@I7@'])
+        sort_siblings(families[1]['CHIL'], individuals)
+        self.assertEqual(families[1]['CHIL'], ['@I7@', '@I5@'])
 
 
 if __name__ == '__main__':
