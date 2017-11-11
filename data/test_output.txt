@@ -1,3 +1,4 @@
+Error US41: Incomplete date format: 1 h i 1960
 Anomaly US23: Name Constance Joan /Lewis/ and Birth 05 OCT 2017 is duplicated
 Anomaly: US25: Duplicate child name and birthday: [('Jane', '9 FEB 2010')]
 Error: US41: Incorrect date format: 1 h i 1960
@@ -14,6 +15,8 @@ Error US05: Marriage in family @F4@ occurred after husband's death.
 Error US04: Family @F1@ has no marriage date.
 Error US04: Marriage in family @F3@ occurred after the divorce.
 Anomaly US11: Spouse Ruth /Jones/ (@I10@) is a spouse in multiple families.
-Ran 29 tests in 0.410s
+
+----------------------------------------------------------------------
+Ran 33 tests in 0.344s
 
 OK
