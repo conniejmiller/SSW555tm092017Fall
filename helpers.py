@@ -359,4 +359,4 @@ def list_large_age_differences(families, individuals):
             elif wife > husb:
                 if floor(wife / husb) >= 2:
                     print("US34: Wife %s is %d times older than husband %s" %
-                          (family["WIFE"], floor(wufe / husb), family["HUSB"]))
+                          (family["WIFE"], floor(wife / husb), family["HUSB"]))
