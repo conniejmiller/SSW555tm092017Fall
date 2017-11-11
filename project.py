@@ -4,7 +4,6 @@ from validate import validate_divorces, validate_siblings
 from display import print_table
 from helpers import list_deceased, get_recent_deaths, get_recent_births2
 from helpers import get_living_married, list_living_single, create_family_dict, process_partial_dates
-from pprint import pprint
 from helpers import get_living_married, list_living_single, sort_siblings
 from helpers import list_large_age_differences
 
@@ -92,12 +91,12 @@ class Gedcom():
             family.append(fam_dict)
         
         for row in family:
-            if row['MARR'] or row['DIV']:  
+            if row['MARR'] or row['DIV']:
                 row['MARR'] = process_partial_dates(row['MARR'])
                 row['DIV'] = process_partial_dates(row['DIV'])
 
         for row in individual:
-            if row['BIRT'] or row['DEAT']:  
+            if row['BIRT'] or row['DEAT']:
                 row['BIRT'] = process_partial_dates(row['BIRT'])
                 row['DEAT'] = process_partial_dates(row['DEAT'])
 
