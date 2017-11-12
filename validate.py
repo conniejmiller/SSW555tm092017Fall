@@ -1,4 +1,3 @@
-from datetime import datetime
 from helpers import calculate_years, get_name_id, date_compare, get_death
 from helpers import get_birth, get_name_id_list, get_last_name, get_age
 from helpers import find_duplicates, valid_divorce, siblings
@@ -315,5 +314,3 @@ def validate_siblings(families):
                   "Spouses in family %s share at least one parent." %
                   spouse['ID'])
     return True
-
-

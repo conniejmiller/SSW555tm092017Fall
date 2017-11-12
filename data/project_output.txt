@@ -1,3 +1,4 @@
+Error US41: Incomplete date format: 1 h i 1960
 +-------+----------------------------+--------+-------------+-------------+
 |   ID  | NAME                       | GENDER |   BIRTHDAY  |    DEATH    |
 +-------+----------------------------+--------+-------------+-------------+
@@ -7,7 +8,13 @@
 | @I13@ | Jon /Jones/                |   M    | 20 OCT 2017 |             |
 | @I14@ | Hank /Frank/               |   M    | 20 JAN 1985 | 20 OCT 2017 |
 | @I15@ | Mike /Frank/               |   M    | 20 JAN 1985 | 20 OCT 2017 |
+| @I16@ | Ronald /Coleman/           |   M    |  1 JAN 1960 |             |
+| @I17@ | Martha /Coleman/           |   F    |  1 OCT 1960 |             |
+| @I18@ | Jane /Coleman/             |   F    |  9 FEB 2010 |             |
+| @I19@ | Jane /Coleman/             |   F    |  9 FEB 2010 |             |
 |  @I1@ | Bob /Jones/                |   M    |  1 JAN 1900 |  1 JAN 2051 |
+| @I20@ | Marty /Cole/               |   M    |  1 h i 1960 |             |
+| @I20@ | Kobe /Bryant/              |   M    |  1 NOV 1960 |             |
 |  @I2@ | Mary /Smith/               |   M    |  1 JAM 1901 |             |
 |  @I3@ | Thelma Lucella /Philbrook/ |   F    | 18 FEB 1939 |             |
 |  @I4@ | John Walter /Lewis/        |   M    | 30 JAN 1937 |             |
@@ -17,16 +24,17 @@
 |  @I7@ | Joe /Smith/                |   M    | 21 JAN 1957 |             |
 |  @I9@ | George /Johnson/           |   M    | 30 JAN 1977 |             |
 +-------+----------------------------+--------+-------------+-------------+
-+------+-------------+-------------+--------------------------+---------------------------------+------------------+
-|  ID  |   MARRIED   |   DIVORCED  |         HUSBAND          |               WIFE              |     CHILDREN     |
-+------+-------------+-------------+--------------------------+---------------------------------+------------------+
-| @F1@ |             |             |     @I1@:Bob /Jones/     |        @I2@:Mary /Smith/        |    ['@I10@']     |
-| @F2@ | 19 MAR 1989 |             | @I4@:John Walter /Lewis/ | @I3@:Thelma Lucella /Philbrook/ | ['@I5@', '@I7@'] |
-| @F3@ |  8 APR 1962 | 18 JUN 1957 |    @I7@:Joe /Wright/     |    @I5@:Patricia Jane /Lewis/   |        []        |
-| @F4@ |  9 APR 1962 |             |    @I6@:Carol /Smith/    |        @I10@:Ruth /Jones/       |        []        |
-| @F5@ | 19 MAY 2004 |             |  @I11@:Andrew /Stewart/  |        @I10@:Ruth /Jones/       |        []        |
-| @F6@ |  8 APR 1997 | 18 JUN 2007 |    @I7@:Joe /Wright/     |        @I10@:Ruth /Jones/       |        []        |
-+------+-------------+-------------+--------------------------+---------------------------------+------------------+
++------+-------------+-------------+--------------------------+---------------------------------+--------------------+
+|  ID  |   MARRIED   |   DIVORCED  |         HUSBAND          |               WIFE              |      CHILDREN      |
++------+-------------+-------------+--------------------------+---------------------------------+--------------------+
+| @F1@ |             |             |     @I1@:Bob /Jones/     |        @I2@:Mary /Smith/        |     ['@I10@']      |
+| @F2@ | 19 MAR 1989 |             | @I4@:John Walter /Lewis/ | @I3@:Thelma Lucella /Philbrook/ |  ['@I5@', '@I7@']  |
+| @F3@ |  8 APR 1962 | 18 JUN 1957 |    @I7@:Joe /Wright/     |    @I5@:Patricia Jane /Lewis/   |         []         |
+| @F4@ |  9 APR 1962 |             |    @I6@:Carol /Smith/    |        @I10@:Ruth /Jones/       |         []         |
+| @F5@ | 19 MAY 2004 |             |  @I11@:Andrew /Stewart/  |        @I10@:Ruth /Jones/       |         []         |
+| @F6@ |  8 APR 1997 | 18 JUN 2007 |    @I7@:Joe /Wright/     |        @I10@:Ruth /Jones/       |         []         |
+| @F7@ |  8 APR 1985 |             |  @I16@:Ronald /Coleman/  |      @I17@:Martha /Coleman/     | ['@I18@', '@I19@'] |
++------+-------------+-------------+--------------------------+---------------------------------+--------------------+
 US29: Deceased: Bob /Jones/, 1 JAN 2051
 US29: Deceased: Carol /Smith/, 1 FEB 1951
 US29: Deceased: Joe /Wright/, 21 JAN 1959
@@ -39,13 +47,20 @@ US35: Recent Birth: Jon /Jones/ | 20 Oct 2017
 US30: Living married person: Thelma Lucella /Philbrook/
 US30: Living married person: John Walter /Lewis/
 US30: Living married person: Andrew /Stewart/
+US30: Living married person: Ronald /Coleman/
+US30: Living married person: Martha /Coleman/
 US31: Living single person over 30: @I9@, George /Johnson/
 US31: Living single person over 30: @I12@, Andrew /Stewart/
+Anomaly US25: Duplicate child name and birthday: [('Jane', '9 FEB 2010')]
+US34: Wife @I5@ is 7 times older than husband @I7@
+US34: Husband @I6@ is 5 times older than wife @I10@
+US34: Husband @I7@ is 2 times older than wife @I10@
 Error US01: Death date of Bob /Jones/ (@I1@) occurs after the current date.
 Error US07: Life duration of Bob /Jones/ (@I1@) is greater than 150 years.
 Error US42: Invalid birth month for Mary /Smith/ (@I2@)
 Error US01: Birth date of Carol /Smith/ (@I6@) occurs after the current date.
 Error US03: Birth date of Carol /Smith/ (@I6@) occurs after the death date
+Error US42: Invalid birth month for Marty /Cole/ (@I20@)
 Anomaly: No marriage date exists for family (@F1@)
 Error US04: Family @F1@ has no marriage date.
 Error US05: Family @F1@ has no marriage date.
@@ -62,8 +77,10 @@ Anomaly US21: Wife Mary /Smith/ (@I2@) in family (@F1@) is not female.
 Anomaly US21: Husband Carol /Smith/ (@I6@) in family (@F4@) is not male.
 Anomaly US16: Male Joe /Wright/ (@I7@) has differing last name.
 Anomaly US16: Male Joe /Smith/ (@I7@) has differing last name.
-Anomaly US11: Spouse Ruth /Jones/ (@I10@) is a spouse in multiple families.
 Error US06: Divorce in family @F6@ occurred after death of one spouse.
+Anomaly US11: Spouse Ruth /Jones/ (@I10@) is a spouse in multiple families.
 Anomaly US22: ID @I7@ is duplicated.
+Anomaly US22: ID @I20@ is duplicated.
 Anomaly US23: Name Andrew /Stewart/ and Birth 30 JAN 1977 is duplicated
+Anomaly US23: Name Jane /Coleman/ and Birth 9 FEB 2010 is duplicated
 Anomaly US18: Spouses in family @F3@ share at least one parent.

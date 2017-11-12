@@ -1,15 +1,15 @@
 from math import floor
-from datetime import datetime, timedelta, date
-import validate
+from datetime import datetime, timedelta
 from collections import Counter, defaultdict
-from pprint import pprint
 from itertools import chain
 
+
 def find_duplicate_children(children_list):
-    """ Count for duplicate children names and birthday dictionaries in a list of children dictionaries. """
+    """ Count for duplicate children names and birthday dictionaries
+    in a list of children dictionaries. """
     duplicates = []
     for child in children_list:
-        c = list(child) # change from type dict_values to list
+        c = list(child)  # change from type dict_values to list
         if len(child) <= 1:
             continue
         if len(child) > 1:
@@ -18,10 +18,11 @@ def find_duplicate_children(children_list):
             if len(b) == len(set(b)) == False:
                 continue
             elif len(b) == len(set(b)) == True:
-                duplicates.append("Anomaly: US25: Duplicate child name and birthday: {}".format(b))
+                duplicates.append("Anomaly: US25: Duplicate child name and " +
+                                  "birthday: {}".format(b))
                 print(" ".join(duplicates))
     return " ".join(duplicates)
-                
+
 
 def create_family_dict(fam, ind):
     """ Return a dict list of children in each family. """
@@ -31,21 +32,21 @@ def create_family_dict(fam, ind):
         for person in ind:
             name = person['NAME'].split(' ')[0]
             bday = person['BIRT']
-            
+
             for child_id in spouse['CHIL']:
                 if person['ID'] == child_id:
                     dd[spouse['ID']][child_id][name] = bday
-   
-    children_list = [ chil.values() for fam_id, chil in dd.items()] 
+
+    children_list = [chil.values() for fam_id, chil in dd.items()]
     return find_duplicate_children(children_list)
 
 
 def process_partial_dates(date):
-    """ Return partial dates without days or without days and months 
-    with default a date. """ 
+    """ Return partial dates without days or without days and months
+    with default a date. """
     d = date.split()
     if len(d) == 3:
-        return date 
+        return date
     elif len(d) == 2:
         copy = d[:]
         month_and_year = copy[:2]
@@ -61,7 +62,7 @@ def process_partial_dates(date):
     elif len(d) == 0:
         return date
     else:
-        print("Error: US41: Incorrect date format: {}".format(date))
+        print("Error US41: Incomplete date format: {}".format(date))
         return date
 
 
@@ -199,7 +200,7 @@ def get_recent_births(individuals):
             days = today - bday
             if days < DD and bday < today:
                 print('US35: Recent Birth: {} | {}'.format(individual['NAME'],
-                       bday.strftime('%d %b %Y')))
+                      bday.strftime('%d %b %Y')))
                 names.append(individual["NAME"])
         except ValueError:
             # Invalid date, carry on
@@ -358,4 +359,4 @@ def list_large_age_differences(families, individuals):
             elif wife > husb:
                 if floor(wife / husb) >= 2:
                     print("US34: Wife %s is %d times older than husband %s" %
-                          (family["WIFE"], floor(husb / wife), family["HUSB"]))
+                          (family["WIFE"], floor(wife / husb), family["HUSB"]))
